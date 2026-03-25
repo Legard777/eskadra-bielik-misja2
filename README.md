@@ -123,4 +123,77 @@ Przykładowy kod źródłowy pozwalający na:
    cd ..
    ```
 
+## 5. Inicjalizacja wektorowej bazy danych w BigQuery
+
+Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kontekstową.
+
+1. Przejdź do katalogu `vector_store`
+   ```bash
+   cd vector_store
+   ```
+
+2. Zainstaluj wymagane biblioteki (w środowisku deweloperskim)
+   ```bash
+   pip install google-cloud-bigquery
+   ```
+
+3. Uruchom skrypt inicjalizacyjny, który stworzy zbiór danych i tabelę w BigQuery
+   ```bash
+   python init_db.py
+   ```
+
+4. Wróć do głównego katalogu projektu
+   ```bash
+   cd ..
+   ```
+
+## 6. Uruchomienie API (Orchestration) na Cloud Run
+
+1. Przeanalizuj kod aplikacji FastAPI w katalogu `orchestration`
+
+2. Przejdź do katalogu `orchestration`
+   ```bash
+   cd orchestration
+   ```
+
+3. Uruchom skrypt publikujący aplikację na Cloud Run
+   ```bash
+   ./cloud_run.sh
+   ```
+
+4. Po wdrożeniu gcloud wypisze adres URL usługi `orchestration-api`. Zapisz go do zmiennej środowiskowej
+   ```bash
+   export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
+   ```
+
+5. Wróć do głównego katalogu
+   ```bash
+   cd ..
+   ```
+
+## 7. Testowanie API - Zasilanie i Wyszukiwanie (RAG)
+
+1. Zasil bazę BigQuery przykładowymi danymi z pliku CSV
+   ```bash
+   curl -X POST "$ORCHESTRATION_URL/ingest" \
+        -F "file=@vector_store/hotel_rules.csv"
+   ```
+
+2. Sprawdź w Google Cloud Console -> BigQuery, czy rekordy pojawiły się w tabeli `rag_dataset.hotel_rules` 
+   *(Proces indeksowania danych do Vector Search może chwilę potrwać, jednak dane tekstowe widoczne są natychmiast).*
+
+3. Wykonaj testowe zapytanie wykorzystując RAG, dopytujące o informacje z wgranych reguł
+   ```bash
+   curl -X POST "$ORCHESTRATION_URL/ask" \
+        -H "Content-Type: application/json" \
+        -d '{"query": "O której godzinie jest podawane śniadanie?"}'
+   ```
+   
+   oraz testowo o parking:
+   ```bash
+   curl -X POST "$ORCHESTRATION_URL/ask" \
+        -H "Content-Type: application/json" \
+        -d '{"query": "Ile kosztuje parking hotelowy?"}'
+   ```
+
 
