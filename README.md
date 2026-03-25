@@ -64,7 +64,7 @@ Przykładowy kod źródłowy pozwalający na:
 
 3. Uruchom skrypt `setup_env.sh`
    ```bash
-   ./setup_env.sh
+   sourcesetup_env.sh
    ```
 >[!IMPORTANT]
 >Jeżeli z jakiegoś powodu musisz ponownie uruchomić terminal Cloud Shell, pamiętaj aby ponownie uruchomić skrypt `setup_env.sh` aby wczytać zmienne środowiskowe.
