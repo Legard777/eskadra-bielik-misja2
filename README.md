@@ -37,6 +37,7 @@ Przykładowy kod źródłowy pozwalający na:
    ```
 >[!TIP]
 >Jeżeli projekt jest nieodpowiedni, zmień go za pomocą komendy: `gcloud config set project <ID_TWOJEGO_PROJEKTU>`
+
 >[!CAUTION]
 >Nie pomyl nazwy projektu z ID projektu! Nie zawsze są one takie same.
 
@@ -63,7 +64,7 @@ Przykładowy kod źródłowy pozwalający na:
 
 3. Uruchom skrypt `setup_env.sh`
    ```bash
-   source setup_env.sh
+   ./setup_env.sh
    ```
 >[!IMPORTANT]
 >Jeżeli z jakiegoś powodu musisz ponownie uruchomić terminal Cloud Shell, pamiętaj aby ponownie uruchomić skrypt `setup_env.sh` aby wczytać zmienne środowiskowe.
