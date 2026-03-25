@@ -88,13 +88,18 @@ Przykładowy kod źródłowy pozwalający na:
 
 2. Uruchom skrypt `llm/cloud_run.sh`
    ```bash
-   source llm/cloud_run.sh
+   cd llm
+   ./cloud_run.sh
    ```
 3. Sprawdź status usługi `bielik` w Cloud Console - Cloud Run - Services
 
-4. Zadaj pierwsze pytanie modelowi Bielik korzystając z poniższego skryptu
+4. Przeanalizuj plik `llm/llm_test1.sh` i zadaj pierwsze pytanie modelowi Bielik uruchamiając ten skrypt
    ```bash
-   source llm/llm_test1.sh
+   ./llm_test1.sh
+   ```
+5. Wróć do głównego katalogu projektu
+   ```bash
+   cd ..
    ```
 
 ## 4. Uruchomienie modelu embeddingowego EmbeddingGemma na Cloud Run
@@ -103,11 +108,18 @@ Przykładowy kod źródłowy pozwalający na:
 
 2. Uruchom skrypt `embedding_model/cloud_run.sh`
    ```bash
-   source embedding_model/cloud_run.sh
+   cd embedding_model
+   ./cloud_run.sh
    ```
 3. Sprawdź status usługi `embedding-gemma` w Cloud Console - Cloud Run - Services
 
-4. Wygeneruj embeddingi (wektory) dla przykładowego tekstu korzystając z poniższego skryptu
+4. Przeanalizuj plik `embedding_model/embedding_test1.sh` i wygeneruj pierwsze testowe embeddingi (wektory) dla przykładowego tekstu uruchamiając ten skrypt
    ```bash
-   source embedding_model/embedding_test1.sh
+   ./embedding_test1.sh
    ```
+5. Wróć do głównego katalogu projektu
+   ```bash
+   cd ..
+   ```
+
+
