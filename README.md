@@ -183,13 +183,22 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
    *(Proces indeksowania danych do Vector Search może chwilę potrwać, jednak dane tekstowe widoczne są natychmiast).*
 
 3. Wykonaj testowe zapytanie wykorzystując RAG, dopytujące o informacje z wgranych reguł
+   
+   Pytanie o częstotliwość pomiaru chloru w basenie:
+   ```bash
+   curl -X POST "$ORCHESTRATION_URL/ask" \
+        -H "Content-Type: application/json" \
+        -d '{"query": "Jak często powinien być mierzony poziom chloru w basenie?"}'
+   ```
+
+   Pytanie o godzinę podawania śniadania:
    ```bash
    curl -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
         -d '{"query": "O której godzinie jest podawane śniadanie?"}'
    ```
    
-   oraz testowo o parking:
+   Pytanie o parking:
    ```bash
    curl -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
