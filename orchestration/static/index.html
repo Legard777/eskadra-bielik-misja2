@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eskadra Bielik - Porównanie RAG</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f7;
+            --container-bg: rgba(255, 255, 255, 0.85);
+            --text-color: #1d1d1f;
+            --accent-color: #0071e3;
+            --accent-hover: #0077ED;
+            --border-color: #d2d2d7;
+            --shadow: 0 4px 24px rgba(0,0,0,0.06);
+            --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 20px;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+
+        .header h1 {
+            font-size: 40px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 19px;
+            color: #86868b;
+            font-weight: 400;
+        }
+
+        .input-section {
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 40px;
+            display: flex;
+            gap: 16px;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 18px 24px;
+            font-size: 17px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background: var(--container-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
+        }
+
+        button {
+            padding: 0 32px;
+            font-size: 17px;
+            font-weight: 500;
+            color: white;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        button:disabled {
+            background-color: #a1c6ff;
+            cursor: not-allowed;
+        }
+
+        .comparision-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 24px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .panel {
+            flex: 1;
+            min-width: 300px;
+            background: var(--container-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+
+        .panel p.desc {
+            font-size: 14px;
+            color: #86868b;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .content {
+            flex-grow: 1;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #1d1d1f;
+            white-space: pre-wrap;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #e2e2e2 25%, #f0f0f0 50%, #e2e2e2 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 8px;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+
+        .skeleton.title { width: 40%; height: 24px; margin-bottom: 16px; }
+        .skeleton.p1 { width: 100%; }
+        .skeleton.p2 { width: 100%; }
+        .skeleton.p3 { width: 80%; }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .context-box {
+            margin-top: 24px;
+            background: #f5f5f7;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 13px;
+            color: #515154;
+        }
+        
+        .context-box h4 {
+            margin-bottom: 8px;
+            color: #1d1d1f;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .context-item {
+            margin-bottom: 8px;
+            padding-left: 12px;
+            border-left: 2px solid var(--accent-color);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Bielik + RAG</h1>
+        <p>Zadaj pytanie i porównaj odpowiedź samego modelu Bielik z odpowiedzią wspartą kontekstem RAG opartym o hotelową bazę wiedzy w BigQuery.</p>
+    </div>
+
+    <div class="input-section">
+        <input type="text" id="promptInput" placeholder="Np. Ile kosztuje parking hotelowy?" autocomplete="off" autofocus>
+        <button id="submitBtn">Zapytaj</button>
+    </div>
+
+    <div class="comparision-container">
+        <div class="panel">
+            <h2>Bielik</h2>
+            <p class="desc">Odpowiedź wygenerowana wyłącznie w oparciu o wagę modelu, bez dostępu do bazy wektorowej BigQuery.</p>
+            <div id="directContent" class="content"><i>Czekam na Twoje pytanie...</i></div>
+        </div>
+
+        <div class="panel">
+            <h2>Bielik (RAG)</h2>
+            <p class="desc">Odpowiedź wygenerowana w oparciu o odszukane w locie dokumenty z BigQuery Vector Search.</p>
+            <div id="ragContent" class="content"><i>Czekam na Twoje pytanie...</i></div>
+            <div id="ragContext" class="context-box" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const submitBtn = document.getElementById('submitBtn');
+        const promptInput = document.getElementById('promptInput');
+        
+        const directContent = document.getElementById('directContent');
+        const ragContent = document.getElementById('ragContent');
+        const ragContext = document.getElementById('ragContext');
+
+        const getSkeletonHTML = () => `
+            <div class="skeleton p1"></div>
+            <div class="skeleton p2"></div>
+            <div class="skeleton p3"></div>
+        `;
+
+        async function askBielik() {
+            const query = promptInput.value.trim();
+            if(!query) return;
+
+            submitBtn.disabled = true;
+            promptInput.disabled = true;
+
+            directContent.innerHTML = getSkeletonHTML();
+            ragContent.innerHTML = getSkeletonHTML();
+            ragContext.style.display = 'none';
+            ragContext.innerHTML = '';
+
+            const callApi = async (url) => {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ query: query })
+                    });
+                    
+                    if(!response.ok) throw new Error("Błąd serwera. Sprawdź logi na Google Cloud Run.");
+                    return await response.json();
+                } catch (error) {
+                    return { error: error.message };
+                }
+            };
+
+            const directPromise = callApi('/ask_direct');
+            const ragPromise = callApi('/ask');
+
+            // Handle Direct response
+            directPromise.then(res => {
+                if(res.error) directContent.innerHTML = `<span style="color:#ff3b30;">${res.error}</span>`;
+                else directContent.innerText = res.answer;
+            });
+
+            // Handle RAG response
+            ragPromise.then(res => {
+                if(res.error) {
+                    ragContent.innerHTML = `<span style="color:#ff3b30;">${res.error}</span>`;
+                } else {
+                    ragContent.innerText = res.answer;
+                    if(res.context_used && res.context_used.length > 0) {
+                        ragContext.style.display = 'block';
+                        ragContext.innerHTML = `<h4>💡 Wykorzystany kontekst z BigQuery:</h4>`;
+                        res.context_used.forEach(ctx => {
+                            ragContext.innerHTML += `<div class="context-item">${ctx}</div>`;
+                        });
+                    }
+                }
+            });
+
+            await Promise.allSettled([directPromise, ragPromise]);
+            submitBtn.disabled = false;
+            promptInput.disabled = false;
+            promptInput.focus();
+        }
+
+        submitBtn.addEventListener('click', askBielik);
+        promptInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') askBielik();
+        });
+    </script>
+</body>
+</html>

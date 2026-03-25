@@ -3,12 +3,22 @@ import csv
 import io
 import requests
 from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import google.auth.transport.requests
 import google.oauth2.id_token
 from google.cloud import bigquery
 
 app = FastAPI(title="RAG API (Bielik & EmbeddingGemma)")
+
+# Zapewnij, że katalog static istnieje
+os.makedirs("static", exist_ok=True)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/")
+def read_root():
+    return FileResponse("static/index.html")
 
 PROJECT_ID = os.environ.get("PROJECT_ID")
 DATASET_ID = os.environ.get("BIGQUERY_DATASET", "rag_dataset")
@@ -156,4 +166,37 @@ async def ask_question(request_data: AskRequest):
     return {
         "answer": answer,
         "context_used": context_docs
+    }
+
+@app.post("/ask_direct")
+async def ask_direct(request_data: AskRequest):
+    query = request_data.query
+
+    if not LLM_URL:
+        raise HTTPException(status_code=500, detail="LLM_URL variable is not set")
+        
+    token = get_id_token(LLM_URL)
+    url = f"{LLM_URL}/api/chat"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    
+    prompt = f"Odpowiedz na poniższe pytanie w sposób jasny i zwięzły:\\n\\nPYTANIE:\\n{query}"
+    
+    payload = {
+        "model": "SpeakLeash/bielik-4.5b-v3.0-instruct:Q8_0",
+        "messages": [{"role": "user", "content": prompt}],
+        "stream": False
+    }
+    
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+        answer = response.json().get("message", {}).get("content", "")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Błąd podczas komunikacji z modelem LLM: {e}")
+        
+    return {
+        "answer": answer
     }

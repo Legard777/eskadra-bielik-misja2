@@ -205,4 +205,17 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
         -d '{"query": "Ile kosztuje parking hotelowy?"}'
    ```
 
+## 8. Interfejs Użytkownika (Web UI)
+
+Aplikacja udostępnia prosty interfejs WWW, pozwalający na wygodne sprawdzenie i porównanie działania bazowego modelu Bielik z modelem Bielik wspartym przez RAG.
+
+Aby otworzyć interfejs graficzny:
+
+1. Wyświetl i kliknij adres URL usługi `orchestration-api` uruchamiając w terminalu poniższą komendę:
+   ```bash
+   echo $ORCHESTRATION_URL
+   ```
+2. Po otwarciu strony w przeglądarce, wpisz w okno dialogowe dowolne zapytanie (np. "Do której godziny jest otwarty basen?") i kliknij "Zapytaj".
+3. Porównaj strumień odpowiedzi wyświetlany dla samej bazy wiedzy modelu i z zestawem wyników RAG pochodzących z wektorowej bazy BigQuery.
+
 
