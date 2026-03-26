@@ -8,6 +8,6 @@ gcloud run deploy $EMBEDDING_SERVICE \
   --no-allow-unauthenticated \
   --set-env-vars OLLAMA_NUM_PARALLEL=4 \
   --max-instances 1 \
-  --memory 16Gi \
+  --memory 8Gi \
   --timeout=600 \
   --labels dev-tutorial=dos-codelab-bielik-rag
