@@ -12,7 +12,7 @@ gcloud run deploy $LLM_SERVICE \
   --no-gpu-zonal-redundancy \
   --set-env-vars OLLAMA_NUM_PARALLEL=4 \
   --max-instances 1 \
-  --memory 32Gi \
+  --memory 16Gi \
   --timeout=600 \
   --labels dev-tutorial=dos-codelab-bielik-rag
 
