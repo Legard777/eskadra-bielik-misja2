@@ -83,47 +83,67 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 ## 1. Przygotowanie projektu Google Cloud `~15 min`
 
-1. Uzyskaj kredyt Cloud **OnRamp**, lub skonfiguruj płatności w projekcie Google Cloud
+### Krok 1.1 — Aktywacja konta rozliczeniowego z kredytami OnRamp
 
-2. Przejdź do **Google Cloud Console**: [console.cloud.google.com](https://console.cloud.google.com)
+>[!NOTE]
+>Kredyty OnRamp pozwalają korzystać z Google Cloud **bez karty kredytowej**. Otrzymasz od prowadzącego indywidualny link do aktywacji kredytów.
 
-3. Stwórz nowy projekt Google Cloud i wybierz go aby był aktywny
+1. Otwórz otrzymany od prowadzącego link do aktywacji kredytów i postępuj zgodnie z instrukcjami
 >[!TIP]
->Możesz sprawdzić dostępność kredytów OnRamp wybierając z menu po lewej stronie: Billing / Credits
+>Szczegółową instrukcję aktywacji kredytów znajdziesz w tym przewodniku: [Google Cloud Credits Redemption](https://codelabs.developers.google.com/codelabs/cloud-codelab-credits#1)
 
-4. Otwórz Cloud Shell ([dokumentacja](https://cloud.google.com/shell/docs))
+2. Wypełnij formularz aktywacji — podaj imię i nazwisko, zaakceptuj regulamin
 
-5. Zweryfikuj konto które jest zalogowane w Cloud Shell
+3. Potwierdź że konto rozliczeniowe zostało aktywowane — pojawi się komunikat o przyznaniu kredytów
+
+### Krok 1.2 — Utworzenie nowego projektu Google Cloud
+
+1. Przejdź do selektora projektów w górnym pasku Google Cloud Console i kliknij **Nowy projekt**
+>[!TIP]
+>Szczegółową instrukcję tworzenia projektu znajdziesz w tym przewodniku: [Google Cloud Credits Redemption — krok 2](https://codelabs.developers.google.com/codelabs/cloud-codelab-credits#2)
+
+2. Nadaj projektowi nazwę (np. `bielik-warsztat`) i jako konto rozliczeniowe wybierz konto aktywowane w poprzednim kroku
+
+3. Kliknij **Utwórz** i poczekaj aż projekt zostanie utworzony
+
+4. Upewnij się że nowo utworzony projekt jest aktywny (widoczny w selektorze projektów w górnym pasku)
+
+>[!CAUTION]
+>Nie pomyl nazwy projektu z ID projektu — nie zawsze są takie same. ID projektu widoczne jest pod nazwą podczas tworzenia i na stronie głównej konsoli.
+
+>[!TIP]
+>Możesz potwierdzić że kredyty są powiązane z projektem wchodząc w menu po lewej stronie: **Billing → Credits**
+
+### Krok 1.3 — Otwarcie terminala Cloud Shell i sklonowanie repozytorium
+
+1. Otwórz terminal Cloud Shell klikając ikonę **`>_`** w górnym pasku Google Cloud Console ([dokumentacja](https://cloud.google.com/shell/docs))
+
+2. Zweryfikuj że zalogowane jest właściwe konto
    ```bash
    gcloud auth list
    ```
 >[!TIP]
->Jeżeli konto nie jest zalogowane, lub jest to inne konto niż to z dostępem do Twojego projektu Google Cloud, zaloguj się za pomocą komendy: `gcloud auth login`
+>Jeżeli widoczne jest inne konto niż to z kredytami, zaloguj się komendą: `gcloud auth login`
 
-6. Potwierdź, że wybrany jest odpowiedni projekt Google Cloud
+3. Potwierdź że aktywny jest właściwy projekt
    ```bash
    gcloud config get project
    ```
 >[!TIP]
->Jeżeli projekt jest nieodpowiedni, zmień go za pomocą komendy: `gcloud config set project <ID_TWOJEGO_PROJEKTU>`
+>Jeżeli projekt jest inny niż oczekiwany, zmień go komendą: `gcloud config set project <ID_TWOJEGO_PROJEKTU>`
 
->[!CAUTION]
->Nie pomyl nazwy projektu z ID projektu! Nie zawsze są one takie same.
-
-7. Sklonuj repozytorium z przykładowym kodem i przejdź do nowoutworzonego katalogu
+4. Sklonuj repozytorium z kodem warsztatu
    ```bash
-   git clone https://github.com/avedave/eskadra-bielik-misja2
+   git clone https://github.com/Legard777/eskadra-bielik-misja2
    ```
 
-8. Przejdź do katalogu z kodem źródłowym
+5. Przejdź do katalogu z kodem
    ```bash
    cd eskadra-bielik-misja2
    ```
 
-9. Uruchom edytor w katalogu z kodem źródłowym
-   ```bash
-   cloudshell workspace .
-   ```
+>[!TIP]
+>Cloud Shell posiada wbudowany edytor graficzny — przydatny do przeglądania i edycji plików bez znajomości edytorów terminalowych. Na potrzeby tego warsztatu nie jest wymagany, jednak możesz go uruchomić w dowolnym momencie komendą `cloudshell workspace .` lub klikając przycisk **Open Editor** w górnym pasku Cloud Shell. Więcej informacji: [Cloud Shell Editor](https://docs.cloud.google.com/shell/docs/editor-overview)
 
 ## 2. Konfiguracja zmiennych środowiskowych i usług Google Cloud `~10 min`
 
@@ -132,28 +152,64 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    cat setup_env.sh
    ```
 
-2. Otwórz terminal Cloud Shell — po uruchomieniu edytora w poprzednim kroku terminal może być ukryty za zakładką edytora. Kliknij zakładkę **Terminal** w dolnym pasku aby go przywrócić
+   >[!NOTE]
+   >Skrypt `setup_env.sh` pełni trzy kluczowe funkcje:
+   >
+   > - **Automatyzacja konfiguracji** — pobiera ID Twojego projektu Google Cloud i definiuje stałe nazwy dla usług (np. `bielik`, `rag_dataset`). Dzięki temu nie musisz wpisywać tych danych ręcznie w kolejnych krokach — skrypty wdrożeniowe same odczytają je z pamięci terminala
+   > - **Spójność środowiska** — gwarantuje że wszystkie komponenty (LLM, Embedding, BigQuery) zostaną uruchomione w tym samym regionie (`europe-west1`) i będą mogły się ze sobą komunikować
+   > - **Ochrona plików** — ustawia pliki źródłowe (`.py`, `.html`, `.csv`) w tryb tylko do odczytu, aby zapobiec przypadkowym zmianom podczas przeglądania kodu
+   >
+   > **Ważne:** zmienne działają tylko w terminalu, w którym uruchomiono `source setup_env.sh`. Po otwarciu nowej karty Cloud Shell należy uruchomić skrypt ponownie.
 
-3. Uruchom skrypt `setup_env.sh`
+2. Uruchom skrypt `setup_env.sh`
    ```bash
    source setup_env.sh
    ```
->[!IMPORTANT]
->Jeżeli z jakiegoś powodu musisz ponownie uruchomić terminal Cloud Shell, pamiętaj aby ponownie uruchomić skrypt `setup_env.sh` aby wczytać zmienne środowiskowe.
 
-4. Włącz potrzebne usługi w projekcie Google Cloud
+   >[!NOTE]
+   >Ten krok jest jednym z najważniejszych w całym warsztacie, ponieważ ładuje konfigurację do pamięci bieżącego terminala:
+   >
+   > - **Dlaczego `source`, a nie `./setup_env.sh`?** — Komenda `source` sprawia że zmienne (`$PROJECT_ID`, `$REGION` itd.) pozostają dostępne w Twoim terminalu po zakończeniu skryptu. Zwykłe uruchomienie `./setup_env.sh` spowodowałoby że zniknęłyby zaraz po jego zakończeniu
+   > - **Przygotowanie pod kolejne kroki** — wszystkie następne skrypty (wdrażające Bielik, BigQuery itd.) nie pytają o nazwę projektu ani region — po prostu odczytują je z ustawionych tutaj zmiennych
+   > - **Wymóg powtarzalności** — zmienne żyją tylko w bieżącym oknie terminala. Po otwarciu nowej karty lub restarcie Cloud Shell należy wykonać ten punkt ponownie
+   >
+   > Bez wykonania tego kroku kolejne skrypty nie będą wiedziały gdzie wdrożyć kod i zakończą się błędem `Project ID not set`.
+
+   >[!IMPORTANT]
+   >Jeżeli z jakiegoś powodu musisz ponownie uruchomić terminal Cloud Shell, pamiętaj aby ponownie uruchomić skrypt `setup_env.sh` aby wczytać zmienne środowiskowe.
+
+3. Włącz potrzebne usługi w projekcie Google Cloud
    ```bash
    gcloud services enable run.googleapis.com
    gcloud services enable cloudbuild.googleapis.com
    gcloud services enable artifactregistry.googleapis.com
    gcloud services enable bigquery.googleapis.com
    ```
-5. Uzyskaj uprawnienia do wywoływania usług Cloud Run
+
+   >[!NOTE]
+   >Domyślnie wiele usług Google Cloud jest wyłączonych, aby uniknąć niepotrzebnych kosztów. Powyższe komendy aktywują interfejsy API niezbędne do działania warsztatu:
+   >
+   > - **`run.googleapis.com`** — Cloud Run: platforma na której uruchamiane są kontenery z modelem Bielik, modelem embeddingowym oraz aplikacją orchestration
+   > - **`cloudbuild.googleapis.com`** — Cloud Build: automatycznie buduje obrazy Docker z kodu źródłowego przed wdrożeniem na Cloud Run
+   > - **`artifactregistry.googleapis.com`** — Artifact Registry: prywatne repozytorium przechowujące zbudowane obrazy kontenerów
+   > - **`bigquery.googleapis.com`** — BigQuery: pełni rolę wektorowej bazy danych (Vector Search) przechowującej zaindeksowane dokumenty i umożliwiającej ich semantyczne przeszukiwanie
+   >
+   > Bez wykonania tych komend próba wdrożenia aplikacji skryptami `cloud_run.sh` zakończyłaby się błędem `API not enabled`.
+4. Uzyskaj uprawnienia do wywoływania usług Cloud Run
    ```bash
    gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member=user:$(gcloud config get-value account) \
     --role='roles/run.invoker'
-   ```  
+   ```
+
+   >[!NOTE]
+   >Komenda nadaje Twojemu kontu uprawnienia do wywoływania usług Cloud Run. Oto co robią poszczególne elementy:
+   >
+   > - **`add-iam-policy-binding $PROJECT_ID`** — dopisuje nową regułę do polityki dostępu (IAM) Twojego projektu
+   > - **`--member=user:$(gcloud config get-value account)`** — automatycznie pobiera adres e-mail aktualnie zalogowanego użytkownika, dzięki czemu nie musisz wpisywać go ręcznie
+   > - **`--role='roles/run.invoker'`** — nadaje rolę Cloud Run Invoker, niezbędną do wysyłania zapytań (np. przez `curl` lub przeglądarkę) do modeli i API wdrożonych na Cloud Run
+   >
+   > W Google Cloud obowiązuje zasada najmniejszych uprawnień — nawet właściciel projektu musi jawnie przypisać tę rolę, aby komunikacja między komponentami przebiegała poprawnie.
 
 ## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na Cloud Run `~15 min`
 
@@ -161,6 +217,7 @@ Aby zaoszczędzić czas, uruchom oba modele **równolegle** w dwóch osobnych te
 
 >[!IMPORTANT]
 >Każdy nowy terminal Cloud Shell wymaga ponownego wczytania zmiennych środowiskowych. Zanim wykonasz jakąkolwiek komendę w nowym terminalu, uruchom:
+
 >```bash
 >source ~/eskadra-bielik-misja2/setup_env.sh
 >```
