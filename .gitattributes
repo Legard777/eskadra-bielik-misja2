@@ -1,0 +1,5 @@
+# Wymuszaj LF dla wszystkich plików tekstowych (zapobiega problemom z CRLF na Windows)
+* text=auto eol=lf
+
+# Skrypty bash muszą mieć LF - nigdy CRLF
+*.sh text eol=lf
