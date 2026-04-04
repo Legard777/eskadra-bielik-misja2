@@ -1,0 +1,3 @@
+# Zaszyfrowane artefakty checkpointów uczestników
+# Nie commituj plików .enc do repozytorium — zawierają dane osobowe (email, project ID)
+*.enc

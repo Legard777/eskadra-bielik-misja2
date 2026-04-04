@@ -8,22 +8,22 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 
 ## Agenda warsztatu
 
-| # | Temat | Czas |
-|---|---|---|
-| 0 | Wstęp — czym jest RAG, Bielik i architektura rozwiązania | 15 min |
-| 1 | Przygotowanie projektu Google Cloud | 15 min |
-| 2 | Konfiguracja zmiennych środowiskowych i usług Google Cloud | 10 min |
-| 3 | Uruchomienie modeli Bielik i EmbeddingGemma na Cloud Run (równolegle) | 15 min |
-| 4 | Inicjalizacja wektorowej bazy danych w BigQuery | 5 min |
-| 5 | Uruchomienie API (Orchestration) na Cloud Run | 15 min |
-| — | **Przerwa — lunch / poczęstunek / kawa / herbata / sok** | **20 min** |
-| 6 | Testowanie API — zasilanie bazy i pierwsze zapytania RAG | 10 min |
-| 7 | Przegląd API i architektury kodu | 5 min |
-| 8 | Interfejs Web UI — porównanie modelu z RAG i bez RAG + eksperymenty | 20 min |
-| 9 | Certyfikat ukończenia warsztatu | 5 min |
-| 10 | Czyszczenie zasobów Google Cloud | 5 min |
-| 11 | Networking | 15 min |
-| | **Łącznie** | **~155 min** |
+| # | Temat | Czas | Punkty |
+|---|---|---|:---:|
+| 0 | Wstęp — czym jest RAG, Bielik i architektura rozwiązania | 15 min | — |
+| 1 | Przygotowanie projektu Google Cloud | 15 min | **5** |
+| 2 | Konfiguracja zmiennych środowiskowych i usług Google Cloud | 10 min | **10** |
+| 3 | Uruchomienie modeli Bielik i EmbeddingGemma na Cloud Run (równolegle) | 15 min | **20** |
+| 4 | Inicjalizacja wektorowej bazy danych w BigQuery | 5 min | **5** |
+| 5 | Uruchomienie API (Orchestration) na Cloud Run | 15 min | **10** |
+| — | **Przerwa — lunch / poczęstunek / kawa / herbata / sok** | **20 min** | — |
+| 6 | Testowanie API — zasilanie bazy i pierwsze zapytania RAG | 10 min | **10** |
+| 7 | Przegląd API i architektury kodu | 5 min | **5** |
+| 8 | Interfejs Web UI — porównanie modelu z RAG i bez RAG + eksperymenty | 20 min | **10** |
+| 9 | Certyfikat ukończenia warsztatu | 5 min | — |
+| 10 | Czyszczenie zasobów Google Cloud | 5 min | — |
+| 11 | Networking | 15 min | — |
+| | **Łącznie** | **~155 min** | **75 pkt** |
 
 ---
 
@@ -148,6 +148,11 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 >[!TIP]
 >Cloud Shell posiada wbudowany edytor graficzny — przydatny do przeglądania i edycji plików bez znajomości edytorów terminalowych. Na potrzeby tego warsztatu nie jest wymagany, jednak możesz go uruchomić w dowolnym momencie komendą `cloudshell workspace .` lub klikając przycisk **Open Editor** w górnym pasku Cloud Shell. Więcej informacji: [Cloud Shell Editor](https://docs.cloud.google.com/shell/docs/editor-overview)
 
+6. Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny:
+   ```bash
+   ./checkpoints/checkpoint_1.sh
+   ```
+
 ## 2. Konfiguracja zmiennych środowiskowych i usług Google Cloud `~10 min`
 
 1. Przejrzyj zawartość skryptu `setup_env.sh`
@@ -213,6 +218,11 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-gcloud-projects-add-iam-policy-binding).
+
+6. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
+   ```bash
+   ./checkpoints/checkpoint_2.sh
+   ```
 
 ## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na Cloud Run `~15 min`
 
@@ -313,6 +323,11 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    cd ..
    ```
 
+7. Zalicz krok i zdobądź **+20 punktów** — oba modele wdrożone, to najtrudniejszy etap warsztatu:
+   ```bash
+   ./checkpoints/checkpoint_3.sh
+   ```
+
 ## 4. Inicjalizacja wektorowej bazy danych w BigQuery `~5 min`
 
 Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kontekstową.
@@ -358,6 +373,11 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
 4. Wróć do głównego katalogu projektu
    ```bash
    cd ..
+   ```
+
+5. Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny:
+   ```bash
+   ./checkpoints/checkpoint_4.sh
    ```
 
 ## 5. Uruchomienie API (Orchestration) na Cloud Run `~15 min`
@@ -411,6 +431,11 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 6. Wróć do głównego katalogu
    ```bash
    cd ..
+   ```
+
+7. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
+   ```bash
+   ./checkpoints/checkpoint_5.sh
    ```
 
 ---
@@ -514,6 +539,11 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```
    > Wynik to 3 dokumenty semantycznie najbliższe zapytaniu — dokładnie to, co aplikacja wysyła jako kontekst do modelu Bielik.
 
+5. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
+   ```bash
+   ./checkpoints/checkpoint_6.sh
+   ```
+
 ## 7. Interfejs Programistyczny (API) `~5 min`
 
 Aplikacja udostępnia proste API stworzone przy pomocy frameworka *FastAPI*, pozwalające nie tylko na zasilanie bazy wiedzy, ale również na zadawanie pytań.
@@ -528,6 +558,12 @@ Aplikacja definiuje w pliku `orchestration/main.py` następujące ścieżki:
   - buduje prompt z odnalezionym kontekstem,
   - wysyła połączony prompt do modelu `Bielik` i zwraca ostateczną odpowiedź wraz z wybranym i wykorzystanym kontekstem.
 * `POST /ask_direct` – służy jako zestawienie porównawcze (baseline). Przyjmuje zapytanie i wysyła je bezpośrednio do bazowego modelu `Bielik`, z całkowitym pominięciem RAG.
+
+Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny, który potwierdzi że wszystkie usługi działają razem:
+
+```bash
+./checkpoints/checkpoint_7.sh
+```
 
 ## 8. Interfejs Użytkownika (Web UI) `~20 min`
 
@@ -560,26 +596,30 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 2. Po otwarciu opublikowanej strony w Twojej przeglądarce internetowej, wpisz w okno dialogowe dowolne zapytanie (np. "Do której godziny jest otwarty basen?") i kliknij "Zapytaj".
 3. Porównaj strumień odpowiedzi wyświetlany dla samej bazy wiedzy modelu (bez dodatkowego kontekstu) z bogatszą odpowiedzią RAG wygenerowaną w oparciu o wiedzę z przeszukiwania BigQuery Vector Search.
 
+4. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
+   ```bash
+   ./checkpoints/checkpoint_8.sh
+   ```
+
 ## 9. Certyfikat ukończenia warsztatu `~5 min`
 
-Gratulacje — warsztat dobiegł końca! Aby potwierdzić ukończenie i otrzymać certyfikat, wykonaj poniższą komendę i prześlij jej wynik do prowadzącego.
+Gratulacje — warsztat dobiegł końca! Wygeneruj zaszyfrowany certyfikat zawierający wszystkie 8 checkpointów i prześlij go prowadzącemu.
 
 > [!IMPORTANT]
-> Skopiuj cały wynik komendy (od `=== START ===` do `=== STOP ===`) i wklej do formularza certyfikacji przekazanego przez prowadzącego.
+> Przed wygenerowaniem certyfikatu upewnij się, że wszystkie 8 checkpointów zostało wykonanych (pliki `cert_artifacts/checkpoint_N.enc` muszą istnieć). Skrypt sam to weryfikuje i zgłosi brakujące kroki.
 
 ```bash
-echo -e "\n=== START KOPIOWANIA TEKSTU ===" && \
-echo -e "\n=== INFORMACJE O PROJEKCIE ===" && \
-echo "Projekt: $(gcloud config get-value project)" && \
-echo "Konto:   $(gcloud config get-value account)" && \
-echo -e "\n=== WDROŻONE USŁUGI CLOUD RUN ===" && \
-gcloud run services list \
-  --filter="metadata.name:bielik OR metadata.name:embedding-gemma OR metadata.name:orchestration-api" \
-  --format="table(metadata.name,status.url,metadata.creationTimestamp,status.lastTransitionTime,metadata.labels)" && \
-echo -e "\n=== STOP KOPIOWANIA TEKSTU ==="
+./checkpoints/certyfikat_generate.sh
 ```
 
-Komenda wyświetli nazwę projektu, konto oraz tabelę z trzema wdrożonymi usługami (`bielik`, `embedding-gemma`, `orchestration-api`). Szczegółowy opis wyniku znajdziesz w pliku [certyfikat.md](certyfikat.md).
+Po pomyślnym wykonaniu wyślij prowadzącemu plik:
+
+```bash
+cert_artifacts/checkpoint_certyfikat.enc
+```
+
+> [!TIP]
+> Plik jest zaszyfrowany — możesz go przesłać przez dowolny kanał (email, formularz, Slack). Zawiera potwierdzenie wykonania wszystkich etapów warsztatu powiązane z Twoim kontem Google Cloud i projektem. Szczegółowy opis systemu certyfikacji znajdziesz w pliku [certyfikat.md](certyfikat.md).
 
 ---
 

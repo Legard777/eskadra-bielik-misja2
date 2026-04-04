@@ -205,3 +205,9 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Eskadra Bielik Misja 2 — dekoder artefaktów (tylko dla prowadzącego)
+decode_artifact.py
+
+# Zaszyfrowane artefakty checkpointów (dane osobowe uczestników)
+cert_artifacts/*.enc
