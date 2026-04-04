@@ -191,6 +191,122 @@
             border-left: 2px solid var(--accent-color);
         }
 
+        .confidence-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .confidence-badge.high   { background: #d1fae5; color: #065f46; }
+        .confidence-badge.medium { background: #fef3c7; color: #92400e; }
+        .confidence-badge.low    { background: #fee2e2; color: #991b1b; }
+        .confidence-badge.none   { background: #f3f4f6; color: #6b7280; }
+
+        .context-score {
+            font-size: 11px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--accent-color);
+            border-radius: 10px;
+            padding: 1px 6px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .context-id {
+            font-size: 11px;
+            color: #86868b;
+            font-family: monospace;
+            margin-bottom: 2px;
+        }
+
+        .show-records-btn {
+            margin-top: 32px;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--accent-color);
+            background: transparent;
+            border: 1.5px solid var(--accent-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .show-records-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: #fff;
+            border-radius: 20px;
+            padding: 36px;
+            width: 90%;
+            max-width: 760px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .modal-header h3 { font-size: 22px; font-weight: 600; }
+        .modal-close {
+            background: #f5f5f7;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1d1d1f;
+            padding: 0;
+        }
+        .record-row {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            align-items: flex-start;
+        }
+        .record-row:last-child { border-bottom: none; }
+        .record-id {
+            font-family: monospace;
+            font-size: 12px;
+            color: #fff;
+            background: #515154;
+            border-radius: 8px;
+            padding: 2px 8px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .record-content { line-height: 1.5; color: #1d1d1f; }
+
     </style>
 </head>
 <body>
@@ -205,16 +321,31 @@
         <button id="submitBtn">Zapytaj</button>
     </div>
 
+    <button class="show-records-btn" id="showRecordsBtn">Przeglądaj bazę wiedzy BigQuery</button>
+
+    <!-- Modal z rekordami -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Rekordy w BigQuery</h3>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div id="recordsList"><i>Ładowanie...</i></div>
+        </div>
+    </div>
+
     <div class="comparision-container">
         <div class="panel">
             <h2>Bielik</h2>
             <p class="desc">Odpowiedź wygenerowana wyłącznie w oparciu o wagę modelu, bez dostępu do bazy wektorowej BigQuery.</p>
+            <div id="directConfidence"></div>
             <div id="directContent" class="content"><i>Czekam na Twoje pytanie...</i></div>
         </div>
 
         <div class="panel">
             <h2>Bielik (RAG)</h2>
             <p class="desc">Odpowiedź wygenerowana w oparciu o odszukane w locie dokumenty z BigQuery Vector Search.</p>
+            <div id="ragConfidence"></div>
             <div id="ragContent" class="content"><i>Czekam na Twoje pytanie...</i></div>
             <div id="ragContext" class="context-box" style="display: none;"></div>
         </div>
@@ -225,8 +356,22 @@
         const promptInput = document.getElementById('promptInput');
         
         const directContent = document.getElementById('directContent');
+        const directConfidence = document.getElementById('directConfidence');
         const ragContent = document.getElementById('ragContent');
+        const ragConfidence = document.getElementById('ragConfidence');
         const ragContext = document.getElementById('ragContext');
+
+        function confidenceBadge(score, label) {
+            const cls = score === null ? 'none'
+                      : score >= 75   ? 'high'
+                      : score >= 50   ? 'medium'
+                      :                 'low';
+            const icon = score === null ? '—' : score >= 75 ? '✓' : score >= 50 ? '~' : '✗';
+            const text = score === null
+                ? label
+                : `${label}: ${score}% trafności kontekstu`;
+            return `<span class="confidence-badge ${cls}">${icon} ${text}</span>`;
+        }
 
         const getSkeletonHTML = () => `
             <div class="skeleton p1"></div>
@@ -242,7 +387,9 @@
             promptInput.disabled = true;
 
             directContent.innerHTML = getSkeletonHTML();
+            directConfidence.innerHTML = '';
             ragContent.innerHTML = getSkeletonHTML();
+            ragConfidence.innerHTML = '';
             ragContext.style.display = 'none';
             ragContext.innerHTML = '';
 
@@ -266,8 +413,12 @@
 
             // Handle Direct response
             directPromise.then(res => {
-                if(res.error) directContent.innerHTML = `<span style="color:#ff3b30;">${res.error}</span>`;
-                else directContent.innerText = res.answer;
+                if(res.error) {
+                    directContent.innerHTML = `<span style="color:#ff3b30;">${res.error}</span>`;
+                } else {
+                    directConfidence.innerHTML = confidenceBadge(null, 'Brak danych o trafności — odpowiedź bez kontekstu');
+                    directContent.innerText = res.answer;
+                }
             });
 
             // Handle RAG response
@@ -275,12 +426,21 @@
                 if(res.error) {
                     ragContent.innerHTML = `<span style="color:#ff3b30;">${res.error}</span>`;
                 } else {
+                    ragConfidence.innerHTML = confidenceBadge(res.confidence ?? null, 'Trafność RAG');
                     ragContent.innerText = res.answer;
                     if(res.context_used && res.context_used.length > 0) {
                         ragContext.style.display = 'block';
                         ragContext.innerHTML = `<h4>💡 Wykorzystany kontekst z BigQuery:</h4>`;
-                        res.context_used.forEach(ctx => {
-                            ragContext.innerHTML += `<div class="context-item">${ctx}</div>`;
+                        res.context_used.forEach((ctx, i) => {
+                            const score = res.context_scores ? res.context_scores[i] : null;
+                            const id    = res.context_ids   ? res.context_ids[i]    : null;
+                            const scoreTag = score !== null
+                                ? `<span class="context-score">${score}%</span>`
+                                : '';
+                            const idTag = id !== null
+                                ? `<div class="context-id">id: ${id}</div>`
+                                : '';
+                            ragContext.innerHTML += `<div class="context-item">${idTag}${ctx}${scoreTag}</div>`;
                         });
                     }
                 }
@@ -295,6 +455,44 @@
         submitBtn.addEventListener('click', askBielik);
         promptInput.addEventListener('keypress', (e) => {
             if(e.key === 'Enter') askBielik();
+        });
+
+        // --- Modal z rekordami ---
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose   = document.getElementById('modalClose');
+        const recordsList  = document.getElementById('recordsList');
+        const showRecordsBtn = document.getElementById('showRecordsBtn');
+
+        async function loadRecords() {
+            recordsList.innerHTML = '<i>Ładowanie...</i>';
+            try {
+                const res = await fetch('/records?limit=200');
+                if(!res.ok) throw new Error('Błąd pobierania danych.');
+                const data = await res.json();
+                if(data.records.length === 0) {
+                    recordsList.innerHTML = '<i>Brak rekordów w tabeli.</i>';
+                    return;
+                }
+                recordsList.innerHTML = `<p style="font-size:13px;color:#86868b;margin-bottom:16px;">Łącznie rekordów: <strong>${data.total}</strong></p>`;
+                data.records.forEach(r => {
+                    recordsList.innerHTML += `
+                        <div class="record-row">
+                            <span class="record-id">${r.id}</span>
+                            <span class="record-content">${r.content}</span>
+                        </div>`;
+                });
+            } catch(e) {
+                recordsList.innerHTML = `<span style="color:#ff3b30;">${e.message}</span>`;
+            }
+        }
+
+        showRecordsBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('open');
+            loadRecords();
+        });
+        modalClose.addEventListener('click', () => modalOverlay.classList.remove('open'));
+        modalOverlay.addEventListener('click', (e) => {
+            if(e.target === modalOverlay) modalOverlay.classList.remove('open');
         });
     </script>
 </body>

@@ -10,13 +10,24 @@ import google.auth.transport.requests
 import google.oauth2.id_token
 from google.cloud import bigquery
 
-app = FastAPI(title="RAG API (Bielik & EmbeddingGemma)")
+app = FastAPI(
+    title="RAG API (Bielik & EmbeddingGemma)",
+    description=(
+        "## API systemu RAG opartego na modelach Bielik i EmbeddingGemma\n\n"
+        "Umożliwia:\n"
+        "- **ingestion** dokumentów CSV do BigQuery z wektoryzacją\n"
+        "- **wyszukiwanie wektorowe** w BigQuery i generowanie odpowiedzi przez LLM (RAG)\n"
+        "- **bezpośrednie pytania** do modelu Bielik bez kontekstu\n\n"
+        "Dokumentacja interaktywna: `/docs` · Alternatywna: `/redoc`"
+    ),
+    version="1.0.0",
+)
 
 # Zapewnij, że katalog static istnieje
 os.makedirs("static", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def read_root():
     return FileResponse("static/index.html")
 
@@ -64,7 +75,17 @@ def get_embedding(text: str) -> list[float]:
 class AskRequest(BaseModel):
     query: str
 
-@app.post("/ingest")
+@app.post(
+    "/ingest",
+    summary="Wgraj dokumenty CSV do BigQuery",
+    description=(
+        "Przyjmuje plik CSV z kolumnami `id` i `text`.\n\n"
+        "Dla każdego wiersza generuje wektor osadzenia (EmbeddingGemma) "
+        "i zapisuje rekord do tabeli BigQuery. "
+        "Zwraca liczbę pomyślnie wstawionych wierszy."
+    ),
+    tags=["Ingestion"],
+)
 async def ingest_csv(file: UploadFile = File(...)):
     if not bq_client:
         raise HTTPException(status_code=500, detail="BigQuery client not initialized (missing PROJECT_ID)")
@@ -99,7 +120,19 @@ async def ingest_csv(file: UploadFile = File(...)):
             
     return {"status": "success", "inserted_count": len(rows_to_insert)}
 
-@app.post("/ask")
+@app.post(
+    "/ask",
+    summary="Zapytaj model RAG (z kontekstem z BigQuery)",
+    description=(
+        "Przyjmuje pytanie w polu `query`.\n\n"
+        "**Przepływ:**\n"
+        "1. Generuje wektor zapytania (EmbeddingGemma)\n"
+        "2. Wyszukuje 3 najbliższe dokumenty w BigQuery (VECTOR_SEARCH, COSINE)\n"
+        "3. Buduje prompt z kontekstem i wysyła do modelu Bielik\n\n"
+        "Zwraca odpowiedź modelu oraz listę użytych fragmentów kontekstu."
+    ),
+    tags=["RAG"],
+)
 async def ask_question(request_data: AskRequest):
     if not bq_client:
         raise HTTPException(status_code=500, detail="BigQuery client not initialized (missing PROJECT_ID)")
@@ -115,7 +148,7 @@ async def ask_question(request_data: AskRequest):
     
     # Krok 1: Wyszukiwanie Wektorowe w BigQuery
     bq_query = f"""
-    SELECT base.content, distance
+    SELECT base.id, base.content, distance
     FROM VECTOR_SEARCH(
       TABLE `{table_ref}`,
       'embedding',
@@ -127,7 +160,11 @@ async def ask_question(request_data: AskRequest):
     try:
         query_job = bq_client.query(bq_query)
         results = query_job.result()
-        context_docs = [row.content for row in results]
+        rows = list(results)
+        context_docs = [row.content for row in rows]
+        # distance COSINE: 0 = identyczny, 1 = ortogonalny; zamieniamy na % podobieństwa
+        context_scores = [round((1 - row.distance) * 100, 1) for row in rows]
+        context_ids = [row.id for row in rows]
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Błąd przeszukiwania wektorowego w BigQuery: {e}")
         
@@ -163,12 +200,26 @@ async def ask_question(request_data: AskRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Błąd podczas komunikacji z modelem LLM: {e}")
         
+    avg_score = round(sum(context_scores) / len(context_scores), 1) if context_scores else 0.0
+
     return {
         "answer": answer,
-        "context_used": context_docs
+        "context_used": context_docs,
+        "context_ids": context_ids,
+        "context_scores": context_scores,
+        "confidence": avg_score,
     }
 
-@app.post("/ask_direct")
+@app.post(
+    "/ask_direct",
+    summary="Zapytaj model Bielik bezpośrednio (bez RAG)",
+    description=(
+        "Przyjmuje pytanie w polu `query` i przesyła je wprost do modelu Bielik "
+        "**bez** wyszukiwania kontekstu w BigQuery.\n\n"
+        "Przydatne do weryfikacji działania modelu LLM niezależnie od pipeline'u RAG."
+    ),
+    tags=["RAG"],
+)
 async def ask_direct(request_data: AskRequest):
     query = request_data.query
 
@@ -199,4 +250,33 @@ async def ask_direct(request_data: AskRequest):
         
     return {
         "answer": answer
+    }
+
+
+@app.get(
+    "/records",
+    summary="Pobierz wszystkie rekordy z BigQuery",
+    description=(
+        "Zwraca listę wszystkich dokumentów zapisanych w tabeli BigQuery "
+        "(pola `id` i `content`, bez wektora osadzenia).\n\n"
+        "Parametr `limit` pozwala ograniczyć liczbę zwracanych rekordów (domyślnie 100)."
+    ),
+    tags=["Ingestion"],
+)
+async def list_records(limit: int = 100):
+    if not bq_client:
+        raise HTTPException(status_code=500, detail="BigQuery client not initialized (missing PROJECT_ID)")
+
+    table_ref = f"{PROJECT_ID}.{DATASET_ID}.{TABLE_ID}"
+    bq_query = f"SELECT id, content FROM `{table_ref}` LIMIT {limit}"
+
+    try:
+        query_job = bq_client.query(bq_query)
+        rows = list(query_job.result())
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Błąd pobierania rekordów z BigQuery: {e}")
+
+    return {
+        "total": len(rows),
+        "records": [{"id": row.id, "content": row.content} for row in rows],
     }
