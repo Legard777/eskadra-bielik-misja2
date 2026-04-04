@@ -1,10 +1,24 @@
 #!/bin/bash
 
-#uzyskanie URL usługi LLM
-export LLM_SERVICE_URL=$(gcloud run services describe $LLM_SERVICE --region $REGION --format="value(status.url)")
+echo ""
+echo "======================================================"
+echo " Test modelu LLM Bielik"
+echo "======================================================"
+echo ""
 
-#uzyskanie tokenu autoryzacyjnego
+echo " [1/3] Pobieranie adresu URL usługi '$LLM_SERVICE'..."
+export LLM_SERVICE_URL=$(gcloud run services describe $LLM_SERVICE --region $REGION --format="value(status.url)")
+echo "       URL: $LLM_SERVICE_URL"
+echo ""
+
+echo " [2/3] Pobieranie tokenu autoryzacyjnego..."
 export ID_TOKEN=$(gcloud auth print-identity-token)
+echo "       Token pobrany pomyślnie."
+echo ""
+
+echo " [3/3] Wysyłanie zapytania testowego do modelu Bielik..."
+echo "       Pytanie: 'Jak często powinien być mierzony poziom chloru w basenie?'"
+echo ""
 
 curl -X POST "$LLM_SERVICE_URL/api/chat" \
     -H "Authorization: Bearer $ID_TOKEN" \
@@ -14,3 +28,9 @@ curl -X POST "$LLM_SERVICE_URL/api/chat" \
         "messages": [{ "role": "user", "content": "Jak często powinien być mierzony poziom chloru w basenie?" }],
         "stream": false
     }'
+
+echo ""
+echo "======================================================"
+echo " Odpowiedź modelu wyświetlona powyżej."
+echo "======================================================"
+echo ""

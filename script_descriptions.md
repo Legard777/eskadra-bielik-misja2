@@ -60,6 +60,91 @@ Skrypt wdraża model Bielik jako usługę na platformie Cloud Run. Oto co oznacz
 
 ---
 
+## Skrypt `orchestration/cloud_run.sh`
+
+Skrypt wdraża aplikację Orchestration API na Cloud Run. W odróżnieniu od skryptów modeli, musi najpierw pobrać adresy URL działających już usług, aby przekazać je aplikacji:
+
+- **Walidacja zmiennych środowiskowych** — skrypt sprawdza czy `$REGION`, `$PROJECT_ID`, `$EMBEDDING_SERVICE` i `$LLM_SERVICE` są ustawione. Jeśli nie — kończy działanie z czytelnym komunikatem błędu zanim wykona jakiekolwiek zapytanie do Google Cloud.
+- **Pobranie URL-i modeli** — `gcloud run services describe` odpytuje Google Cloud o publiczny adres HTTPS każdej z usług. Są one potrzebne, bo aplikacja Orchestration musi wiedzieć gdzie wysyłać żądania do EmbeddingGemma i Bielika.
+- **`--allow-unauthenticated`** — w odróżnieniu od modeli (które wymagają tokenu), aplikacja Orchestration jest publiczna, aby użytkownik mógł ją otworzyć w przeglądarce bez dodatkowego uwierzytelniania.
+- **`--set-env-vars`** — przekazuje do kontenera wszystkie potrzebne zmienne: `PROJECT_ID`, nazwy dataset i tabeli BigQuery, region oraz URL-e obu modeli. Aplikacja FastAPI odczyta je przy starcie z `os.environ.get(...)`.
+- **`--max-instances 2`** — pozwala uruchomić do 2 instancji (wyższy limit niż przy modelach, bo aplikacja obsługuje ruch użytkowników, a nie intensywne obliczenia).
+
+---
+
+## Plik `orchestration/main.py`
+
+Plik zawiera aplikację FastAPI, która spina wszystkie komponenty systemu RAG w jeden przepływ. Oto co robi każdy element:
+
+- **`GET /`** — serwuje statyczny plik `index.html` z interfejsem Web UI.
+- **`POST /ingest`** — przyjmuje plik CSV, dla każdego wiersza generuje embedding przez EmbeddingGemma, a następnie zapisuje tekst i wektor do tabeli BigQuery. To zasilanie bazy wiedzy.
+- **`POST /ask`** — główny endpoint RAG. Przepływ danych krok po kroku:
+  1. Zamienia zapytanie użytkownika na wektor (EmbeddingGemma)
+  2. Wykonuje zapytanie `VECTOR_SEARCH` w BigQuery — szuka 3 dokumentów semantycznie najbliższych zapytaniu (metryka kosinusowa)
+  3. Buduje prompt z odnalezionymi dokumentami jako kontekstem
+  4. Wysyła prompt do modelu Bielik i zwraca odpowiedź wraz z użytym kontekstem
+- **`POST /ask_direct`** — wysyła zapytanie bezpośrednio do Bielika, z pominięciem RAG. Używany przez Web UI do porównania odpowiedzi "z" i "bez" kontekstu.
+- **`get_id_token()`** — funkcja pomocnicza pobierająca token JWT do autoryzacji żądań do modeli (które są wdrożone z `--no-allow-unauthenticated`). W Cloud Run token pobierany jest automatycznie z metadanych instancji.
+
+---
+
+## Skrypt `vector_store/init_db.py`
+
+Skrypt tworzy strukturę danych w BigQuery niezbędną do przechowywania dokumentów i ich wektorów. Oto co robi każdy element:
+
+- **Odczyt zmiennych środowiskowych** — skrypt pobiera `PROJECT_ID`, `BIGQUERY_DATASET`, `BIGQUERY_TABLE` i `REGION` z ustawionych wcześniej zmiennych powłoki. Jeśli `PROJECT_ID` nie jest ustawiony, wyświetla czytelny błąd i kończy działanie.
+- **Tworzenie datasetu** — `client.create_dataset()` tworzy kontener (dataset) o nazwie `rag_dataset` w regionie `europe-west1`. Obsługa wyjątku `Conflict` sprawia, że skrypt nie zwróci błędu jeśli dataset już istnieje — można go bezpiecznie uruchomić ponownie.
+- **Tworzenie tabeli ze schematem** — tabela `hotel_rules` ma trzy kolumny:
+  - **`id`** (`STRING REQUIRED`) — unikalny identyfikator dokumentu.
+  - **`content`** (`STRING REQUIRED`) — oryginalny tekst dokumentu, który będzie zwracany jako kontekst do modelu Bielik.
+  - **`embedding`** (`FLOAT64 REPEATED`) — wektor liczbowy reprezentujący znaczenie tekstu. Typ `REPEATED` oznacza tablicę dowolnej długości — w tym przypadku tyle wartości, ile wymiarów ma model EmbeddingGemma. Na tej kolumnie BigQuery Vector Search wykonuje wyszukiwanie semantyczne.
+
+---
+
+## Skrypt `embedding_model/cloud_run.sh`
+
+Skrypt wdraża model EmbeddingGemma jako usługę na platformie Cloud Run. Konfiguracja jest celowo uproszczona w porównaniu do modelu Bielik — model embeddingowy nie wymaga GPU:
+
+- **`gcloud run deploy $EMBEDDING_SERVICE`** — wdraża usługę o nazwie zdefiniowanej w zmiennej `$EMBEDDING_SERVICE` (czyli `embedding-gemma`).
+- **`--source .`** — buduje obraz Docker bezpośrednio z bieżącego katalogu za pomocą Cloud Build.
+- **`--region $REGION`** — region Google Cloud, w którym uruchamiana jest usługa (`europe-west1`).
+- **`--concurrency 4`** — jedna instancja kontenera może obsługiwać do 4 równoczesnych żądań.
+- **`--cpu 8`** — przydział 8 vCPU dla kontenera.
+- **Brak flag GPU** — w odróżnieniu od modelu Bielik, EmbeddingGemma działa wyłącznie na CPU. Generowanie wektorów jest znacznie mniej obliczeniowo intensywne niż generowanie tekstu, dlatego GPU nie jest potrzebny.
+- **`--no-allow-unauthenticated`** — usługa nie jest publiczna; wymagane uwierzytelnienie tokenem Google.
+- **`--set-env-vars OLLAMA_NUM_PARALLEL=4`** — umożliwia 4 równoległe przetwarzania w silniku Ollama.
+- **`--max-instances 1`** — ogranicza liczbę instancji do jednej (kontrola kosztów).
+- **`--memory 8Gi`** — przydział 8 GB RAM (połowa w porównaniu do modelu Bielik — model embeddingowy jest lżejszy).
+- **`--timeout=600`** — maksymalny czas odpowiedzi na żądanie: 600 sekund.
+
+---
+
+## Skrypt `embedding_model/embedding_test1.sh`
+
+Skrypt wysyła pierwsze testowe zapytanie do modelu EmbeddingGemma wdrożonego na Cloud Run w celu wygenerowania wektora dla przykładowego tekstu:
+
+- **Pobranie URL usługi** — analogicznie jak w teście LLM, `gcloud run services describe` pobiera adres HTTPS usługi `embedding-gemma`.
+- **Pobranie tokenu autoryzacyjnego** — `gcloud auth print-identity-token` generuje token JWT wymagany do uwierzytelnienia.
+- **Zapytanie curl do endpointu `/api/embed`** — w odróżnieniu od `/api/chat` (generowanie tekstu), endpoint `/api/embed` zamienia tekst wejściowy na reprezentację wektorową (embedding). Ciało żądania zawiera:
+  - **`model`** — nazwa modelu embeddingowego załadowanego w Ollama (`embeddinggemma`).
+  - **`input`** — tekst wejściowy, który zostanie zamieniony na wektor liczbowy.
+- **Co zwraca odpowiedź?** — zamiast tekstu naturalnego, model zwraca tablicę liczb zmiennoprzecinkowych (np. 2048 wartości). Każda liczba reprezentuje jeden wymiar przestrzeni semantycznej. Dwa teksty o podobnym znaczeniu będą miały wektory bliskie sobie geometrycznie — na tym opiera się wyszukiwanie semantyczne w BigQuery Vector Search.
+
+---
+
+## Skrypt `llm/llm_test1.sh`
+
+Skrypt wysyła pierwsze testowe zapytanie bezpośrednio do modelu Bielik wdrożonego na Cloud Run. Oto co robi każdy krok:
+
+- **Pobranie URL usługi** — komenda `gcloud run services describe` odpytuje Google Cloud i zwraca publiczny adres HTTPS usługi `bielik`. Wynik zapisywany jest do zmiennej `$LLM_SERVICE_URL`, dzięki czemu nie trzeba wpisywać adresu ręcznie.
+- **Pobranie tokenu autoryzacyjnego** — `gcloud auth print-identity-token` generuje krótkotrwały token JWT potwierdzający tożsamość zalogowanego użytkownika. Jest wymagany, ponieważ usługa została wdrożona z flagą `--no-allow-unauthenticated` — bez tokenu Cloud Run odrzuci żądanie z błędem 403.
+- **Zapytanie curl** — skrypt wysyła żądanie HTTP POST do endpointu `/api/chat`, który jest standardowym interfejsem API silnika Ollama. Ciało żądania w formacie JSON zawiera:
+  - **`model`** — pełna nazwa modelu załadowanego w Ollama (`SpeakLeash/bielik-4.5b-v3.0-instruct:Q8_0`); Q8_0 oznacza kwantyzację 8-bitową, kompromis między jakością a zużyciem pamięci GPU.
+  - **`messages`** — lista wiadomości w formacie konwersacji; tutaj jedno pytanie użytkownika (`role: user`).
+  - **`stream: false`** — wyłącza strumieniowanie odpowiedzi; model poczeka z odesłaniem wyniku aż wygeneruje całą odpowiedź.
+
+---
+
 ## Komenda `gcloud projects add-iam-policy-binding`
 
 Komenda nadaje Twojemu kontu uprawnienia do wywoływania usług Cloud Run. Oto co robią poszczególne elementy:

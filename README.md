@@ -159,7 +159,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```bash
    > gemini "Co robi ten skrypt @setup_env.sh? Wyjaśnij każdą zmienną środowiskową."
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komende /quit.
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-setupenvsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa, dlatego dwie osoby zadające to samo pytanie mogą otrzymać różne, ale równie poprawne wyjaśnienia.
 
 2. Uruchom skrypt `setup_env.sh`
@@ -172,7 +172,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```bash
    > gemini "Jaka jest różnica między source setup_env.sh a ./setup_env.sh w bashu? Kiedy używać każdej z form?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komende /quit.
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#dlaczego-source-a-nie-setupenvsh) — Twoja wersja może być krótsza, dłuższa lub podać inne przykłady. Właśnie tak działają modele językowe.
 
    >[!IMPORTANT]
@@ -196,7 +196,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```bash
    > gemini "Do czego służy komenda gcloud services enable? Wyjaśnij po krótce każdą z usług: run, cloudbuild, artifactregistry, bigquery."
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komende `/quit`.
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komendy-gcloud-services-enable).
 5. Uzyskaj uprawnienia do wywoływania usług Cloud Run
    ```bash
@@ -210,21 +210,17 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```bash
    > gemini "Co robi komenda gcloud projects add-iam-policy-binding? Wyjaśnij czym jest rola roles/run.invoker i dlaczego zasada najmniejszych uprawnień jest ważna."
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komende `/quit`.
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-gcloud-projects-add-iam-policy-binding).
 
 ## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na Cloud Run `~15 min`
 
-Aby zaoszczędzić czas, uruchom oba modele **równolegle** w dwóch osobnych terminalach Cloud Shell.
+Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim** w tym samym terminalu.
 
->[!IMPORTANT]
->Każdy nowy terminal Cloud Shell wymaga ponownego wczytania zmiennych środowiskowych. Zanim wykonasz jakąkolwiek komendę w nowym terminalu, uruchom:
+> [!TIP]
+> **Dla bardziej doświadczonych:** wdrożenia obu modeli można uruchomić równolegle w dwóch osobnych terminalach Cloud Shell, co skróci czas oczekiwania. Jeśli wiesz jak to zrobić — śmiało! Możesz przełączać się między terminalami klikając ich zakładki w dolnym pasku Cloud Shell. Pamiętaj aby w każdym nowym terminalu wczytać zmienne środowiskowe (`source ~/eskadra-bielik-misja2/setup_env.sh`) i poczekać aż oba wdrożenia zakończą się sukcesem zanim przejdziesz do następnego kroku. Jeśli nie — wykonaj kroki po kolei zgodnie z instrukcją poniżej.
 
->```bash
->source ~/eskadra-bielik-misja2/setup_env.sh
->```
-
-### Terminal 1 (aktualnie aktywny) — Model LLM Bielik
+### Model LLM Bielik
 
 1. Przejrzyj zawartość skryptu `llm/cloud_run.sh`
    ```bash
@@ -239,11 +235,12 @@ Aby zaoszczędzić czas, uruchom oba modele **równolegle** w dwóch osobnych te
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmcloud_runsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
 
-2. Uruchom skrypt `llm/cloud_run.sh`
+2. Uruchom skrypt wdrożeniowy
    ```bash
    cd llm
    ./cloud_run.sh
    ```
+
 3. Sprawdź czy usługa `bielik` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
 
 4. Przejrzyj zawartość pliku `llm/llm_test1.sh`
@@ -251,55 +248,69 @@ Aby zaoszczędzić czas, uruchom oba modele **równolegle** w dwóch osobnych te
    cat llm_test1.sh
    ```
 
-5. Zadaj pierwsze pytanie modelowi Bielik uruchamiając ten skrypt
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > ```bash
+   > gemini "Co robi ten skrypt @llm/llm_test1.sh? Wyjaśnij jak działa autoryzacja i co oznaczają poszczególne pola w ciele zapytania JSON."
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmllm_test1sh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+
+5. Zadaj pierwsze pytanie modelowi Bielik
    ```bash
    ./llm_test1.sh
    ```
+
 6. Wróć do głównego katalogu projektu
    ```bash
    cd ..
    ```
 
-### Terminal 2 (nowa sesja)— Model EmbeddingGemma
+### Model EmbeddingGemma
 
->[!NOTE]
->Nowy terminal startuje zawsze w katalogu domowym (`~`), dlatego poniższe komendy używają pełnych ścieżek do plików projektu.
-
-1. Otwórz **nowy terminal** Cloud Shell klikając ikonę **+** w górnym pasku terminala
-
-2. Wczytaj zmienne środowiskowe
+1. Przejrzyj zawartość skryptu `embedding_model/cloud_run.sh`
    ```bash
-   source ~/eskadra-bielik-misja2/setup_env.sh
+   cat embedding_model/cloud_run.sh
    ```
 
-3. Przejrzyj zawartość skryptu `embedding_model/cloud_run.sh`
-   ```bash
-   cat ~/eskadra-bielik-misja2/embedding_model/cloud_run.sh
-   ```
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > ```bash
+   > gemini "Co robi ten skrypt @embedding_model/cloud_run.sh? Wyjaśnij każdą flagę komendy gcloud run deploy. Czym różni się ta konfiguracja od wdrożenia modelu LLM?"
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelcloud_runsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
 
-4. Przejdź do katalogu i uruchom skrypt `embedding_model/cloud_run.sh`
+2. Uruchom skrypt wdrożeniowy
    ```bash
-   cd ~/eskadra-bielik-misja2/embedding_model
+   cd embedding_model
    ./cloud_run.sh
    ```
-5. Sprawdź czy usługa `embedding-gemma` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
 
-6. Przejrzyj zawartość pliku `embedding_model/embedding_test1.sh`
+3. Sprawdź czy usługa `embedding-gemma` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
+
+4. Przejrzyj zawartość pliku `embedding_model/embedding_test1.sh`
    ```bash
    cat embedding_test1.sh
    ```
 
-7. Wygeneruj pierwsze testowe embeddingi (wektory) dla przykładowego tekstu
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > ```bash
+   > gemini "Co robi ten skrypt @embedding_model/embedding_test1.sh? Czym różni się endpoint /api/embed od /api/chat i czym są embeddingi (wektory)?"
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelembedding_test1sh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+
+5. Wygeneruj pierwsze testowe embeddingi (wektory) dla przykładowego tekstu
    ```bash
    ./embedding_test1.sh
    ```
-8. Wróć do głównego katalogu projektu
-   ```bash
-   cd ~/eskadra-bielik-misja2
-   ```
 
->[!TIP]
->Możesz przełączać się między terminalami klikając ich zakładki w dolnym pasku Cloud Shell. Poczekaj aż oba wdrożenia zakończą się sukcesem zanim przejdziesz do następnego kroku.
+6. Wróć do głównego katalogu projektu
+   ```bash
+   cd ..
+   ```
 
 ## 4. Inicjalizacja wektorowej bazy danych w BigQuery `~5 min`
 
@@ -310,12 +321,35 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
    cd vector_store
    ```
 
-2. Zainstaluj wymagane biblioteki (w środowisku deweloperskim)
+2. Zainstaluj wymagane biblioteki
    ```bash
    pip install google-cloud-bigquery
    ```
 
-3. Uruchom skrypt inicjalizacyjny, który stworzy zbiór danych i tabelę w BigQuery
+   > [!NOTE]
+   > Celowo pomijamy tworzenie wirtualnego środowiska Python (`venv`). W warsztacie korzystamy z Cloud Shell, który jest tymczasowym środowiskiem uruchamianym od nowa po każdej sesji — instalacja globalna jest tu w zupełności wystarczająca. Wirtualne środowisko byłoby przydatne przy długotrwałym projekcie, gdzie chcemy izolować zależności między aplikacjami na tej samej maszynie.
+
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI czym jest ta biblioteka i do czego służy:
+   > ```bash
+   > gemini "Do czego służy biblioteka google-cloud-bigquery w Pythonie? Czym jest pip i dlaczego w tym przypadku nie potrzebujemy wirtualnego środowiska venv?"
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
+
+3. Przejrzyj kod skryptu inicjalizacyjnego
+   ```bash
+   cat init_db.py
+   ```
+
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > ```bash
+   > gemini "Co robi ten skrypt @vector_store/init_db.py? Wyjaśnij schemat tabeli BigQuery i dlaczego pole embedding ma typ FLOAT64 REPEATED."
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-vector_storeinit_dbpy) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+
+4. Uruchom skrypt inicjalizacyjny, który stworzy zbiór danych i tabelę w BigQuery
    ```bash
    python init_db.py
    ```
@@ -327,27 +361,53 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
 
 ## 5. Uruchomienie API (Orchestration) na Cloud Run `~15 min`
 
+Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embeddingowy, BigQuery Vector Search i model Bielik w jeden przepływ i udostępnia go przez API oraz interfejs Web UI.
+
 1. Przejrzyj kod aplikacji FastAPI
    ```bash
    cat orchestration/main.py
    ```
 
-2. Przejdź do katalogu `orchestration`
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ta aplikacja:
+   > ```bash
+   > gemini "Co robi plik @orchestration/main.py? Wyjaśnij każdy endpoint API i opisz przepływ danych w endpoincie /ask: od zapytania użytkownika do odpowiedzi modelu Bielik."
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#plik-orchestrationmainpy) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+
+2. Przejrzyj skrypt wdrożeniowy
+   ```bash
+   cat orchestration/cloud_run.sh
+   ```
+
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > ```bash
+   > gemini "Co robi ten skrypt @orchestration/cloud_run.sh? Dlaczego musi najpierw pobrać URL-e modeli i jak przekazuje je do aplikacji przez zmienne środowiskowe?"
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-orchestrationcloud_runsh).
+
+3. Przejdź do katalogu `orchestration`
    ```bash
    cd orchestration
    ```
 
-3. Uruchom skrypt wdrażający aplikację na Cloud Run
+4. Uruchom skrypt wdrażający aplikację na Cloud Run
    ```bash
    ./cloud_run.sh
    ```
 
-4. Po zakończeniu wdrożenia pobierz adres URL usługi i zapisz go do zmiennej środowiskowej
+5. Po zakończeniu wdrożenia pobierz adres URL usługi i zapisz go do zmiennej środowiskowej
    ```bash
    export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
    ```
 
-5. Wróć do głównego katalogu
+   > [!NOTE]
+   > Zmienna `$ORCHESTRATION_URL` będzie potrzebna w kolejnych krokach do wysyłania zapytań przez `curl`. Jak wszystkie zmienne środowiskowe — działa tylko w bieżącym terminalu.
+
+6. Wróć do głównego katalogu
    ```bash
    cd ..
    ```
@@ -360,19 +420,64 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
 
 ---
 
+> [!IMPORTANT]
+> **Powrót po przerwie — sprawdź terminal przed kontynuacją.**
+> Cloud Shell automatycznie rozłącza się po okresie bezczynności, co usuwa wszystkie zmienne środowiskowe z pamięci. Jeśli robiłeś przerwę, uruchom poniższe komendy przed przejściem do kroku 6:
+> ```bash
+> source ~/eskadra-bielik-misja2/setup_env.sh
+> ```
+> ```bash
+> export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
+> ```
+> Jeśli nie robiłeś przerwy i terminal był aktywny — możesz pominąć ten krok.
+
+---
+
 ## 6. Testowanie API — Zasilanie i Wyszukiwanie (RAG) `~10 min`
 
-1. Wgraj przykładowe dane do BigQuery z pliku CSV
+1. Przejrzyj plik z przykładowymi danymi
+   ```bash
+   tr -d '\r' < vector_store/hotel_rules.csv | awk -F',' '{printf "%-4s  %s\n", $1, $2}'
+   ```
+
+   Plik CSV zawiera dwie kolumny:
+
+   | Kolumna | Opis |
+   |---|---|
+   | `id` | Unikalny identyfikator rekordu |
+   | `text` | Treść dokumentu — zasada hotelowa w języku naturalnym |
+
+   > [!NOTE]
+   > Po wgraniu danych przez endpoint `/ingest` aplikacja automatycznie doda trzecią kolumnę: **`embedding`** — wygenerowany przez EmbeddingGemma wektor liczbowy reprezentujący znaczenie tekstu. To właśnie ta kolumna umożliwia semantyczne wyszukiwanie w BigQuery Vector Search.
+
+2. Wgraj przykładowe dane do BigQuery z pliku CSV
    ```bash
    curl -X POST "$ORCHESTRATION_URL/ingest" \
         -F "file=@vector_store/hotel_rules.csv"
    ```
 
-2. Sprawdź w Google Cloud Console -> BigQuery, czy rekordy pojawiły się w tabeli `rag_dataset.hotel_rules` 
-   *(Proces indeksowania danych do Vector Search może chwilę potrwać, jednak dane tekstowe widoczne są natychmiast).*
+3. Zweryfikuj czy rekordy pojawiły się w BigQuery
 
-3. Wykonaj testowe zapytanie wykorzystując RAG, dopytujące o informacje z wgranych reguł
-   
+   Otwórz [BigQuery w Google Cloud Console](https://console.cloud.google.com/bigquery), przejdź do tabeli `rag_dataset` → `hotel_rules` i kliknij przycisk **Preview** aby podejrzeć dane.
+
+   > [!TIP]
+   > **Preview jest bezpłatny** — nie wykonuje zapytania SQL i nie zużywa limitu darmowych zapytań BigQuery. To najszybszy sposób sprawdzenia czy dane zostały załadowane poprawnie.
+
+   > [!NOTE]
+   > Dane tekstowe w kolumnach `id`, `content` widoczne są natychmiast. Indeksowanie kolumny `embedding` na potrzeby Vector Search może chwilę potrwać — to normalne i nie blokuje kolejnych kroków.
+
+   > [!TIP]
+   > **Dla chętnych — weryfikacja SQL:** jeśli chcesz zobaczyć dane zapytaniem, wklej w edytorze BigQuery:
+   > ```sql
+   > SELECT id, content, ARRAY_LENGTH(embedding) AS embedding_dimensions
+   > FROM `rag_dataset.hotel_rules`
+   > ORDER BY id
+   > LIMIT 10
+   > ```
+   > Kolumna `embedding_dimensions` pokaże ile wymiarów ma wygenerowany wektor.
+
+4. Wykonaj testowe zapytania RAG
+
    Pytanie o częstotliwość pomiaru chloru w basenie:
    ```bash
    curl -X POST "$ORCHESTRATION_URL/ask" \
@@ -386,13 +491,27 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
         -H "Content-Type: application/json" \
         -d '{"query": "O której godzinie jest podawane śniadanie?"}'
    ```
-   
+
    Pytanie o parking:
    ```bash
    curl -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
         -d '{"query": "Ile kosztuje parking hotelowy?"}'
    ```
+
+   > [!TIP]
+   > **Dla chętnych — odpowiednik SQL:** każde z powyższych zapytań wewnętrznie wykonuje Vector Search w BigQuery. Możesz zobaczyć jak to wygląda „pod maską", wklejając w edytorze BigQuery (zastąp `[...]` wektorem zwróconym przez `/api/embed`):
+   > ```sql
+   > SELECT base.content, distance
+   > FROM VECTOR_SEARCH(
+   >   TABLE `rag_dataset.hotel_rules`,
+   >   'embedding',
+   >   (SELECT [...] AS embedding),
+   >   top_k => 3,
+   >   distance_type => 'COSINE'
+   > )
+   > ```
+   > Wynik to 3 dokumenty semantycznie najbliższe zapytaniu — dokładnie to, co aplikacja wysyła jako kontekst do modelu Bielik.
 
 ## 7. Interfejs Programistyczny (API) `~5 min`
 
