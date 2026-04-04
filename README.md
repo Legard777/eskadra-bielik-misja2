@@ -71,6 +71,18 @@ Dodatkowo, dzięki prostemu interfejsowi graficznemu, aplikacja pozwala na wygod
 >[!TIP]
 >Jeśli chcesz lepiej zrozumieć ideę RAG przed przystąpieniem do warsztatu, zapoznaj się z wprowadzeniem Google Cloud: [Retrieval-Augmented Generation](https://cloud.google.com/use-cases/retrieval-augmented-generation?hl=pl)
 
+## Diagramy architektury
+
+Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu [`architektura/`](architektura/):
+
+| Plik | Zawartość |
+|---|---|
+| [`01_widok_systemowy.md`](architektura/01_widok_systemowy.md) | Pełna mapa komponentów GCP i przepływu danych |
+| [`02_pipeline_rag.md`](architektura/02_pipeline_rag.md) | Diagram sekwencji endpointu `/ask` (RAG) |
+| [`03_pipeline_ingestion.md`](architektura/03_pipeline_ingestion.md) | Diagram sekwencji endpointu `/ingest` |
+| [`04_kroki_warsztatu.md`](architektura/04_kroki_warsztatu.md) | Kolejność budowania systemu krok po kroku |
+| [`05_mapa_repozytorium.md`](architektura/05_mapa_repozytorium.md) | Struktura plików i ich rola w architekturze |
+| [`prompty_nano_banana.md`](architektura/prompty_nano_banana.md) | Prompty dla agentów AI — spójność architektoniczna |
 
 ## Z czego składa się kod?
 
