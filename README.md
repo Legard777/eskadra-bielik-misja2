@@ -619,7 +619,7 @@ cert_artifacts/checkpoint_certyfikat.enc
 ```
 
 > [!TIP]
-> Plik jest zaszyfrowany — możesz go przesłać przez dowolny kanał (email, formularz, Slack). Zawiera potwierdzenie wykonania wszystkich etapów warsztatu powiązane z Twoim kontem Google Cloud i projektem. Szczegółowy opis systemu certyfikacji znajdziesz w pliku [certyfikat.md](certyfikat.md).
+> Plik jest zaszyfrowany — możesz go przesłać przez dowolny kanał (email, formularz, Slack). Zawiera potwierdzenie wykonania wszystkich etapów warsztatu powiązane z Twoim kontem Google Cloud i projektem.
 
 ---
 
