@@ -20,9 +20,10 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 | 6 | Testowanie API — zasilanie bazy i pierwsze zapytania RAG | 10 min |
 | 7 | Przegląd API i architektury kodu | 5 min |
 | 8 | Interfejs Web UI — porównanie modelu z RAG i bez RAG + eksperymenty | 20 min |
-| 9 | Czyszczenie zasobów Google Cloud | 5 min |
-| 10 | Networking | 15 min |
-| | **Łącznie** | **~150 min** |
+| 9 | Certyfikat ukończenia warsztatu | 5 min |
+| 10 | Czyszczenie zasobów Google Cloud | 5 min |
+| 11 | Networking | 15 min |
+| | **Łącznie** | **~155 min** |
 
 ---
 
@@ -559,7 +560,30 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 2. Po otwarciu opublikowanej strony w Twojej przeglądarce internetowej, wpisz w okno dialogowe dowolne zapytanie (np. "Do której godziny jest otwarty basen?") i kliknij "Zapytaj".
 3. Porównaj strumień odpowiedzi wyświetlany dla samej bazy wiedzy modelu (bez dodatkowego kontekstu) z bogatszą odpowiedzią RAG wygenerowaną w oparciu o wiedzę z przeszukiwania BigQuery Vector Search.
 
-## 9. Czyszczenie zasobów Google Cloud `~5 min`
+## 9. Certyfikat ukończenia warsztatu `~5 min`
+
+Gratulacje — warsztat dobiegł końca! Aby potwierdzić ukończenie i otrzymać certyfikat, wykonaj poniższą komendę i prześlij jej wynik do prowadzącego.
+
+> [!IMPORTANT]
+> Skopiuj cały wynik komendy (od `=== START ===` do `=== STOP ===`) i wklej do formularza certyfikacji przekazanego przez prowadzącego.
+
+```bash
+echo -e "\n=== START KOPIOWANIA TEKSTU ===" && \
+echo -e "\n=== INFORMACJE O PROJEKCIE ===" && \
+echo "Projekt: $(gcloud config get-value project)" && \
+echo "Konto:   $(gcloud config get-value account)" && \
+echo -e "\n=== WDROŻONE USŁUGI CLOUD RUN ===" && \
+gcloud run services list \
+  --filter="metadata.name:bielik OR metadata.name:embedding-gemma OR metadata.name:orchestration-api" \
+  --format="table(metadata.name,status.url,metadata.creationTimestamp,status.lastTransitionTime,metadata.labels)" && \
+echo -e "\n=== STOP KOPIOWANIA TEKSTU ==="
+```
+
+Komenda wyświetli nazwę projektu, konto oraz tabelę z trzema wdrożonymi usługami (`bielik`, `embedding-gemma`, `orchestration-api`). Szczegółowy opis wyniku znajdziesz w pliku [certyfikat.md](certyfikat.md).
+
+---
+
+## 10. Czyszczenie zasobów Google Cloud `~5 min`
 
 Po zakończeniu warsztatu usuń utworzone zasoby aby uniknąć niepotrzebnych kosztów.
 
