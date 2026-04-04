@@ -16,11 +16,13 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 | 3 | Uruchomienie modeli Bielik i EmbeddingGemma na Cloud Run (równolegle) | 15 min |
 | 4 | Inicjalizacja wektorowej bazy danych w BigQuery | 5 min |
 | 5 | Uruchomienie API (Orchestration) na Cloud Run | 15 min |
+| — | **Przerwa — lunch / poczęstunek / kawa / herbata / sok** | **20 min** |
 | 6 | Testowanie API — zasilanie bazy i pierwsze zapytania RAG | 10 min |
 | 7 | Przegląd API i architektury kodu | 5 min |
 | 8 | Interfejs Web UI — porównanie modelu z RAG i bez RAG + eksperymenty | 20 min |
 | 9 | Czyszczenie zasobów Google Cloud | 5 min |
-| | **Łącznie** | **~115 min** |
+| 10 | Networking | 15 min |
+| | **Łącznie** | **~150 min** |
 
 ---
 
@@ -152,33 +154,36 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    cat setup_env.sh
    ```
 
-   >[!NOTE]
-   >Skrypt `setup_env.sh` pełni trzy kluczowe funkcje:
-   >
-   > - **Automatyzacja konfiguracji** — pobiera ID Twojego projektu Google Cloud i definiuje stałe nazwy dla usług (np. `bielik`, `rag_dataset`). Dzięki temu nie musisz wpisywać tych danych ręcznie w kolejnych krokach — skrypty wdrożeniowe same odczytają je z pamięci terminala
-   > - **Spójność środowiska** — gwarantuje że wszystkie komponenty (LLM, Embedding, BigQuery) zostaną uruchomione w tym samym regionie (`europe-west1`) i będą mogły się ze sobą komunikować
-   > - **Ochrona plików** — ustawia pliki źródłowe (`.py`, `.html`, `.csv`) w tryb tylko do odczytu, aby zapobiec przypadkowym zmianom podczas przeglądania kodu
-   >
-   > **Ważne:** zmienne działają tylko w terminalu, w którym uruchomiono `source setup_env.sh`. Po otwarciu nowej karty Cloud Shell należy uruchomić skrypt ponownie.
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zamiast czytać opis, zapytaj AI! Uruchom w terminalu:
+   > ```bash
+   > gemini "Co robi ten skrypt @setup_env.sh? Wyjaśnij każdą zmienną środowiskową."
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komende /quit.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-setupenvsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa, dlatego dwie osoby zadające to samo pytanie mogą otrzymać różne, ale równie poprawne wyjaśnienia.
 
 2. Uruchom skrypt `setup_env.sh`
    ```bash
    source setup_env.sh
    ```
 
-   >[!NOTE]
-   >Ten krok jest jednym z najważniejszych w całym warsztacie, ponieważ ładuje konfigurację do pamięci bieżącego terminala:
-   >
-   > - **Dlaczego `source`, a nie `./setup_env.sh`?** — Komenda `source` sprawia że zmienne (`$PROJECT_ID`, `$REGION` itd.) pozostają dostępne w Twoim terminalu po zakończeniu skryptu. Zwykłe uruchomienie `./setup_env.sh` spowodowałoby że zniknęłyby zaraz po jego zakończeniu
-   > - **Przygotowanie pod kolejne kroki** — wszystkie następne skrypty (wdrażające Bielik, BigQuery itd.) nie pytają o nazwę projektu ani region — po prostu odczytują je z ustawionych tutaj zmiennych
-   > - **Wymóg powtarzalności** — zmienne żyją tylko w bieżącym oknie terminala. Po otwarciu nowej karty lub restarcie Cloud Shell należy wykonać ten punkt ponownie
-   >
-   > Bez wykonania tego kroku kolejne skrypty nie będą wiedziały gdzie wdrożyć kod i zakończą się błędem `Project ID not set`.
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI o różnicę między `source` a `./`:
+   > ```bash
+   > gemini "Jaka jest różnica między source setup_env.sh a ./setup_env.sh w bashu? Kiedy używać każdej z form?"
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komende /quit.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#dlaczego-source-a-nie-setupenvsh) — Twoja wersja może być krótsza, dłuższa lub podać inne przykłady. Właśnie tak działają modele językowe.
 
    >[!IMPORTANT]
    >Jeżeli z jakiegoś powodu musisz ponownie uruchomić terminal Cloud Shell, pamiętaj aby ponownie uruchomić skrypt `setup_env.sh` aby wczytać zmienne środowiskowe.
 
-3. Włącz potrzebne usługi w projekcie Google Cloud
+3. Uruchom skrypt ochrony plików źródłowych *(tylko raz — zabezpiecza pliki `.py`, `.html`, `.csv` przed przypadkową edycją)*
+   ```bash
+   ./protect_files.sh
+   ```
+
+4. Włącz potrzebne usługi w projekcie Google Cloud
    ```bash
    gcloud services enable run.googleapis.com
    gcloud services enable cloudbuild.googleapis.com
@@ -186,30 +191,27 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    gcloud services enable bigquery.googleapis.com
    ```
 
-   >[!NOTE]
-   >Domyślnie wiele usług Google Cloud jest wyłączonych, aby uniknąć niepotrzebnych kosztów. Powyższe komendy aktywują interfejsy API niezbędne do działania warsztatu:
-   >
-   > - **`run.googleapis.com`** — Cloud Run: platforma na której uruchamiane są kontenery z modelem Bielik, modelem embeddingowym oraz aplikacją orchestration
-   > - **`cloudbuild.googleapis.com`** — Cloud Build: automatycznie buduje obrazy Docker z kodu źródłowego przed wdrożeniem na Cloud Run
-   > - **`artifactregistry.googleapis.com`** — Artifact Registry: prywatne repozytorium przechowujące zbudowane obrazy kontenerów
-   > - **`bigquery.googleapis.com`** — BigQuery: pełni rolę wektorowej bazy danych (Vector Search) przechowującej zaindeksowane dokumenty i umożliwiającej ich semantyczne przeszukiwanie
-   >
-   > Bez wykonania tych komend próba wdrożenia aplikacji skryptami `cloud_run.sh` zakończyłaby się błędem `API not enabled`.
-4. Uzyskaj uprawnienia do wywoływania usług Cloud Run
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI do czego służą te komendy:
+   > ```bash
+   > gemini "Do czego służy komenda gcloud services enable? Wyjaśnij po krótce każdą z usług: run, cloudbuild, artifactregistry, bigquery."
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komende `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komendy-gcloud-services-enable).
+5. Uzyskaj uprawnienia do wywoływania usług Cloud Run
    ```bash
    gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member=user:$(gcloud config get-value account) \
     --role='roles/run.invoker'
    ```
 
-   >[!NOTE]
-   >Komenda nadaje Twojemu kontu uprawnienia do wywoływania usług Cloud Run. Oto co robią poszczególne elementy:
-   >
-   > - **`add-iam-policy-binding $PROJECT_ID`** — dopisuje nową regułę do polityki dostępu (IAM) Twojego projektu
-   > - **`--member=user:$(gcloud config get-value account)`** — automatycznie pobiera adres e-mail aktualnie zalogowanego użytkownika, dzięki czemu nie musisz wpisywać go ręcznie
-   > - **`--role='roles/run.invoker'`** — nadaje rolę Cloud Run Invoker, niezbędną do wysyłania zapytań (np. przez `curl` lub przeglądarkę) do modeli i API wdrożonych na Cloud Run
-   >
-   > W Google Cloud obowiązuje zasada najmniejszych uprawnień — nawet właściciel projektu musi jawnie przypisać tę rolę, aby komunikacja między komponentami przebiegała poprawnie.
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI o uprawnienia IAM w Google Cloud:
+   > ```bash
+   > gemini "Co robi komenda gcloud projects add-iam-policy-binding? Wyjaśnij czym jest rola roles/run.invoker i dlaczego zasada najmniejszych uprawnień jest ważna."
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komende `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-gcloud-projects-add-iam-policy-binding).
 
 ## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na Cloud Run `~15 min`
 
@@ -222,12 +224,20 @@ Aby zaoszczędzić czas, uruchom oba modele **równolegle** w dwóch osobnych te
 >source ~/eskadra-bielik-misja2/setup_env.sh
 >```
 
-### Terminal 1 — Model LLM Bielik
+### Terminal 1 (aktualnie aktywny) — Model LLM Bielik
 
 1. Przejrzyj zawartość skryptu `llm/cloud_run.sh`
    ```bash
    cat llm/cloud_run.sh
    ```
+
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > ```bash
+   > gemini "Co robi ten skrypt @llm/cloud_run.sh? Wyjaśnij każdą flagę komendy gcloud run deploy."
+   > ```
+   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmcloud_runsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
 
 2. Uruchom skrypt `llm/cloud_run.sh`
    ```bash
@@ -250,7 +260,7 @@ Aby zaoszczędzić czas, uruchom oba modele **równolegle** w dwóch osobnych te
    cd ..
    ```
 
-### Terminal 2 — Model EmbeddingGemma
+### Terminal 2 (nowa sesja)— Model EmbeddingGemma
 
 >[!NOTE]
 >Nowy terminal startuje zawsze w katalogu domowym (`~`), dlatego poniższe komendy używają pełnych ścieżek do plików projektu.
@@ -341,6 +351,14 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
    ```bash
    cd ..
    ```
+
+---
+
+## ☕ Przerwa — lunch / poczęstunek / kawa / herbata / sok `~20 min`
+
+> Wszystkie komponenty są wdrożone i gotowe. Po przerwie przetestujemy całe rozwiązanie RAG w akcji.
+
+---
 
 ## 6. Testowanie API — Zasilanie i Wyszukiwanie (RAG) `~10 min`
 
