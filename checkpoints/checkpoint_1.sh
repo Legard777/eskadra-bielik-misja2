@@ -56,8 +56,24 @@ BILLING_ACCOUNT=$(gcloud billing projects describe "$PROJECT_ID" \
 if [ "$BILLING_ENABLED" = "True" ]; then
     _print_ok "Billing aktywny: $BILLING_ACCOUNT"
 else
-    _print_fail "Billing nieaktywny lub brak uprawnień do sprawdzenia. Konto: $BILLING_ACCOUNT"
-    # Nie zwiększamy ERRORS — billing check może wymagać dodatkowych uprawnień
+    _print_fail "Billing nieaktywny. Upewnij się że kredyty OnRamp zostały aktywowane i powiązane z projektem $PROJECT_ID. Konto: ${BILLING_ACCOUNT:-brak}"
+    ERRORS=$((ERRORS+1))
+fi
+
+# --- Weryfikacja 1.5: sklonowane repozytorium ---
+echo ""
+echo "[1.5] Repozytorium warsztatu:"
+REPO_ROOT=$(git -C "$(dirname "$0")/.." rev-parse --show-toplevel 2>/dev/null || true)
+REMOTE_URL=$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null || true)
+EXPECTED_REPO="eskadra-bielik-misja2"
+if [ -n "$REPO_ROOT" ] && [[ "$REMOTE_URL" == *"$EXPECTED_REPO"* ]]; then
+    _print_ok "Repozytorium sklonowane: $REPO_ROOT"
+    _print_ok "Remote: $REMOTE_URL"
+elif [ -n "$REPO_ROOT" ]; then
+    _print_ok "Repozytorium git wykryte: $REPO_ROOT (remote: ${REMOTE_URL:-brak})"
+else
+    _print_fail "Nie wykryto repozytorium git. Upewnij się że uruchomiłeś 'git clone' i jesteś w katalogu eskadra-bielik-misja2."
+    ERRORS=$((ERRORS+1))
 fi
 
 # --- Podsumowanie i zapis ---
@@ -76,6 +92,8 @@ project_state=${PROJECT_STATE:-UNKNOWN}
 project_create=${PROJECT_CREATE:-UNKNOWN}
 billing_enabled=${BILLING_ENABLED:-UNKNOWN}
 billing_account=${BILLING_ACCOUNT:-UNKNOWN}
+repo_root=${REPO_ROOT:-UNKNOWN}
+repo_remote=${REMOTE_URL:-UNKNOWN}
 verification=PASSED"
 
 echo " WYNIK: Wszystkie weryfikacje przeszły pomyślnie."

@@ -103,7 +103,10 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 ## 1. Przygotowanie projektu Google Cloud `~15 min`
 
->[!NOTE] Przed warsztatem była prośba, aby się z tym punktem zapoznać, wierzę, ze to zostalo zrobione :)
+>[!NOTE]
+>Przed warsztatem otrzymałeś instrukcję zapoznania się z procesem aktywacji kredytów Google Cloud (link w TIP poniżej) — ten krok nie powinien być dla Ciebie nowością.
+>
+>Jeżeli nie zapoznałeś się z instrukcją lub nie masz linka do aktywacji kredytów — **poinformuj prowadzącego natychmiast**, ponieważ bez aktywnego konta rozliczeniowego nie będziesz mógł kontynuować warsztatu.
 
 ### Krok 1.1 — Aktywacja konta rozliczeniowego z kredytami OnRamp
 
@@ -120,7 +123,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 ### Krok 1.2 — Utworzenie nowego projektu Google Cloud
 
-1. Przejdź do selektora projektów w górnym pasku Google Cloud Console i kliknij **Nowy projekt**
+1. W górnym lewym rogu [Google Cloud Console](https://console.cloud.google.com) kliknij nazwę aktywnego projektu (lub napis **„Wybierz projekt"**) — otworzy się selektor projektów. Kliknij **Nowy projekt**
 >[!TIP]
 >Szczegółową instrukcję tworzenia projektu znajdziesz w tym przewodniku: [Google Cloud Credits Redemption — krok 2](https://codelabs.developers.google.com/codelabs/cloud-codelab-credits#2)
 
