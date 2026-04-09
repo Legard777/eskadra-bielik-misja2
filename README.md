@@ -96,6 +96,11 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 * Skonfigurowanie bazy wektorów w [BigQuery](https://cloud.google.com/bigquery?hl=en) wraz ze specjalnym zaawansowanym przeszukiwaniem [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search)
 
+* Uruchomienie serwera Orchestration, który udostępnia API oraz interfejs Web UI, umożliwiający bezpośrednie porównanie odpowiedzi surowego modelu z odpowiedzią wzbogaconą o kontekst z bazy wiedzy (RAG)
+
+---
+
+
 ## 1. Przygotowanie projektu Google Cloud `~15 min`
 
 >[!NOTE] Przed warsztatem była prośba, aby się z tym punktem zapoznać, wierzę, ze to zostalo zrobione :)
@@ -254,6 +259,11 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    ./copy_models.sh
    ```
 
+3. Wróć do głównego katalogu projektu
+   ```bash
+   cd ..
+   ```
+
 ### 3.2 Tworzenie dedykowane repozytorium na obraz zawierający Ollama
 
 1. Przejdź do katalogu `ollama_docker_images`
@@ -269,6 +279,11 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
 3. Utworzenie dedykowanego obrazu
    ```bash
    ./create_ollama_image.sh
+   ```
+
+4. Wróć do głównego katalogu projektu
+   ```bash
+   cd ..
    ```
 
 ### 3.3 Model LLM->Bielik
@@ -644,6 +659,7 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
    echo $ORCHESTRATION_URL
    ```
 2. Po otwarciu opublikowanej strony w Twojej przeglądarce internetowej, wpisz w okno dialogowe dowolne zapytanie (np. "Do której godziny jest otwarty basen?") i kliknij "Zapytaj".
+
 3. Porównaj strumień odpowiedzi wyświetlany dla samej bazy wiedzy modelu (bez dodatkowego kontekstu) z bogatszą odpowiedzią RAG wygenerowaną w oparciu o wiedzę z przeszukiwania BigQuery Vector Search.
 
 4. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
