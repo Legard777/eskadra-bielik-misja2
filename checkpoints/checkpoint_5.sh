@@ -59,14 +59,16 @@ if [ "$ORCH_STATUS" = "True" ]; then
         --format="value(spec.template.spec.containers[0].env[name=EMBEDDING_URL].value)" 2>/dev/null || true)
 
     if [ -n "$LLM_ENV" ]; then
-        _print_ok "LLM_URL skonfigurowany"
+        _print_ok "LLM_URL skonfigurowany: $LLM_ENV"
     else
-        _print_skip "LLM_URL — nie znaleziono (może mieć inną nazwę)"
+        _print_fail "LLM_URL — nie skonfigurowany w usłudze. Sprawdź czy modele są wdrożone i uruchom ponownie ./cloud_run.sh"
+        ERRORS=$((ERRORS+1))
     fi
     if [ -n "$EMBED_ENV" ]; then
-        _print_ok "EMBEDDING_URL skonfigurowany"
+        _print_ok "EMBEDDING_URL skonfigurowany: $EMBED_ENV"
     else
-        _print_skip "EMBEDDING_URL — nie znaleziono (może mieć inną nazwę)"
+        _print_fail "EMBEDDING_URL — nie skonfigurowany w usłudze. Sprawdź czy modele są wdrożone i uruchom ponownie ./cloud_run.sh"
+        ERRORS=$((ERRORS+1))
     fi
 else
     _print_skip "Pominięto — usługa nie jest gotowa"
@@ -96,6 +98,17 @@ else
     UI_STATUS="SKIPPED"
 fi
 
+# --- Weryfikacja 5.4: zmienna ORCHESTRATION_URL w bieżącym terminalu ---
+echo ""
+echo "[5.4] Zmienna ORCHESTRATION_URL w bieżącym terminalu:"
+if [ -n "${ORCHESTRATION_URL:-}" ]; then
+    _print_ok "ORCHESTRATION_URL=${ORCHESTRATION_URL}"
+else
+    _print_fail "ORCHESTRATION_URL nie jest ustawiona. Uruchom:"
+    _print_skip "export ORCHESTRATION_URL=\$(gcloud run services describe orchestration-api --region \$REGION --format=\"value(status.url)\")"
+    ERRORS=$((ERRORS+1))
+fi
+
 # --- Podsumowanie i zapis ---
 echo ""
 _print_separator
@@ -115,6 +128,7 @@ orchestration_created=${ORCH_CREATED:-UNKNOWN}
 orchestration_last_deploy=${ORCH_LAST:-UNKNOWN}
 llm_url_configured=${LLM_ENV:-NOT_FOUND}
 embedding_url_configured=${EMBED_ENV:-NOT_FOUND}
+orchestration_url_local=${ORCHESTRATION_URL:-NOT_SET}
 ui_http_status=${UI_STATUS}
 verification=PASSED"
 
