@@ -632,6 +632,14 @@ Aplikacja definiuje w pliku `orchestration/main.py` następujące ścieżki:
   - buduje prompt z odnalezionym kontekstem,
   - wysyła połączony prompt do modelu `Bielik` i zwraca ostateczną odpowiedź wraz z wybranym i wykorzystanym kontekstem.
 * `POST /ask_direct` – służy jako zestawienie porównawcze (baseline). Przyjmuje zapytanie i wysyła je bezpośrednio do bazowego modelu `Bielik`, z całkowitym pominięciem RAG.
+* `GET /records` – zwraca listę dokumentów zapisanych w tabeli BigQuery (pola `id` i `content`, bez wektorów). Parametr `limit` pozwala ograniczyć liczbę wyników (domyślnie 100).
+* `GET /docs` – interaktywna dokumentacja API wygenerowana automatycznie przez FastAPI (Swagger UI). Pozwala przeglądać i testować wszystkie endpointy bezpośrednio w przeglądarce.
+* `GET /redoc` – alternatywna dokumentacja API w formacie ReDoc.
+
+Otwórz interaktywną dokumentację API w przeglądarce:
+```bash
+echo "$ORCHESTRATION_URL/docs"
+```
 
 Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny, który potwierdzi że wszystkie usługi działają razem:
 

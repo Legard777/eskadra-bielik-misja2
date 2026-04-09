@@ -60,7 +60,7 @@ ORCH_URL=$(gcloud run services describe orchestration-api \
 
 if [ -n "$ORCH_URL" ]; then
     TOKEN=$(gcloud auth print-identity-token 2>/dev/null || true)
-    for ENDPOINT in "/" "/docs"; do
+    for ENDPOINT in "/" "/docs" "/records"; do
         HTTP_CODE=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" \
             -H "Authorization: Bearer $TOKEN" \
             "${ORCH_URL}${ENDPOINT}" 2>/dev/null || true)
