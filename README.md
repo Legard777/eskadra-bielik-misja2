@@ -727,11 +727,16 @@ Gratulacje — warsztat dobiegł końca! Wygeneruj zaszyfrowany certyfikat zawie
 ./checkpoints/certyfikat_generate.sh
 ```
 
-Po pomyślnym wykonaniu wyślij prowadzącemu plik:
+Po pomyślnym wykonaniu pobierz plik certyfikatu na swój komputer za pomocą wbudowanej komendy Cloud Shell:
 
 ```bash
-cert_artifacts/checkpoint_certyfikat.enc
+cloudshell dl cert_artifacts/checkpoint_certyfikat.enc
 ```
+
+> [!TIP]
+> Komenda `cloudshell dl` automatycznie pobiera plik do folderu Pobrane na Twoim lokalnym komputerze. Plik jest zaszyfrowany — możesz go przesłać prowadzącemu przez dowolny kanał (email, Slack, formularz).
+
+Wyślij pobrany plik `checkpoint_certyfikat.enc` prowadzącemu.
 
 > [!TIP]
 > Plik jest zaszyfrowany — możesz go przesłać przez dowolny kanał (email, formularz, Slack). Zawiera potwierdzenie wykonania wszystkich etapów warsztatu powiązane z Twoim kontem Google Cloud i projektem.

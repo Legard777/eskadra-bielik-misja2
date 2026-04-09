@@ -119,6 +119,9 @@ ${ENCRYPTED}
 ---END ENCRYPTED---
 ARTIFACT
 
+EARNED=$(_get_earned_points)
+BAR=$(_draw_progress_bar "$EARNED" "$_TOTAL_POINTS")
+
 echo ""
 echo "======================================================"
 echo "  *** WARSZTAT ESKADRA BIELIK - MISJA 2 ***"
@@ -129,8 +132,8 @@ echo "  Uczestnik : $ACCOUNT"
 echo "  Projekt   : $PROJECT_ID"
 echo "  Czas      : $CERT_TIMESTAMP"
 echo ""
-echo "  Wynik: 75 / 75 pkt"
-echo "  [##############################] 100%"
+printf "  Wynik: %d / %d pkt\n" "$EARNED" "$_TOTAL_POINTS"
+printf "  [%s] 100%%\n" "$BAR"
 echo ""
 echo "  Checkpointy zaliczone: 8 / 8"
 for i in 1 2 3 4 5 6 7 8; do
@@ -140,6 +143,8 @@ for i in 1 2 3 4 5 6 7 8; do
 done
 echo ""
 echo "======================================================"
-echo "  Wyslij prowadzacemu plik:"
-echo "  cert_artifacts/checkpoint_certyfikat.enc"
+echo "  Pobierz certyfikat na swoj komputer:"
+echo "  cloudshell dl cert_artifacts/checkpoint_certyfikat.enc"
+echo ""
+echo "  Nastepnie wyslij plik prowadzacemu."
 echo "======================================================"
