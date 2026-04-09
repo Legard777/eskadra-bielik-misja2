@@ -12,6 +12,12 @@ export BUCKET_NAME_LLM="$PROJECT_ID-eskadra-bielik-llm"
 export BUCKET_NAME_EMBEDDING="$PROJECT_ID-eskadra-bielik-embedding"
 export OLLAMA_REPO_NAME="ollama-repo"
 export OLLAMA_REPO_DESCRIPTION="Ollama obraz do uruchomienia modeli LLM->Bielik i EMBEDDING->Gemma"
+# Konfiguracja pod Pub/Sub
+export PUBSUB_TOPIC_NAME="nadaj-mi-dostep-do-cloud-storage"
+# UWAGA ! Zamien projekt na swoj wlasny
+export PUBSUB_PROJECT_ID="bielik-greg-cloud-ai-ttt-pl"
+# Pub/Sub Topic
+export PUBSUB_PUBLISH_TOPIC="projects/$PROJECT_ID/topics/$TOPIC_NAME"
 
 echo ""
 echo "======================================================"
