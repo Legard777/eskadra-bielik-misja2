@@ -49,7 +49,7 @@ if [ -n "$TABLE_INFO" ]; then
         "import sys,json; d=json.load(sys.stdin); cols=[f['name'] for f in d.get('schema',{}).get('fields',[])]; print(','.join(cols))" 2>/dev/null || echo "UNKNOWN")
     _print_ok "Tabela istnieje: ${BQ_TABLE}"
     _print_ok "Schemat kolumn: $TABLE_SCHEMA"
-    _print_ok "Liczba wierszy: $TABLE_ROWS"
+    _print_ok "Liczba wierszy: $TABLE_ROWS (0 jest prawidłowe — dane załadujesz w kroku 6)"
     _print_ok "Utworzono (ms epoch): $TABLE_CREATED"
 else
     _print_fail "Tabela '${BQ_TABLE}' nie istnieje w datasecie ${BQ_DATASET}"
