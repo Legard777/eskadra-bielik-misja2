@@ -205,7 +205,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 3. Uruchom skrypt ochrony plików źródłowych *(tylko raz — zabezpiecza pliki `.py`, `.html`, `.csv` przed przypadkową edycją)*
    ```bash
-   ./protect_files.sh
+   ./skrypty/protect_files.sh
    ```
 
 4. Włącz potrzebne usługi w projekcie Google Cloud
@@ -256,7 +256,8 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
 
 2. Utwórz dedykowane buckety na Cloud Storage i skopiuj modele do nich LLM->Bielik i Embedding->Gemma
    ```bash
-   ./copy_models.sh
+   ./copy_llm.sh
+   ./copy_embedding.sh
    ```
 
 3. Wróć do głównego katalogu projektu
@@ -266,9 +267,9 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
 
 ### 3.2 Tworzenie dedykowane repozytorium na obraz zawierający Ollama
 
-1. Przejdź do katalogu `ollama_docker_images`
+1. Przejdź do katalogu `ollama_docker_image`
    ```bash
-   cd ollama_docker_images
+   cd ollama_docker_image
    ```
 
 2. Utworzenie repozytorium w Artifact Reposiroty
@@ -707,7 +708,7 @@ Skrypt `cleanup.sh` usuwa wszystkie zasoby utworzone podczas warsztatu:
 1. Wróć do głównego katalogu projektu i uruchom skrypt czyszczący
    ```bash
    cd ~/eskadra-bielik-misja2
-   ./cleanup.sh
+   ./skrypty/cleanup.sh
    ```
 
 2. Skrypt wyświetli listę zasobów do usunięcia i poprosi o potwierdzenie. Wpisz `tak` aby kontynuować.
