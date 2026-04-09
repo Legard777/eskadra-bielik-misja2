@@ -62,7 +62,7 @@ else
 fi
 
 echo "Kopiowanie modelu $MODEL_LABEL z $BUCKET_NAME_SOURCE do $BUCKET_NAME..."
-if gcloud storage cp -r gs://$BUCKET_NAME_SOURCE/$SOURCE_PATH/** gs://$BUCKET_NAME/; then
+if gcloud storage cp -r gs://$BUCKET_NAME_SOURCE/$SOURCE_PATH/* gs://$BUCKET_NAME/; then
     echo "Kopiowanie modelu $MODEL_LABEL zakończone sukcesem."
 else
     echo "Błąd podczas kopiowania modelu $MODEL_LABEL."
