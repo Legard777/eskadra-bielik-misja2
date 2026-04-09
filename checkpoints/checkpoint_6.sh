@@ -68,10 +68,10 @@ fi
 
 # --- Weryfikacja 6.3: endpoint /ask odpowiada ---
 echo ""
-echo "[6.3] Endpoint POST /ask (test dostępności):"
+echo "[6.3] Endpoint POST /ask (test dostępności — max 60s):"
 if [ -n "$ORCH_URL" ]; then
     TOKEN=$(gcloud auth print-identity-token 2>/dev/null || true)
-    HTTP_CODE=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" \
+    HTTP_CODE=$(curl -s --max-time 60 -o /dev/null -w "%{http_code}" \
         -X POST "${ORCH_URL}/ask" \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer $TOKEN" \
@@ -79,10 +79,13 @@ if [ -n "$ORCH_URL" ]; then
     if [ "$HTTP_CODE" = "200" ]; then
         _print_ok "Endpoint /ask odpowiada (HTTP $HTTP_CODE)"
         ASK_STATUS="HTTP_200"
+    elif [ -z "$HTTP_CODE" ] || [ "$HTTP_CODE" = "000" ]; then
+        _print_skip "Endpoint /ask — timeout po 60s (model Bielik potrzebuje więcej czasu — to normalne przy zimnym starcie)"
+        ASK_STATUS="TIMEOUT"
     else
-        _print_skip "Endpoint /ask — HTTP ${HTTP_CODE:-timeout} (model może jeszcze odpowiadać)"
-        ASK_STATUS="HTTP_${HTTP_CODE:-TIMEOUT}"
-        # Nie blokujemy — model Bielik może być wolny
+        _print_fail "Endpoint /ask zwrócił błąd HTTP $HTTP_CODE — sprawdź logi: gcloud run services logs read orchestration-api --region $REGION"
+        ASK_STATUS="HTTP_${HTTP_CODE}"
+        ERRORS=$((ERRORS+1))
     fi
 else
     _print_skip "Pominięto — brak URL usługi orchestration-api"
