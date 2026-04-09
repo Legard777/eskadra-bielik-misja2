@@ -226,6 +226,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komendy-gcloud-services-enable).
+
 5. Uzyskaj uprawnienia do wywoływania usług Cloud Run
    ```bash
    gcloud projects add-iam-policy-binding $PROJECT_ID \

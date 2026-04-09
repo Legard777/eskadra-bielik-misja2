@@ -64,10 +64,31 @@ for VAR in PROJECT_ID REGION EMBEDDING_SERVICE LLM_SERVICE BIGQUERY_DATASET BIGQ
     else
         _print_fail "${VAR} — nie ustawiona. Uruchom: source setup_env.sh"
         ENV_STATUS="${ENV_STATUS}${VAR}=UNSET\n"
-        # Nie zwiększamy ERRORS — zmienne mogą nie być ustawione między sesjami,
-        # ale usługi i IAM są kluczowe
+        ERRORS=$((ERRORS+1))
     fi
 done
+
+# --- Weryfikacja 2.4: ochrona plików źródłowych ---
+echo ""
+echo "[2.4] Ochrona plików źródłowych (protect_files.sh):"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PROTECTED_FILES=("orchestration/main.py" "orchestration/static/index.html" "vector_store/hotel_rules.csv")
+ALL_PROTECTED=true
+for REL_PATH in "${PROTECTED_FILES[@]}"; do
+    FILE="$REPO_ROOT/$REL_PATH"
+    if [ -f "$FILE" ] && [ ! -w "$FILE" ]; then
+        _print_ok "$REL_PATH — tylko do odczytu (chmod 444)"
+    elif [ -f "$FILE" ]; then
+        _print_fail "$REL_PATH — plik jest zapisywalny. Uruchom: ./skrypty/protect_files.sh"
+        ALL_PROTECTED=false
+        ERRORS=$((ERRORS+1))
+    fi
+done
+if [ "$ALL_PROTECTED" = true ]; then
+    PROTECT_STATUS="PROTECTED"
+else
+    PROTECT_STATUS="NOT_PROTECTED"
+fi
 
 # --- Podsumowanie i zapis ---
 echo ""
@@ -87,6 +108,7 @@ iam:
 ${IAM_STATUS}
 env_vars:
 $(echo -e "$ENV_STATUS")
+protect_files=${PROTECT_STATUS}
 verification=PASSED"
 
 echo " WYNIK: Wszystkie weryfikacje przeszły pomyślnie."
