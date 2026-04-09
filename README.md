@@ -244,8 +244,12 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
 > **Dla bardziej doświadczonych:** wdrożenia obu modeli można uruchomić równolegle w dwóch osobnych terminalach Cloud Shell, co skróci czas oczekiwania. Jeśli wiesz jak to zrobić — śmiało! Możesz przełączać się między terminalami klikając ich zakładki w dolnym pasku Cloud Shell. Pamiętaj aby w każdym nowym terminalu wczytać zmienne środowiskowe (`source ~/eskadra-bielik-misja2/setup_env.sh`) i poczekać aż oba wdrożenia zakończą się sukcesem zanim przejdziesz do następnego kroku. Jeśli nie — wykonaj kroki po kolei zgodnie z instrukcją poniżej.
 
 ### Model LLM Bielik
+1. Tworzenie bucketu i kopiowanie modelu do niego
+   ```bash
+   ./copy_llm.sh
+   ```
 
-1. Przejrzyj zawartość skryptu `llm/cloud_run.sh`
+2. Przejrzyj zawartość skryptu `llm/cloud_run.sh`
    ```bash
    cat llm/cloud_run.sh
    ```
@@ -258,15 +262,15 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmcloud_runsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
 
-2. Uruchom skrypt wdrożeniowy
+3. Uruchom skrypt wdrożeniowy
    ```bash
    cd llm
    ./cloud_run.sh
    ```
 
-3. Sprawdź czy usługa `bielik` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
+4. Sprawdź czy usługa `bielik` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
 
-4. Przejrzyj zawartość pliku `llm/llm_test1.sh`
+5. Przejrzyj zawartość pliku `llm/llm_test1.sh`
    ```bash
    cat llm_test1.sh
    ```
@@ -279,12 +283,12 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmllm_test1sh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
 
-5. Zadaj pierwsze pytanie modelowi Bielik
+6. Zadaj pierwsze pytanie modelowi Bielik
    ```bash
    ./llm_test1.sh
    ```
 
-6. Wróć do głównego katalogu projektu
+7. Wróć do głównego katalogu projektu
    ```bash
    cd ..
    ```

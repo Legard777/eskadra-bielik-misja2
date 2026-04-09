@@ -1,9 +1,10 @@
-FROM ollama/ollama:latest
+FROM --platform=linux/amd64 ollama/ollama:latest
 
 # Listen on all interfaces, port 8080
 ENV OLLAMA_HOST=0.0.0.0:8080
 
 # Store model weight files in /models
+# IMPORTANT: Point Ollama to the GCS FUSE mount point
 ENV OLLAMA_MODELS=/models
 
 # Reduce logging verbosity
@@ -13,8 +14,8 @@ ENV OLLAMA_DEBUG=false
 ENV OLLAMA_KEEP_ALIVE=-1
 
 # Store the model weights in the container image
-ENV MODEL=SpeakLeash/bielik-4.5b-v3.0-instruct:Q8_0
-RUN ollama serve & sleep 5 && ollama pull $MODEL
+# ENV MODEL=SpeakLeash/bielik-4.5b-v3.0-instruct:Q8_0
+# RUN ollama serve & sleep 5 && ollama pull $MODEL
 
 # Start Ollama
 ENTRYPOINT ["ollama", "serve"]
