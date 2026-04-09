@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Weryfikacja zmiennych środowiskowych
-REQUIRED_VARS=("LLM_SERVICE" "REGION" "BUCKET_NAME_LLM"")
+REQUIRED_VARS=("LLM_SERVICE" "REGION" "BUCKET_NAME_LLM")
 MISSING_VARS=()
 
 for var in "${REQUIRED_VARS[@]}"; do

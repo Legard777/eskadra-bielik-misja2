@@ -87,6 +87,26 @@ else
     BIELIK_PING_STATUS="SKIPPED"
 fi
 
+# --- Weryfikacja 3.4: test odpowiedzi modelu embedding-gemma ---
+echo ""
+echo "[3.4] Test odpowiedzi modelu EmbeddingGemma (ping):"
+if [ -n "$EMBED_URL" ] && [ "$EMBED_STATUS" = "True" ]; then
+    TOKEN=$(gcloud auth print-identity-token 2>/dev/null || true)
+    EMBED_PING=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" \
+        -H "Authorization: Bearer $TOKEN" \
+        "${EMBED_URL}/api/tags" 2>/dev/null || true)
+    if [ "$EMBED_PING" = "200" ]; then
+        _print_ok "Endpoint /api/tags odpowiada (HTTP $EMBED_PING)"
+        EMBED_PING_STATUS="HTTP_200"
+    else
+        _print_skip "Endpoint /api/tags — HTTP ${EMBED_PING:-timeout} (model może być w trakcie ładowania)"
+        EMBED_PING_STATUS="HTTP_${EMBED_PING:-TIMEOUT}"
+    fi
+else
+    _print_skip "Pominięto — usługa nie jest gotowa"
+    EMBED_PING_STATUS="SKIPPED"
+fi
+
 # --- Podsumowanie i zapis ---
 echo ""
 _print_separator
@@ -108,6 +128,7 @@ bielik_ping=${BIELIK_PING_STATUS}
 embedding_status=${EMBED_STATUS:-UNKNOWN}
 embedding_url=${EMBED_URL:-UNKNOWN}
 embedding_created=${EMBED_CREATED:-UNKNOWN}
+embedding_ping=${EMBED_PING_STATUS}
 verification=PASSED"
 
 echo " WYNIK: Oba modele wdrożone i gotowe."

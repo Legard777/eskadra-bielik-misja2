@@ -258,13 +258,17 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    cd ollama_models
    ```
 
-2. Utwórz dedykowane buckety na Cloud Storage i skopiuj modele do nich LLM->Bielik i Embedding->Gemma
+2. Utwórz bucket i skopiuj model LLM — **Bielik**
    ```bash
-   ./copy_llm.sh
-   ./copy_embedding.sh
+   ./copy_model.sh llm
    ```
 
-3. Wróć do głównego katalogu projektu
+3. Utwórz bucket i skopiuj model embeddingowy — **EmbeddingGemma**
+   ```bash
+   ./copy_model.sh embedding
+   ```
+
+4. Wróć do głównego katalogu projektu
    ```bash
    cd ..
    ```
@@ -340,7 +344,7 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    cd ..
    ```
 
-### 3.3 Model EmbeddingGemma
+### 3.4 Model EmbeddingGemma
 
 1. Przejdź do katalogu `embedding_model`
    ```bash
