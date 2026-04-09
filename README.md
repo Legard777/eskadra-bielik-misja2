@@ -801,6 +801,36 @@ Jeśli chcesz mieć 100% pewności braku kosztów lub zamierzasz zakończyć pra
 
 ## 11. Networking `~15 min`
 
+Właśnie zbudowałeś działający system RAG oparty na polskim modelu językowym i Google Cloud. Czas porozmawiać z innymi uczestnikami — może przy kawie.
+
+### Tematy do rozmowy
+
+Wszyscy przeszliście przez ten sam warsztat, ale każdy może mieć inne przemyślenia. Kilka pytań na start:
+
+- **Co Cię zaskoczyło?** — Czy coś zadziałało lepiej lub gorzej niż się spodziewałeś?
+- **Gdzie widzisz zastosowanie RAG w swoim projekcie/firmie?** — Jakie dokumenty chciałbyś przeszukiwać semantycznie?
+- **Co byś zmienił w architekturze?** — Inne modele? Inna baza wektorowa? Inne chunking strategii?
+- **Bielik vs. inne modele** — Jak oceniasz jakość odpowiedzi w porównaniu do modeli, których używasz na co dzień?
+
+### Co dalej?
+
+Zbudowany dziś system to punkt startowy. Kilka kierunków do eksploracji:
+
+| Kierunek | Opis |
+|---|---|
+| Własne dokumenty | Zamień `hotel_rules.csv` na własne dane — regulaminy, dokumentację, FAQ |
+| Chunking | Podziel długie dokumenty na fragmenty przed indeksowaniem dla lepszej precyzji RAG |
+| Ewaluacja | Zmierz jakość odpowiedzi RAG — sprawdź projekt [RAGAS](https://docs.ragas.io/) |
+| Streaming | Dodaj strumieniowanie odpowiedzi (`stream: true` w Ollama API) do Web UI |
+| Większy Bielik | Wypróbuj większą wersję modelu — [SpeakLeash na Hugging Face](https://huggingface.co/speakleash) |
+| Produkcja | Dodaj uwierzytelnianie, monitoring, limity kosztów zgodnie z [Cloud Run GPU Best Practices](https://docs.cloud.google.com/run/docs/configuring/services/gpu-best-practices) |
+
+### Zostańmy w kontakcie
+
+- Repozytorium warsztatu: [github.com/Legard777/eskadra-bielik-misja2](https://github.com/Legard777/eskadra-bielik-misja2)
+- Model Bielik: [SpeakLeash](https://speakleash.org/) — projekt tworzenia polskich modeli językowych open source
+- Społeczność: [Google Cloud Community Poland](https://www.meetup.com/google-cloud-community-poland/)
+
 ---
 
 ### Orientacyjny koszt warsztatu
