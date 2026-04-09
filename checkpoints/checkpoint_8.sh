@@ -50,9 +50,9 @@ fi
 
 # --- Weryfikacja 8.2: endpoint /ask_direct (baseline bez RAG) ---
 echo ""
-echo "[8.2] Endpoint /ask_direct (model bez RAG):"
+echo "[8.2] Endpoint /ask_direct (model bez RAG — max 60s):"
 if [ -n "$ORCH_URL" ]; then
-    HTTP_CODE_DIRECT=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" \
+    HTTP_CODE_DIRECT=$(curl -s --max-time 60 -o /dev/null -w "%{http_code}" \
         -X POST "${ORCH_URL}/ask_direct" \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer $TOKEN" \
@@ -60,9 +60,13 @@ if [ -n "$ORCH_URL" ]; then
     if [ "$HTTP_CODE_DIRECT" = "200" ]; then
         _print_ok "Endpoint /ask_direct dostępny (HTTP $HTTP_CODE_DIRECT)"
         DIRECT_STATUS="HTTP_200"
+    elif [ -z "$HTTP_CODE_DIRECT" ] || [ "$HTTP_CODE_DIRECT" = "000" ]; then
+        _print_skip "Endpoint /ask_direct — timeout po 60s (model Bielik potrzebuje więcej czasu — to normalne przy zimnym starcie)"
+        DIRECT_STATUS="TIMEOUT"
     else
-        _print_skip "Endpoint /ask_direct — HTTP ${HTTP_CODE_DIRECT:-timeout} (model może być wolny)"
-        DIRECT_STATUS="HTTP_${HTTP_CODE_DIRECT:-TIMEOUT}"
+        _print_fail "Endpoint /ask_direct zwrócił błąd HTTP $HTTP_CODE_DIRECT — sprawdź logi: gcloud run services logs read orchestration-api --region $REGION"
+        DIRECT_STATUS="HTTP_${HTTP_CODE_DIRECT}"
+        ERRORS=$((ERRORS+1))
     fi
 else
     _print_skip "Pominięto — brak URL"
@@ -71,9 +75,9 @@ fi
 
 # --- Weryfikacja 8.3: endpoint /ask (z RAG) ---
 echo ""
-echo "[8.3] Endpoint /ask (model z RAG):"
+echo "[8.3] Endpoint /ask (model z RAG — max 60s):"
 if [ -n "$ORCH_URL" ]; then
-    HTTP_CODE_RAG=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" \
+    HTTP_CODE_RAG=$(curl -s --max-time 60 -o /dev/null -w "%{http_code}" \
         -X POST "${ORCH_URL}/ask" \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer $TOKEN" \
@@ -81,9 +85,13 @@ if [ -n "$ORCH_URL" ]; then
     if [ "$HTTP_CODE_RAG" = "200" ]; then
         _print_ok "Endpoint /ask dostępny (HTTP $HTTP_CODE_RAG)"
         RAG_STATUS="HTTP_200"
+    elif [ -z "$HTTP_CODE_RAG" ] || [ "$HTTP_CODE_RAG" = "000" ]; then
+        _print_skip "Endpoint /ask — timeout po 60s (model Bielik potrzebuje więcej czasu — to normalne przy zimnym starcie)"
+        RAG_STATUS="TIMEOUT"
     else
-        _print_skip "Endpoint /ask — HTTP ${HTTP_CODE_RAG:-timeout} (model może być wolny)"
-        RAG_STATUS="HTTP_${HTTP_CODE_RAG:-TIMEOUT}"
+        _print_fail "Endpoint /ask zwrócił błąd HTTP $HTTP_CODE_RAG — sprawdź logi: gcloud run services logs read orchestration-api --region $REGION"
+        RAG_STATUS="HTTP_${HTTP_CODE_RAG}"
+        ERRORS=$((ERRORS+1))
     fi
 else
     _print_skip "Pominięto — brak URL"
