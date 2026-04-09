@@ -12,12 +12,10 @@ export BUCKET_NAME_LLM="$PROJECT_ID-eskadra-bielik-llm"
 export BUCKET_NAME_EMBEDDING="$PROJECT_ID-eskadra-bielik-embedding"
 export OLLAMA_REPO_NAME="ollama-repo"
 export OLLAMA_REPO_DESCRIPTION="Ollama obraz do uruchomienia modeli LLM->Bielik i EMBEDDING->Gemma"
-# Konfiguracja pod Pub/Sub
+# Konfiguracja Pub/Sub — temat w projekcie organizatora warsztatu
 export PUBSUB_TOPIC_NAME="nadaj-mi-dostep-do-cloud-storage"
-# UWAGA ! Zamien projekt na swoj wlasny
 export PUBSUB_PROJECT_ID="bielik-greg-cloud-ai-ttt-pl"
-# Pub/Sub Topic
-export PUBSUB_PUBLISH_TOPIC="projects/$PROJECT_ID/topics/$TOPIC_NAME"
+export PUBSUB_PUBLISH_TOPIC="projects/$PUBSUB_PROJECT_ID/topics/$PUBSUB_TOPIC_NAME"
 
 echo ""
 echo "======================================================"
@@ -72,6 +70,10 @@ echo ""
 echo "  OLLAMA_REPO_DESCRIPTION=$OLLAMA_REPO_DESCRIPTION"
 echo "    -> Opis repozytorium na Artifact Registry."
 echo "    -> Używane w: kroku 3 (deploy modelu LLM)"
+echo ""
+echo "  PUBSUB_PUBLISH_TOPIC=$PUBSUB_PUBLISH_TOPIC"
+echo "    -> Pełna ścieżka tematu Pub/Sub w projekcie organizatora."
+echo "    -> Używane w: kroku 2 (żądanie dostępu do bucketu z modelami)"
 echo ""
 echo "======================================================"
 echo " UWAGA: Te zmienne obowiązują tylko w bieżącym terminalu."

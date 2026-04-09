@@ -242,7 +242,23 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-gcloud-projects-add-iam-policy-binding).
 
-6. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
+6. Zażądaj dostępu do bucketu z modelami Ollama
+
+   Modele Bielik i EmbeddingGemma są przechowywane w centralnym buckecie organizatora warsztatu. Aby je skopiować w kroku 3, musisz najpierw uzyskać dostęp — skrypt wysyła Twoje konto do systemu i czeka na potwierdzenie:
+   ```bash
+   ./skrypty/request_access.sh
+   ```
+
+   > [!IMPORTANT]
+   > Jeśli po 30 sekundach skrypt zgłosi brak dostępu — poinformuj prowadzącego. Bez dostępu do bucketu nie będziesz mógł wykonać kroku 3.
+
+   > [!TIP]
+   > Możesz ręcznie sprawdzić dostęp w dowolnym momencie:
+   > ```bash
+   > gcloud storage ls gs://$BUCKET_NAME_SOURCE
+   > ```
+
+7. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
    ```bash
    ./checkpoints/checkpoint_2.sh
    ```

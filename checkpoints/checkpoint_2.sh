@@ -90,6 +90,21 @@ else
     PROTECT_STATUS="NOT_PROTECTED"
 fi
 
+# --- Weryfikacja 2.5: dostęp do bucketu źródłowego z modelami ---
+echo ""
+echo "[2.5] Dostęp do bucketu źródłowego z modelami:"
+BUCKET_SOURCE="${BUCKET_NAME_SOURCE:-warsztat-eskadra-bielika-modele}"
+if gcloud storage ls "gs://${BUCKET_SOURCE}/" > /dev/null 2>&1; then
+    SOURCE_FILES=$(gcloud storage ls "gs://${BUCKET_SOURCE}/" 2>/dev/null | wc -l | tr -d ' ')
+    _print_ok "Dostęp do gs://${BUCKET_SOURCE} potwierdzony (obiektów: ${SOURCE_FILES})"
+    BUCKET_ACCESS="GRANTED"
+else
+    _print_fail "Brak dostępu do gs://${BUCKET_SOURCE}"
+    _print_skip "Uruchom: ./skrypty/request_access.sh i poczekaj ~30 sekund"
+    BUCKET_ACCESS="DENIED"
+    ERRORS=$((ERRORS+1))
+fi
+
 # --- Podsumowanie i zapis ---
 echo ""
 _print_separator
@@ -109,6 +124,7 @@ ${IAM_STATUS}
 env_vars:
 $(echo -e "$ENV_STATUS")
 protect_files=${PROTECT_STATUS}
+bucket_source_access=${BUCKET_ACCESS}
 verification=PASSED"
 
 echo " WYNIK: Wszystkie weryfikacje przeszły pomyślnie."
