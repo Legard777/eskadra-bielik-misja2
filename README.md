@@ -745,20 +745,47 @@ Wyślij pobrany plik `checkpoint_certyfikat.enc` prowadzącemu.
 
 ## 10. Czyszczenie zasobów Google Cloud `~5 min`
 
-Po zakończeniu warsztatu usuń utworzone zasoby aby uniknąć niepotrzebnych kosztów.
+Po zakończeniu warsztatu masz dwie opcje — wybierz w zależności od tego, czy chcesz zachować dostęp do wdrożonego systemu RAG.
 
-Skrypt `cleanup.sh` usuwa wszystkie zasoby utworzone podczas warsztatu:
+### Przegląd kosztów zasobów
 
-| Zasób | Nazwa | Koszty | Uwagi |
+| Zasób | Nazwa | Koszt po warsztacie | Uwagi |
 |---|---|---|---|
-| Cloud Run | `bielik` | naliczane przez czas działania instancji | |
-| Cloud Run | `embedding-gemma` | naliczane przez czas działania instancji | |
-| Cloud Run | `orchestration-api` | naliczane przez czas działania instancji | |
-| BigQuery | dataset `rag_dataset` | w ramach free tier | |
-| Artifact Registry | `cloud-run-source-deploy` | **~$0.01/miesiąc** za przechowywanie obrazów Docker | pojawia się w billingu nawet po zakończeniu warsztatu — należy usunąć |
-| Cloud Storage | `run-sources-{PROJECT_ID}-{REGION}` | nie pojawia się w billingu | archiwa zip tworzone automatycznie przez `gcloud run deploy --source` |
+| Cloud Run | `bielik`, `embedding-gemma`, `orchestration-api` | ~$0 gdy idle | Skalują do zera gdy brak ruchu |
+| BigQuery | dataset `rag_dataset` | bezpłatny | W ramach free tier |
+| Artifact Registry | `ollama-repo`, `cloud-run-source-deploy` | **~$0.01/mies.** | Jedyny stały koszt — warto usunąć |
+| Cloud Storage | buckety z modelami i źródłami | ~$0 | W ramach free tier |
 
-1. Wróć do głównego katalogu projektu i uruchom skrypt czyszczący
+### Opcja A — Zalecana: zostaw usługi, usuń tylko Artifact Registry
+
+Usługi Cloud Run skalują się automatycznie do zera gdy nikt ich nie odpytuje — nie generują kosztów w trybie idle. Jedynym stałym kosztem są repozytoria Artifact Registry (~$0.01/mies.).
+
+1. Wróć do głównego katalogu i uruchom minimalny skrypt czyszczący:
+   ```bash
+   cd ~/eskadra-bielik-misja2
+   ./skrypty/cleanup_minimal.sh
+   ```
+
+2. *(Opcjonalnie)* Zabezpiecz publiczny endpoint orchestration-api przed nieautoryzowanym dostępem:
+   ```bash
+   gcloud run services update orchestration-api \
+     --region $REGION \
+     --no-allow-unauthenticated
+   ```
+   > [!NOTE]
+   > Po tej zmianie dostęp do Web UI i API będzie wymagał tokenu autoryzacyjnego Google. Aby wygenerować token: `gcloud auth print-identity-token`
+
+3. Zweryfikuj usunięcie repozytoriów:
+   - **Artifact Registry:** [console.cloud.google.com/artifacts](https://console.cloud.google.com/artifacts)
+
+### Opcja B — Pełne czyszczenie: usuń wszystko
+
+Jeśli chcesz mieć 100% pewności braku kosztów lub zamierzasz zakończyć pracę z projektem, usuń wszystkie zasoby. Możesz je odtworzyć od nowa powtarzając kroki warsztatu.
+
+> [!CAUTION]
+> Ta operacja jest nieodwracalna. Wszystkie dane w BigQuery, wdrożone modele i usługi zostaną trwale usunięte.
+
+1. Wróć do głównego katalogu projektu i uruchom pełny skrypt czyszczący:
    ```bash
    cd ~/eskadra-bielik-misja2
    ./skrypty/cleanup.sh
@@ -770,6 +797,7 @@ Skrypt `cleanup.sh` usuwa wszystkie zasoby utworzone podczas warsztatu:
    - **Cloud Run:** [console.cloud.google.com/run](https://console.cloud.google.com/run)
    - **BigQuery:** [console.cloud.google.com/bigquery](https://console.cloud.google.com/bigquery)
    - **Artifact Registry:** [console.cloud.google.com/artifacts](https://console.cloud.google.com/artifacts)
+   - **Cloud Storage:** [console.cloud.google.com/storage](https://console.cloud.google.com/storage)
 
 ## 11. Networking `~15 min`
 
@@ -788,7 +816,7 @@ Dominującą pozycją jest GPU NVIDIA L4 używany przez model Bielik na Cloud Ru
 | Cloud Run | RAM — billing instancyjny | ~$0.25 |
 | Cloud Run | CPU — billing requestowy | ~$0.03 |
 | Networking | Network Intelligence Center | ~$0.02 |
-| Artifact Registry | Przechowywanie obrazów Docker | ~$0.01/mies. |
+| Artifact Registry | `ollama-repo` + `cloud-run-source-deploy` | ~$0.01/mies. |
 | **Łącznie** | | **~$3.91** |
 
 >[!IMPORTANT]

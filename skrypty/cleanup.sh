@@ -71,8 +71,14 @@ bq rm -r -f --dataset "$PROJECT_ID:$BIGQUERY_DATASET" \
 
 echo ""
 echo "------------------------------------------------------"
-echo " Usuwanie obrazów Docker z Artifact Registry..."
+echo " Usuwanie repozytoriów Artifact Registry..."
 echo "------------------------------------------------------"
+
+gcloud artifacts repositories delete "${OLLAMA_REPO_NAME:-ollama-repo}" \
+    --location $REGION \
+    --quiet \
+    && echo " [OK] Usunięto repozytorium: ${OLLAMA_REPO_NAME:-ollama-repo}" \
+    || echo " [POMINIĘTO] Repozytorium nie istnieje lub wystąpił błąd"
 
 gcloud artifacts repositories delete cloud-run-source-deploy \
     --location $REGION \
@@ -82,13 +88,21 @@ gcloud artifacts repositories delete cloud-run-source-deploy \
 
 echo ""
 echo "------------------------------------------------------"
-echo " Usuwanie bucketa Cloud Storage z kodami źródłowymi..."
+echo " Usuwanie bucketów Cloud Storage z modelami..."
 echo "------------------------------------------------------"
 
-BUCKET_NAME="run-sources-$PROJECT_ID-$REGION"
-gcloud storage rm -r gs://$BUCKET_NAME \
-    && echo " [OK] Usunięto bucket: $BUCKET_NAME" \
-    || echo " [POMINIĘTO] Bucket $BUCKET_NAME nie istnieje lub wystąpił błąd"
+gcloud storage rm -r gs://$BUCKET_NAME_LLM \
+    && echo " [OK] Usunięto bucket: $BUCKET_NAME_LLM" \
+    || echo " [POMINIĘTO] Bucket $BUCKET_NAME_LLM nie istnieje lub wystąpił błąd"
+
+gcloud storage rm -r gs://$BUCKET_NAME_EMBEDDING \
+    && echo " [OK] Usunięto bucket: $BUCKET_NAME_EMBEDDING" \
+    || echo " [POMINIĘTO] Bucket $BUCKET_NAME_EMBEDDING nie istnieje lub wystąpił błąd"
+
+BUCKET_SOURCES="run-sources-$PROJECT_ID-$REGION"
+gcloud storage rm -r gs://$BUCKET_SOURCES \
+    && echo " [OK] Usunięto bucket: $BUCKET_SOURCES" \
+    || echo " [POMINIĘTO] Bucket $BUCKET_SOURCES nie istnieje lub wystąpił błąd"
 
 echo ""
 echo "======================================================"
