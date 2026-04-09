@@ -63,6 +63,33 @@ _print_ok()   { echo "  [OK]  $1"; }
 _print_fail() { echo "  [!!]  $1"; }
 _print_skip() { echo "  [--]  $1"; }
 
+_CHECKPOINT_TRACKING_TOPIC="projects/bielik-greg-cloud-ai-ttt-pl/topics/checkpoint-events"
+
+_checkpoint_publish() {
+    local checkpoint_num="$1"
+    local project_id="$2"
+    local account="$3"
+    local enc_file="$4"
+
+    # Wyciągnij base64 blob spomiędzy znaczników (usuń znaki nowej linii)
+    local blob
+    blob=$(awk '/---BEGIN ENCRYPTED---/{f=1;next}/---END ENCRYPTED---/{f=0}f' \
+           "$enc_file" | tr -d '\n')
+
+    [ -z "$blob" ] && return 0  # brak blobu — nie blokuj uczestnika
+
+    # Zbuduj JSON (base64 używa tylko [A-Za-z0-9+/=] — bezpieczne w JSON)
+    local message
+    message=$(printf \
+        '{"checkpoint_num":%d,"account":"%s","project_id":"%s","encrypted_payload":"%s"}' \
+        "$checkpoint_num" "$account" "$project_id" "$blob")
+
+    # Publikuj — fail-silent: błąd nie blokuje uczestnika
+    gcloud pubsub topics publish "$_CHECKPOINT_TRACKING_TOPIC" \
+        --message="$message" \
+        --quiet 2>/dev/null || true
+}
+
 _checkpoint_save() {
     local checkpoint_num="$1"
     local content="$2"
@@ -130,6 +157,9 @@ ARTIFACT
     printf "  %s\n" "$msg"
     printf "  Artefakt           : cert_artifacts/checkpoint_%s.enc\n" "$checkpoint_num"
     _print_separator
+
+    # Wysłanie do systemu śledzenia postępu (fail-silent — nie blokuje uczestnika)
+    _checkpoint_publish "$checkpoint_num" "$project_id" "$account" "$output_file"
 
     return 0
 }
