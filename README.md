@@ -227,7 +227,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komendy-gcloud-services-enable).
 
-5. Uzyskaj uprawnienia do wywoływania usług Cloud Run
+5. Uzyskaj uprawnienia do wywoływania usług [Cloud Run](https://cloud.google.com/run?hl=en)
    ```bash
    gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member=user:$(gcloud config get-value account) \
@@ -244,7 +244,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 6. Zażądaj dostępu do bucketu z modelami Ollama
 
-   Modele Bielik i EmbeddingGemma są przechowywane w centralnym buckecie organizatora warsztatu. Aby je skopiować w kroku 3, musisz najpierw uzyskać dostęp — skrypt wysyła Twoje konto do systemu i czeka na potwierdzenie:
+   Modele [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) są przechowywane w centralnym buckecie organizatora warsztatu. Aby je skopiować w kroku 3, musisz najpierw uzyskać dostęp — skrypt wysyła Twoje konto do systemu i czeka na potwierdzenie:
    ```bash
    ./skrypty/request_access.sh
    ```
@@ -263,7 +263,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ./checkpoints/checkpoint_2.sh
    ```
 
-## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na Cloud Run `~10 min`
+## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na [Cloud Run](https://cloud.google.com/run?hl=en) `~10 min`
 
 Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim** w tym samym terminalu.
 
@@ -279,7 +279,7 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    ./copy_model.sh llm
    ```
 
-3. Utwórz bucket i skopiuj model embeddingowy — **EmbeddingGemma**
+3. Utwórz bucket i skopiuj model embeddingowy — **[EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/)**
    ```bash
    ./copy_model.sh embedding
    ```
@@ -311,7 +311,7 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    cd ..
    ```
 
-### 3.3 Model LLM->Bielik
+### 3.3 Model LLM->[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct)
 1. Przejdź do katalogu `llm`
    ```bash
    cd llm
@@ -330,7 +330,7 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmcloud_runsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
 
-3. Uruchom skrypt utworzenie modelu LLM->Bielik na Cloud Run uruchamianym przez Ollama. Model pobrany za Google Cloud Storage
+3. Uruchom skrypt utworzenie modelu LLM->[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) na [Cloud Run](https://cloud.google.com/run?hl=en) uruchamianym przez Ollama. Model pobrany za Google Cloud Storage
    ```bash
    ./cloud_run.sh
    ```
@@ -360,7 +360,7 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    cd ..
    ```
 
-### 3.4 Model EmbeddingGemma
+### 3.4 Model [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/)
 
 1. Przejdź do katalogu `embedding_model`
    ```bash
@@ -380,7 +380,7 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelcloud_runsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
 
-3. Uruchom skrypt utworzenie modelu EMBEDDING->Gemma na Cloud Run uruchamianym przez Ollama. Model pobrany za Google Cloud Storage
+3. Uruchom skrypt utworzenie modelu EMBEDDING->Gemma na [Cloud Run](https://cloud.google.com/run?hl=en) uruchamianym przez Ollama. Model pobrany za Google Cloud Storage
    ```bash
    ./cloud_run.sh
    ```
@@ -400,7 +400,7 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelembedding_test1sh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
 
-6. Wygeneruj pierwsze testowe embeddingi (wektory) dla przykładowego tekstu "Suwerenne AI po polsku — Bielik i RAG w Google Cloud".
+6. Wygeneruj pierwsze testowe embeddingi (wektory) dla przykładowego tekstu "Suwerenne AI po polsku — [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i RAG w Google Cloud".
    ```bash
    ./embedding_test1.sh
    ```
@@ -467,9 +467,9 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
    ./checkpoints/checkpoint_4.sh
    ```
 
-## 5. Uruchomienie API (Orchestration) na Cloud Run `~10 min`
+## 5. Uruchomienie API (Orchestration) na [Cloud Run](https://cloud.google.com/run?hl=en) `~10 min`
 
-Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embeddingowy, BigQuery Vector Search i model Bielik w jeden przepływ i udostępnia go przez API oraz interfejs Web UI.
+Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embeddingowy, BigQuery Vector Search i model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) w jeden przepływ i udostępnia go przez API oraz interfejs Web UI.
 
 1. Przejrzyj kod aplikacji FastAPI
    ```bash
@@ -502,7 +502,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    cd orchestration
    ```
 
-4. Uruchom skrypt wdrażający aplikację na Cloud Run
+4. Uruchom skrypt wdrażający aplikację na [Cloud Run](https://cloud.google.com/run?hl=en)
    ```bash
    ./cloud_run.sh
    ```
@@ -564,7 +564,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    | `text` | Treść dokumentu — zasada hotelowa w języku naturalnym |
 
    > [!NOTE]
-   > Po wgraniu danych przez endpoint `/ingest` aplikacja automatycznie doda trzecią kolumnę: **`embedding`** — wygenerowany przez EmbeddingGemma wektor liczbowy reprezentujący znaczenie tekstu. To właśnie ta kolumna umożliwia semantyczne wyszukiwanie w BigQuery Vector Search.
+   > Po wgraniu danych przez endpoint `/ingest` aplikacja automatycznie doda trzecią kolumnę: **`embedding`** — wygenerowany przez [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) wektor liczbowy reprezentujący znaczenie tekstu. To właśnie ta kolumna umożliwia semantyczne wyszukiwanie w BigQuery Vector Search.
 
 2. Wgraj przykładowe dane do BigQuery z pliku CSV
    ```bash
@@ -627,7 +627,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    >   distance_type => 'COSINE'
    > )
    > ```
-   > Wynik to 3 dokumenty semantycznie najbliższe zapytaniu — dokładnie to, co aplikacja wysyła jako kontekst do modelu Bielik.
+   > Wynik to 3 dokumenty semantycznie najbliższe zapytaniu — dokładnie to, co aplikacja wysyła jako kontekst do modelu [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct).
 
 5. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
    ```bash
@@ -665,7 +665,7 @@ Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny, który
 
 ## 8. Interfejs Użytkownika (Web UI) `~20 min`
 
-Oprócz interfejsu API, aplikacja udostępnia również prostą nakładkę WWW. Całość pozwala na wygodne sprawdzenie i porównanie działania bazowego modelu Bielik z modelem Bielik wspartym przez RAG.
+Oprócz interfejsu API, aplikacja udostępnia również prostą nakładkę WWW. Całość pozwala na wygodne sprawdzenie i porównanie działania bazowego modelu [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) z modelem [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) wspartym przez RAG.
 
 Interfejs użytkownika zaimplementowano w jednym, statycznym pliku: `orchestration/static/index.html`. 
 
@@ -774,7 +774,7 @@ Po zakończeniu warsztatu masz dwie opcje — wybierz w zależności od tego, cz
 
 ### Opcja A — Zalecana: zostaw usługi, usuń tylko Artifact Registry
 
-Usługi Cloud Run skalują się automatycznie do zera gdy nikt ich nie odpytuje — nie generują kosztów w trybie idle. Jedynym stałym kosztem są repozytoria Artifact Registry (~$0.01/mies.).
+Usługi [Cloud Run](https://cloud.google.com/run?hl=en) skalują się automatycznie do zera gdy nikt ich nie odpytuje — nie generują kosztów w trybie idle. Jedynym stałym kosztem są repozytoria Artifact Registry (~$0.01/mies.).
 
 1. Wróć do głównego katalogu i uruchom minimalny skrypt czyszczący:
    ```bash
@@ -868,6 +868,6 @@ Dominującą pozycją jest GPU NVIDIA L4 używany przez model Bielik na Cloud Ru
 >[!IMPORTANT]
 >Uruchom skrypt `cleanup.sh` niezwłocznie po zakończeniu warsztatu. Usługi Cloud Run z GPU naliczają koszty przez cały czas działania instancji — nawet gdy nikt z nich aktywnie nie korzysta.
 
-### Optymalizacje dla środowisk produkcyjnych Cloud Run
+### Optymalizacje dla środowisk produkcyjnych [Cloud Run](https://cloud.google.com/run?hl=en)
 
-Konfiguracja użyta w tym warsztacie jest celowo uproszczona. Dla zastosowań produkcyjnych Google Cloud Run dokumentuje szereg optymalizacji - szczegóły: [Cloud Run GPU Best Practices](https://docs.cloud.google.com/run/docs/configuring/services/gpu-best-practices)
+Konfiguracja użyta w tym warsztacie jest celowo uproszczona. Dla zastosowań produkcyjnych Google [Cloud Run](https://cloud.google.com/run?hl=en) dokumentuje szereg optymalizacji - szczegóły: [Cloud Run GPU Best Practices](https://docs.cloud.google.com/run/docs/configuring/services/gpu-best-practices)
