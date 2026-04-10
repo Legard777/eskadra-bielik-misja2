@@ -84,6 +84,14 @@ Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu 
 | [`05_mapa_repozytorium.md`](architektura/05_mapa_repozytorium.md) | Struktura plików i ich rola w architekturze |
 | [`prompty_nano_banana.md`](architektura/prompty_nano_banana.md) | Prompty dla agentów AI — spójność architektoniczna |
 
+<details>
+<summary>📸 Podgląd 01 — Diagram architektury RAG</summary>
+
+![Screenshot 01 — Diagram architektury RAG](assets/screenshot-01-architektura-rag.png)
+> *Do uzupełnienia: wizualny diagram przedstawiający przepływ danych — od zapytania użytkownika, przez embedding i Vector Search w BigQuery, aż po odpowiedź modelu Bielik.*
+
+</details>
+
 ## Z czego składa się kod?
 
 Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególności na:
@@ -121,6 +129,14 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 3. Potwierdź że konto rozliczeniowe zostało aktywowane — pojawi się komunikat o przyznaniu kredytów
 
+<details>
+<summary>📸 Podgląd 02 — Potwierdzenie aktywacji kredytów</summary>
+
+![Screenshot 02 — Potwierdzenie aktywacji kredytów](assets/screenshot-02-aktywacja-kredytow.png)
+> *Do uzupełnienia: ekran potwierdzający przyznanie kredytów OnRamp — komunikat sukcesu z kwotą kredytów i datą wygaśnięcia.*
+
+</details>
+
 ### Krok 1.2 — Utworzenie nowego projektu Google Cloud
 
 1. W górnym lewym rogu [Google Cloud Console](https://console.cloud.google.com) kliknij nazwę aktywnego projektu (lub napis **„Wybierz projekt"**) — otworzy się selektor projektów. Kliknij **Nowy projekt**
@@ -133,6 +149,14 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 4. Upewnij się że nowo utworzony projekt jest aktywny (widoczny w selektorze projektów w górnym pasku)
 
+<details>
+<summary>📸 Podgląd 03 — Selektor projektów i nowy projekt</summary>
+
+![Screenshot 03 — Selektor projektów i przycisk Nowy projekt](assets/screenshot-03-selektor-projektow.png)
+> *Do uzupełnienia: górny pasek Google Cloud Console z otwartym selektorem projektów i podświetlonym przyciskiem "Nowy projekt".*
+
+</details>
+
 >[!CAUTION]
 >Nie pomyl nazwy projektu z ID projektu — nie zawsze są takie same. ID projektu widoczne jest pod nazwą podczas tworzenia i na stronie głównej konsoli.
 
@@ -142,6 +166,14 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 ### Krok 1.3 — Otwarcie terminala Cloud Shell i sklonowanie repozytorium
 
 1. Otwórz terminal Cloud Shell klikając ikonę **`>_`** w górnym pasku Google Cloud Console ([dokumentacja](https://cloud.google.com/shell/docs))
+
+<details>
+<summary>📸 Podgląd 04 — Ikona Cloud Shell w górnym pasku</summary>
+
+![Screenshot 04 — Ikona Cloud Shell w górnym pasku konsoli](assets/screenshot-04-ikona-cloud-shell.png)
+> *Do uzupełnienia: górny pasek Google Cloud Console z podświetloną ikoną terminala `>_` (Cloud Shell).*
+
+</details>
 
 2. Zweryfikuj że zalogowane jest właściwe konto
    ```bash
@@ -166,6 +198,14 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ```bash
    cd eskadra-bielik-misja2
    ```
+
+<details>
+<summary>📸 Podgląd 05 — Terminal Cloud Shell po sklonowaniu repozytorium</summary>
+
+![Screenshot 05 — Terminal Cloud Shell z wynikiem git clone](assets/screenshot-05-cloud-shell-git-clone.png)
+> *Do uzupełnienia: terminal Cloud Shell pokazujący pomyślne wykonanie `git clone` i przejście do katalogu projektu — widoczny prompt z ścieżką `~/eskadra-bielik-misja2`.*
+
+</details>
 
 >[!TIP]
 >Cloud Shell posiada wbudowany edytor graficzny — przydatny do przeglądania i edycji plików bez znajomości edytorów terminalowych. Na potrzeby tego warsztatu nie jest wymagany, jednak możesz go uruchomić w dowolnym momencie komendą `cloudshell workspace .` lub klikając przycisk **Open Editor** w górnym pasku Cloud Shell. Więcej informacji: [Cloud Shell Editor](https://docs.cloud.google.com/shell/docs/editor-overview)
@@ -328,6 +368,14 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 4. Sprawdź czy usługa `bielik` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
 
+<details>
+<summary>📸 Podgląd 06 — Usługa bielik w Cloud Run ze statusem Ready</summary>
+
+![Screenshot 06 — Cloud Run lista usług z bielik Ready](assets/screenshot-06-cloud-run-bielik-ready.png)
+> *Do uzupełnienia: widok listy usług Cloud Run w Google Cloud Console — usługa `bielik` z zielonym statusem "Ready" i adresem URL.*
+
+</details>
+
 5. Przejrzyj zawartość pliku `llm_test1.sh` w tym katalogu
    ```bash
    cat llm_test1.sh
@@ -344,6 +392,14 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ```bash
    ./llm_test1.sh
    ```
+
+<details>
+<summary>📸 Podgląd 07 — Przykładowa odpowiedź modelu Bielik</summary>
+
+![Screenshot 07 — Terminal z odpowiedzią modelu Bielik](assets/screenshot-07-bielik-odpowiedz.png)
+> *Do uzupełnienia: terminal pokazujący odpowiedź modelu Bielik na pierwsze testowe zapytanie — widoczny JSON z polem `response` zawierającym tekst po polsku.*
+
+</details>
 
 7. Wróć do głównego katalogu projektu
    ```bash
@@ -376,6 +432,14 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 4. Sprawdź czy usługa `embedding-gemma` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
 
+<details>
+<summary>📸 Podgląd 08 — Usługa embedding-gemma w Cloud Run ze statusem Ready</summary>
+
+![Screenshot 08 — Cloud Run lista usług z embedding-gemma Ready](assets/screenshot-08-cloud-run-embedding-ready.png)
+> *Do uzupełnienia: widok listy usług Cloud Run — obie usługi `bielik` i `embedding-gemma` widoczne z zielonym statusem "Ready".*
+
+</details>
+
 5. Przejrzyj zawartość pliku `embedding_model/embedding_test1.sh`
    ```bash
    cat embedding_test1.sh
@@ -392,6 +456,14 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ```bash
    ./embedding_test1.sh
    ```
+
+<details>
+<summary>📸 Podgląd 09 — Przykładowy wektor embedding z modelu EmbeddingGemma</summary>
+
+![Screenshot 09 — Terminal z fragmentem zwróconego wektora liczbowego](assets/screenshot-09-embedding-wektor.png)
+> *Do uzupełnienia: terminal pokazujący odpowiedź modelu EmbeddingGemma — fragment tablicy liczb zmiennoprzecinkowych (embeddings) reprezentujących znaczenie tekstu.*
+
+</details>
 
 7. Wróć do głównego katalogu projektu
    ```bash
@@ -581,6 +653,14 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > [!NOTE]
    > Dane tekstowe w kolumnach `id`, `content` widoczne są natychmiast. Indeksowanie kolumny `embedding` na potrzeby Vector Search może chwilę potrwać — to normalne i nie blokuje kolejnych kroków.
 
+<details>
+<summary>📸 Podgląd 10 — BigQuery Preview tabeli hotel_rules z danymi</summary>
+
+![Screenshot 10 — BigQuery Preview tabeli z kolumną embedding](assets/screenshot-10-bigquery-preview.png)
+> *Do uzupełnienia: widok BigQuery Console z otwartą tabelą `hotel_rules` i klikniętym przyciskiem "Preview" — widoczne kolumny `id`, `content` i `embedding` z wypełnionymi danymi.*
+
+</details>
+
    > [!TIP]
    > **Dla chętnych — weryfikacja SQL:** jeśli chcesz zobaczyć dane zapytaniem, wklej w edytorze BigQuery:
    > ```sql
@@ -613,6 +693,14 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
         -H "Content-Type: application/json" \
         -d '{"query": "Ile kosztuje parking hotelowy?"}'
    ```
+
+<details>
+<summary>📸 Podgląd 11 — Przykładowa odpowiedź RAG z endpointu /ask</summary>
+
+![Screenshot 11 — Terminal z odpowiedzią RAG](assets/screenshot-11-odpowiedz-rag.png)
+> *Do uzupełnienia: terminal pokazujący odpowiedź JSON z endpointu `/ask` — widoczne pola `answer` (odpowiedź Bielika) oraz `context` (fragmenty dokumentów pobrane z BigQuery Vector Search).*
+
+</details>
 
    > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o mechanizm RAG od środka:
@@ -663,6 +751,14 @@ Otwórz interaktywną dokumentację API w przeglądarce:
 echo "$ORCHESTRATION_URL/docs"
 ```
 
+<details>
+<summary>📸 Podgląd 12 — Swagger UI z dokumentacją API</summary>
+
+![Screenshot 12 — Przeglądarka z interfejsem Swagger UI /docs](assets/screenshot-12-swagger-ui.png)
+> *Do uzupełnienia: przeglądarka otwarta na adresie `/docs` — widoczny interfejs Swagger UI z listą wszystkich endpointów: GET `/`, POST `/ingest`, POST `/ask`, POST `/ask_direct`, GET `/records`.*
+
+</details>
+
 Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny, który potwierdzi że wszystkie usługi działają razem:
 
 ```bash
@@ -704,6 +800,14 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
    - *"Jak połączyć się z WiFi?"*
 
 3. Porównaj strumień odpowiedzi wyświetlany dla samej bazy wiedzy modelu (bez dodatkowego kontekstu) z bogatszą odpowiedzią RAG wygenerowaną w oparciu o wiedzę z przeszukiwania [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search).
+
+<details>
+<summary>📸 Podgląd 13 — Web UI z porównaniem odpowiedzi RAG vs bez RAG</summary>
+
+![Screenshot 13 — Interfejs Web UI z dwoma kolumnami odpowiedzi](assets/screenshot-13-webui-porownanie.png)
+> *Do uzupełnienia: przeglądarka z otwartym interfejsem Web UI — widoczne dwie kolumny z odpowiedziami na to samo pytanie: lewa (model bez RAG) i prawa (model z kontekstem RAG z BigQuery), poniżej sekcja "Użyty kontekst" z fragmentami dokumentów.*
+
+</details>
 
 ### Eksperymenty — zmień wygląd interfejsu
 
