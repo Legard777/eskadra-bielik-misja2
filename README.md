@@ -513,17 +513,20 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 > **Powrót po przerwie — sprawdź terminal przed kontynuacją.**
 > Cloud Shell automatycznie rozłącza się po okresie bezczynności, co usuwa wszystkie zmienne środowiskowe z pamięci. Jeśli robiłeś przerwę, uruchom poniższe komendy przed przejściem do kroku 6:
 
-> ```bash
-> cd ~/eskadra-bielik-misja2
-> ```
+> 1. Przejdź do katalogu projektu
+>    ```bash
+>    cd ~/eskadra-bielik-misja2
+>    ```
 
-> ```bash
-> source setup_env.sh
-> ```
+> 2. Załaduj zmienne środowiskowe
+>    ```bash
+>    source setup_env.sh
+>    ```
 
-> ```bash
-> export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
-> ```
+> 3. Odtwórz adres URL usługi Orchestration API
+>    ```bash
+>    export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
+>    ```
 
 > Jeśli nie robiłeś przerwy i terminal był aktywny — możesz pominąć ten krok.
 
