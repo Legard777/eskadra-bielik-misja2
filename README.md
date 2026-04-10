@@ -536,7 +536,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 1. Przejrzyj plik z przykładowymi danymi
    ```bash
-   tr -d '\r' < vector_store/hotel_rules.csv | awk -F',' '{printf "%-4s  %s\n", $1, $2}'
+   ./vector_store/show_data.sh
    ```
 
    Plik CSV zawiera dwie kolumny:
