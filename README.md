@@ -11,19 +11,19 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 | # | Temat | Czas | Punkty |
 |---|---|---|:---:|
 | 0 | Wstęp — czym jest RAG, Bielik i architektura rozwiązania | 10 min | — |
-| 1 | Przygotowanie projektu Google Cloud | 15 min | **5** |
+| 1 | Przygotowanie projektu Google Cloud | 20 min | **5** |
 | 2 | Konfiguracja zmiennych środowiskowych i usług Google Cloud | 5 min | **10** |
-| 3 | Uruchomienie modeli Bielik i EmbeddingGemma na Cloud Run (równolegle) | 10 min | **20** |
+| 3 | Uruchomienie modeli Bielik i EmbeddingGemma na Cloud Run | 15 min | **20** |
 | 4 | Inicjalizacja wektorowej bazy danych w BigQuery | 5 min | **5** |
 | 5 | Uruchomienie API (Orchestration) na Cloud Run | 10 min | **10** |
 | — | **Przerwa — lunch / poczęstunek / kawa / herbata / sok** | **30 min** | — |
 | 6 | Testowanie API — zasilanie bazy i pierwsze zapytania RAG | 10 min | **10** |
 | 7 | Przegląd API i architektury kodu | 10 min | **5** |
 | 8 | Interfejs Web UI — porównanie modelu z RAG i bez RAG + eksperymenty | 20 min | **10** |
-| 9 | Certyfikat ukończenia warsztatu | 5 min | — |
+| 9 | Certyfikat ukończenia warsztatu | 10 min | — |
 | 10 | Czyszczenie zasobów Google Cloud | 5 min | — |
-| 11 | Networking | 15 min | — |
-| | **Łącznie** | **~150 min** | **75 pkt** |
+| 11 | Networking | 30 min | — |
+| | **Łącznie** | **~180 min** | **75 pkt** |
 
 ---
 
@@ -101,7 +101,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 ---
 
 
-## 1. Przygotowanie projektu Google Cloud `~15 min`
+## 1. Przygotowanie projektu Google Cloud `~20 min`
 
 >[!NOTE]
 >Przed warsztatem otrzymałeś instrukcję zapoznania się z procesem aktywacji kredytów Google Cloud (link w TIP poniżej) — ten krok nie powinien być dla Ciebie nowością.
@@ -263,7 +263,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ./checkpoints/checkpoint_2.sh
    ```
 
-## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na [Cloud Run](https://cloud.google.com/run?hl=en) `~10 min`
+## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na [Cloud Run](https://cloud.google.com/run?hl=en) `~15 min`
 
 Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim** w tym samym terminalu.
 
@@ -715,7 +715,7 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
    ./checkpoints/checkpoint_8.sh
    ```
 
-## 9. Certyfikat ukończenia warsztatu `~5 min`
+## 9. Certyfikat ukończenia warsztatu `~10 min`
 
 Gratulacje — warsztat dobiegł końca! Wygeneruj zaszyfrowany certyfikat zawierający wszystkie 8 checkpointów i prześlij go prowadzącemu.
 
@@ -798,7 +798,7 @@ Jeśli chcesz mieć 100% pewności braku kosztów lub zamierzasz zakończyć pra
    - **Artifact Registry:** [console.cloud.google.com/artifacts](https://console.cloud.google.com/artifacts)
    - **Cloud Storage:** [console.cloud.google.com/storage](https://console.cloud.google.com/storage)
 
-## 11. Networking `~15 min`
+## 11. Networking `~30 min`
 
 Właśnie zbudowałeś działający system RAG oparty na polskim modelu językowym i Google Cloud. Czas porozmawiać z innymi uczestnikami — może przy kawie.
 
