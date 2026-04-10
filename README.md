@@ -279,25 +279,13 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 ### 3.2 Tworzenie dedykowane repozytorium na obraz zawierający Ollama
 
-1. Przejdź do katalogu `ollama_docker_image`
-   ```bash
-   cd ollama_docker_image
-   ```
+Uruchom skrypt, który automatycznie tworzy repozytorium w Artifact Registry i buduje dedykowany obraz Docker z Ollama:
 
-2. Utworzenie repozytorium w Artifact Reposiroty
-   ```bash
-   ./create_ollama_repo.sh
-   ```
+```bash
+./ollama_docker_image/setup_ollama_image.sh
+```
 
-3. Utworzenie dedykowanego obrazu
-   ```bash
-   ./create_ollama_image.sh
-   ```
-
-4. Wróć do głównego katalogu projektu
-   ```bash
-   cd ..
-   ```
+Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 ### 3.3 Model LLM->[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct)
 1. Przejdź do katalogu `llm`
