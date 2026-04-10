@@ -277,7 +277,7 @@ Uruchom skrypt, który automatycznie tworzy buckety i kopiuje oba modele — **B
 
 Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
-### 3.2 Tworzenie dedykowane repozytorium na obraz zawierający Ollama
+### 3.2 Tworzenie dedykowanego repozytorium na obraz zawierający Ollama
 
 Uruchom skrypt, który automatycznie tworzy repozytorium w Artifact Registry i buduje dedykowany obraz Docker z Ollama:
 
