@@ -1,6 +1,6 @@
 # Eskadra Bielik - Misja 2 - RAG w oparciu o model Bielik i Google Cloud
 
-Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedzy w oparciu o model Bielik i Google Cloud.
+Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedzy w oparciu o model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i Google Cloud.
 
 >[!WARNING]
 >**Materiał warsztatowy — wyłącznie do celów edukacyjnych.**
@@ -61,12 +61,12 @@ Zapis `$(gcloud run services describe ...)` oznacza: uruchom komendę wewnątrz 
 Niniejsze repozytorium prezentuje kompletne, bezserwerowe (serverless) rozwiązanie klasy RAG (Retrieval-Augmented Generation) wdrożone w chmurze Google Cloud. Głównym celem aplikacji jest dostarczenie wydajnego i suwerennego inteligentnego asystenta zdolnego do odpowiadania na pytania użytkownika w oparciu o dedykowaną bazę wiedzy (np. wewnętrzne dokumenty, regulaminy).
 
 Podstawowa architektura wdrażanego rozwiązania opiera się na poniższych serwisach i komponentach:
-- **Modelu językowym LLM:** Suwerenny polski model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) charakteryzujący się bardzo dobrym zrozumieniem języka polskiego oraz polskiego kontekstu kulturowego. Uruchomiony w usłudze Cloud Run, odpowiada za ostateczne generowanie naturalnej dla użytkownika odpowiedzi.
-- **Modelu osadzania (Embedding):** Wydajny model [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) uruchomiony w usłudze Cloud Run, służący do szybkiej zamiany tekstu (zapytań użytkownika i dokumentów docelowych) na reprezentację wektorową.
+- **Modelu językowym LLM:** Suwerenny polski model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) charakteryzujący się bardzo dobrym zrozumieniem języka polskiego oraz polskiego kontekstu kulturowego. Uruchomiony w usłudze [Cloud Run](https://cloud.google.com/run?hl=en), odpowiada za ostateczne generowanie naturalnej dla użytkownika odpowiedzi.
+- **Modelu osadzania (Embedding):** Wydajny model [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) uruchomiony w usłudze [Cloud Run](https://cloud.google.com/run?hl=en), służący do szybkiej zamiany tekstu (zapytań użytkownika i dokumentów docelowych) na reprezentację wektorową.
 - **Wektorowej Bazie Wiedzy:** Skalowalna hurtownia danych [BigQuery](https://cloud.google.com/bigquery?hl=en) z mechanizmem Vector Search zapewniająca wektorowe wyszukiwanie semantycznie dopasowanych fragmentów z pośród milionów dokumentów źródłowych.
 - **Logice i serwerze aplikacyjnym:** Aplikacja napisana w języku Python (z frameworkiem FastAPI), udostępniająca nakładkę graficzną Web UI oraz publiczne API spinające platformy w całość.
 
-Dodatkowo, dzięki prostemu interfejsowi graficznemu, aplikacja pozwala na wygodne porównanie i empiryczne przetestowanie "surowego" modelu Bielik polegającego tylko na sobie w konfrontacji z bogatszą odpowiedzią modelu wspartego kontekstem RAG.
+Dodatkowo, dzięki prostemu interfejsowi graficznemu, aplikacja pozwala na wygodne porównanie i empiryczne przetestowanie "surowego" modelu [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) polegającego tylko na sobie w konfrontacji z bogatszą odpowiedzią modelu wspartego kontekstem RAG.
 
 >[!TIP]
 >Jeśli chcesz lepiej zrozumieć ideę RAG przed przystąpieniem do warsztatu, zapoznaj się z wprowadzeniem Google Cloud: [Retrieval-Augmented Generation](https://cloud.google.com/use-cases/retrieval-augmented-generation?hl=pl)
@@ -271,7 +271,7 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
 
 ### 3.1 Tworzenie bucketów i kopiowanie modeli Ollama
 
-Uruchom skrypt, który automatycznie tworzy buckety i kopiuje oba modele — **Bielik** (LLM) oraz **[EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/)** (embeddingowy):
+Uruchom skrypt, który automatycznie tworzy buckety i kopiuje oba modele — **[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct)** (LLM) oraz **[EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/)** (embeddingowy):
 
 ```bash
 ./ollama_models/setup_models.sh
@@ -340,7 +340,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmllm_test1sh).
 
-6. Zadaj pierwsze pytanie modelowi Bielik i sprawdź jego odpowiedź
+6. Zadaj pierwsze pytanie modelowi [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i sprawdź jego odpowiedź
    ```bash
    ./llm_test1.sh
    ```
@@ -405,7 +405,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 ## 4. Inicjalizacja wektorowej bazy danych w BigQuery `~5 min`
 
-Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kontekstową.
+Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkcją Vector Search jako bazę z wiedzą kontekstową.
 
 1. Przejdź do katalogu `vector_store`
    ```bash
@@ -439,7 +439,7 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-vector_storeinit_dbpy).
 
-4. Uruchom skrypt inicjalizacyjny, który stworzy zbiór danych i tabelę w BigQuery
+4. Uruchom skrypt inicjalizacyjny, który stworzy zbiór danych i tabelę w [BigQuery](https://cloud.google.com/bigquery?hl=en)
    ```bash
    python init_db.py
    ```
@@ -456,7 +456,7 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
 
 ## 5. Uruchomienie API (Orchestration) na [Cloud Run](https://cloud.google.com/run?hl=en) `~10 min`
 
-Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embeddingowy, BigQuery Vector Search i model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) w jeden przepływ i udostępnia go przez API oraz interfejs Web UI.
+Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embeddingowy, [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search) i model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) w jeden przepływ i udostępnia go przez API oraz interfejs Web UI.
 
 1. Przejrzyj kod aplikacji FastAPI
    ```bash
@@ -556,9 +556,9 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    | `text` | Treść dokumentu — zasada hotelowa w języku naturalnym |
 
    > [!NOTE]
-   > Po wgraniu danych przez endpoint `/ingest` aplikacja automatycznie doda trzecią kolumnę: **`embedding`** — wygenerowany przez [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) wektor liczbowy reprezentujący znaczenie tekstu. To właśnie ta kolumna umożliwia semantyczne wyszukiwanie w BigQuery Vector Search.
+   > Po wgraniu danych przez endpoint `/ingest` aplikacja automatycznie doda trzecią kolumnę: **`embedding`** — wygenerowany przez [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) wektor liczbowy reprezentujący znaczenie tekstu. To właśnie ta kolumna umożliwia semantyczne wyszukiwanie w [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search).
 
-2. Wgraj przykładowe dane do BigQuery z pliku CSV
+2. Wgraj przykładowe dane do [BigQuery](https://cloud.google.com/bigquery?hl=en) z pliku CSV
    ```bash
    curl -X POST "$ORCHESTRATION_URL/ingest" \
         -F "file=@vector_store/hotel_rules.csv"
@@ -571,7 +571,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-curl-ingest).
 
-3. Zweryfikuj czy rekordy pojawiły się w BigQuery
+3. Zweryfikuj czy rekordy pojawiły się w [BigQuery](https://cloud.google.com/bigquery?hl=en)
 
    Otwórz [BigQuery w Google Cloud Console](https://console.cloud.google.com/bigquery), przejdź do tabeli `rag_dataset` → `hotel_rules` i kliknij przycisk **Preview** aby podejrzeć dane.
 
@@ -647,14 +647,14 @@ Aplikacja udostępnia proste API stworzone przy pomocy frameworka *FastAPI*, poz
 Aplikacja definiuje w pliku `orchestration/main.py` następujące ścieżki:
 
 * `GET /` – serwuje statyczny plik interfejsu użytkownika (`index.html`).
-* `POST /ingest` – przyjmuje plik CSV i indeksuje zawarte w nim informacje jako wektory w BigQuery (wykorzystując model embeddingowy `EmbeddingGemma`).
+* `POST /ingest` – przyjmuje plik CSV i indeksuje zawarte w nim informacje jako wektory w [BigQuery](https://cloud.google.com/bigquery?hl=en) (wykorzystując model embeddingowy `EmbeddingGemma`).
 * `POST /ask` – główny endpoint RAG: 
   - zamienia zapytanie z tekstu na wektor,
-  - wyszukuje semantycznie 3 najbardziej zbliżone dokumenty wektorowe w tabeli BigQuery,
+  - wyszukuje semantycznie 3 najbardziej zbliżone dokumenty wektorowe w tabeli [BigQuery](https://cloud.google.com/bigquery?hl=en),
   - buduje prompt z odnalezionym kontekstem,
   - wysyła połączony prompt do modelu `Bielik` i zwraca ostateczną odpowiedź wraz z wybranym i wykorzystanym kontekstem.
 * `POST /ask_direct` – służy jako zestawienie porównawcze (baseline). Przyjmuje zapytanie i wysyła je bezpośrednio do bazowego modelu `Bielik`, z całkowitym pominięciem RAG.
-* `GET /records` – zwraca listę dokumentów zapisanych w tabeli BigQuery (pola `id` i `content`, bez wektorów). Parametr `limit` pozwala ograniczyć liczbę wyników (domyślnie 100).
+* `GET /records` – zwraca listę dokumentów zapisanych w tabeli [BigQuery](https://cloud.google.com/bigquery?hl=en) (pola `id` i `content`, bez wektorów). Parametr `limit` pozwala ograniczyć liczbę wyników (domyślnie 100).
 * `GET /docs` – interaktywna dokumentacja API wygenerowana automatycznie przez FastAPI (Swagger UI). Pozwala przeglądać i testować wszystkie endpointy bezpośrednio w przeglądarce.
 * `GET /redoc` – alternatywna dokumentacja API w formacie ReDoc.
 
@@ -675,10 +675,10 @@ Oprócz interfejsu API, aplikacja udostępnia również prostą nakładkę WWW. 
 
 Interfejs użytkownika zaimplementowano w jednym, statycznym pliku: `orchestration/static/index.html`. 
 
-Skrypt osadzony w pliku HTML wysyła dwa jednoczesne żądania do endpointów `/ask` (wsparty RAG) oraz `/ask_direct` (bezpośrednio do modelu `Bielik`) i prezentuje obie odpowiedzi modelu obok siebie celem zilustrowania różnic. Wyświetla obok również jakich dokładnie fragmentów dokumentów BigQuery model użył w przypadku posiłkowania się dodatkowym kontekstem RAG.
+Skrypt osadzony w pliku HTML wysyła dwa jednoczesne żądania do endpointów `/ask` (wsparty RAG) oraz `/ask_direct` (bezpośrednio do modelu `Bielik`) i prezentuje obie odpowiedzi modelu obok siebie celem zilustrowania różnic. Wyświetla obok również jakich dokładnie fragmentów dokumentów [BigQuery](https://cloud.google.com/bigquery?hl=en) model użył w przypadku posiłkowania się dodatkowym kontekstem RAG.
 
 > [!TIP]
-> Zachęcamy Cię gorąco do eksperymentów! Przejrzyj kod źródłowy plików `orchestration/main.py` oraz `orchestration/static/index.html`, aby zobaczyć, w jak prosty sposób w Pythonie łączy się wyszukiwanie wektorowe BigQuery z modelem LLM i serwuje dla prostej graficznej nakładki JavaScript.
+> Zachęcamy Cię gorąco do eksperymentów! Przejrzyj kod źródłowy plików `orchestration/main.py` oraz `orchestration/static/index.html`, aby zobaczyć, w jak prosty sposób w Pythonie łączy się wyszukiwanie wektorowe [BigQuery](https://cloud.google.com/bigquery?hl=en) z modelem LLM i serwuje dla prostej graficznej nakładki JavaScript.
 > ```bash
 > cat orchestration/main.py
 > cat orchestration/static/index.html
@@ -703,7 +703,7 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
    - *"Czy mogę zabrać psa do hotelu?"*
    - *"Jak połączyć się z WiFi?"*
 
-3. Porównaj strumień odpowiedzi wyświetlany dla samej bazy wiedzy modelu (bez dodatkowego kontekstu) z bogatszą odpowiedzią RAG wygenerowaną w oparciu o wiedzę z przeszukiwania BigQuery Vector Search.
+3. Porównaj strumień odpowiedzi wyświetlany dla samej bazy wiedzy modelu (bez dodatkowego kontekstu) z bogatszą odpowiedzią RAG wygenerowaną w oparciu o wiedzę z przeszukiwania [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search).
 
 ### Eksperymenty — zmień wygląd interfejsu
 
@@ -804,7 +804,7 @@ Usługi [Cloud Run](https://cloud.google.com/run?hl=en) skalują się automatycz
 Jeśli chcesz mieć 100% pewności braku kosztów lub zamierzasz zakończyć pracę z projektem, usuń wszystkie zasoby. Możesz je odtworzyć od nowa powtarzając kroki warsztatu.
 
 > [!CAUTION]
-> Ta operacja jest nieodwracalna. Wszystkie dane w BigQuery, wdrożone modele i usługi zostaną trwale usunięte.
+> Ta operacja jest nieodwracalna. Wszystkie dane w [BigQuery](https://cloud.google.com/bigquery?hl=en), wdrożone modele i usługi zostaną trwale usunięte.
 
 1. Wróć do głównego katalogu projektu i uruchom pełny skrypt czyszczący:
    ```bash
@@ -858,7 +858,7 @@ Zbudowany dziś system to punkt startowy. Kilka kierunków do eksploracji:
 
 Na podstawie rzeczywistego przebiegu warsztatu całkowity koszt wynosi **~$3–4**.
 
-Dominującą pozycją jest GPU NVIDIA L4 używany przez model Bielik na Cloud Run. Usługi Cloud Run z GPU działają w trybie **instance-based billing** (wymagane przez Google Cloud) — oznacza to, że płacisz za każdą sekundę gdy instancja jest aktywna, niezależnie od tego czy w danej chwili obsługuje zapytanie. Instancja może skalować do zera gdy przez dłuższy czas nikt jej nie odpytuje, jednak ze względu na długi czas zimnego startu (ładowanie modelu) pozostaje aktywna przez cały czas trwania warsztatu.
+Dominującą pozycją jest GPU NVIDIA L4 używany przez model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) na [Cloud Run](https://cloud.google.com/run?hl=en). Usługi [Cloud Run](https://cloud.google.com/run?hl=en) z GPU działają w trybie **instance-based billing** (wymagane przez Google Cloud) — oznacza to, że płacisz za każdą sekundę gdy instancja jest aktywna, niezależnie od tego czy w danej chwili obsługuje zapytanie. Instancja może skalować do zera gdy przez dłuższy czas nikt jej nie odpytuje, jednak ze względu na długi czas zimnego startu (ładowanie modelu) pozostaje aktywna przez cały czas trwania warsztatu.
 
 | Usługa | Składnik | Orientacyjny koszt |
 |---|---|---|
@@ -871,7 +871,7 @@ Dominującą pozycją jest GPU NVIDIA L4 używany przez model Bielik na Cloud Ru
 | **Łącznie** | | **~$3.91** |
 
 >[!IMPORTANT]
->Uruchom skrypt `cleanup.sh` niezwłocznie po zakończeniu warsztatu. Usługi Cloud Run z GPU naliczają koszty przez cały czas działania instancji — nawet gdy nikt z nich aktywnie nie korzysta.
+>Uruchom skrypt `cleanup.sh` niezwłocznie po zakończeniu warsztatu. Usługi [Cloud Run](https://cloud.google.com/run?hl=en) z GPU naliczają koszty przez cały czas działania instancji — nawet gdy nikt z nich aktywnie nie korzysta.
 
 ### Optymalizacje dla środowisk produkcyjnych [Cloud Run](https://cloud.google.com/run?hl=en)
 
