@@ -177,7 +177,17 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 ## 2. Konfiguracja zmiennych środowiskowych i usług Google Cloud `~5 min`
 
-1. Przejrzyj zawartość skryptu `setup_env.sh`
+1. Nadaj prawa wykonywania wszystkim skryptom `.sh` *(z wyjątkiem `setup_env.sh`, który uruchamiamy przez `source` — nie wymaga bitu wykonywalności)*
+   ```bash
+   bash skrypty/make_scripts_executable.sh
+   ```
+
+2. Uruchom skrypt ochrony plików źródłowych *(tylko raz — zabezpiecza pliki `.py`, `.html`, `.csv` przed przypadkową edycją)*
+   ```bash
+   ./skrypty/protect_files.sh
+   ```
+
+3. Przejrzyj zawartość skryptu `setup_env.sh`
    ```bash
    cat setup_env.sh
    ```
@@ -190,7 +200,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-setupenvsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa, dlatego dwie osoby zadające to samo pytanie mogą otrzymać różne, ale równie poprawne wyjaśnienia.
 
-2. Uruchom skrypt `setup_env.sh`
+4. Uruchom skrypt `setup_env.sh`
    ```bash
    source setup_env.sh
    ```
@@ -205,12 +215,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    >[!IMPORTANT]
    >Jeżeli z jakiegoś powodu musisz ponownie uruchomić terminal Cloud Shell, pamiętaj aby ponownie uruchomić skrypt `setup_env.sh` aby wczytać zmienne środowiskowe.
 
-3. Uruchom skrypt ochrony plików źródłowych *(tylko raz — zabezpiecza pliki `.py`, `.html`, `.csv` przed przypadkową edycją)*
-   ```bash
-   ./skrypty/protect_files.sh
-   ```
-
-4. Włącz potrzebne usługi w projekcie Google Cloud
+5. Włącz potrzebne usługi w projekcie Google Cloud
    ```bash
    gcloud services enable run.googleapis.com
    gcloud services enable cloudbuild.googleapis.com
@@ -225,7 +230,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komendy-gcloud-services-enable).
 
-5. Uzyskaj uprawnienia do wywoływania usług [Cloud Run](https://cloud.google.com/run?hl=en)
+6. Uzyskaj uprawnienia do wywoływania usług [Cloud Run](https://cloud.google.com/run?hl=en)
    ```bash
    gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member=user:$(gcloud config get-value account) \
@@ -239,7 +244,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-gcloud-projects-add-iam-policy-binding).
 
-6. Zażądaj dostępu do bucketu z modelami Ollama
+7. Zażądaj dostępu do bucketu z modelami Ollama
 
    Modele [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) są przechowywane w centralnym buckecie organizatora warsztatu. Aby je skopiować w kroku 3, musisz najpierw uzyskać dostęp — skrypt wysyła Twoje konto do systemu i czeka na potwierdzenie:
    ```bash
@@ -255,7 +260,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > gcloud storage ls gs://$BUCKET_NAME_SOURCE
    > ```
 
-7. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
+8. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
    ```bash
    ./checkpoints/checkpoint_2.sh
    ```
