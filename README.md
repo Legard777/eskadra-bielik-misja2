@@ -269,25 +269,13 @@ Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim
 
 ### 3.1 Tworzenie bucketów i kopiowanie modeli Ollama
 
-1. Przejdź do katalogu `ollama_models`
-   ```bash
-   cd ollama_models
-   ```
+Uruchom skrypt, który automatycznie tworzy buckety i kopiuje oba modele — **Bielik** (LLM) oraz **[EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/)** (embeddingowy):
 
-2. Utwórz bucket i skopiuj model LLM — **Bielik**
-   ```bash
-   ./copy_model.sh llm
-   ```
+```bash
+./ollama_models/setup_models.sh
+```
 
-3. Utwórz bucket i skopiuj model embeddingowy — **[EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/)**
-   ```bash
-   ./copy_model.sh embedding
-   ```
-
-4. Wróć do głównego katalogu projektu
-   ```bash
-   cd ..
-   ```
+Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 ### 3.2 Tworzenie dedykowane repozytorium na obraz zawierający Ollama
 
