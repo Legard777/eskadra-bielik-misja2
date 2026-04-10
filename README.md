@@ -514,7 +514,11 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 > Cloud Shell automatycznie rozłącza się po okresie bezczynności, co usuwa wszystkie zmienne środowiskowe z pamięci. Jeśli robiłeś przerwę, uruchom poniższe komendy przed przejściem do kroku 6:
 
 > ```bash
-> source ~/eskadra-bielik-misja2/setup_env.sh
+> cd ~/eskadra-bielik-misja2
+> ```
+
+> ```bash
+> source setup_env.sh
 > ```
 
 > ```bash
