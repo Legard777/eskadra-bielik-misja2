@@ -200,8 +200,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```bash
    > gemini "Jaka jest różnica między source setup_env.sh a ./setup_env.sh w bashu? Kiedy używać każdej z form?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#dlaczego-source-a-nie-setupenvsh) — Twoja wersja może być krótsza, dłuższa lub podać inne przykłady. Właśnie tak działają modele językowe.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#dlaczego-source-a-nie-setupenvsh).
 
    >[!IMPORTANT]
    >Jeżeli z jakiegoś powodu musisz ponownie uruchomić terminal Cloud Shell, pamiętaj aby ponownie uruchomić skrypt `setup_env.sh` aby wczytać zmienne środowiskowe.
@@ -220,11 +219,10 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ```
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI do czego służą te komendy:
+   > **Zadanie dla Gemini CLI** — zapytaj AI dlaczego usługi są domyślnie wyłączone:
    > ```bash
-   > gemini "Do czego służy komenda gcloud services enable? Wyjaśnij po krótce każdą z usług: run, cloudbuild, artifactregistry, bigquery."
+   > gemini "Dlaczego usługi Google Cloud są domyślnie wyłączone? Wyjaśnij krótko każdą z włączanych usług: run, cloudbuild, artifactregistry, bigquery i co się stanie jeśli pominąć ten krok."
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komendy-gcloud-services-enable).
 
 5. Uzyskaj uprawnienia do wywoływania usług [Cloud Run](https://cloud.google.com/run?hl=en)
@@ -235,11 +233,10 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ```
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI o uprawnienia IAM w Google Cloud:
+   > **Zadanie dla Gemini CLI** — zapytaj AI o model bezpieczeństwa Google Cloud:
    > ```bash
-   > gemini "Co robi komenda gcloud projects add-iam-policy-binding? Wyjaśnij czym jest rola roles/run.invoker i dlaczego zasada najmniejszych uprawnień jest ważna."
+   > gemini "Wyjaśnij czym jest IAM w Google Cloud i jak działa rola roles/run.invoker. Co się stanie gdy wywołam curl bez tej roli — jaki błąd HTTP i dlaczego?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-gcloud-projects-add-iam-policy-binding).
 
 6. Zażądaj dostępu do bucketu z modelami Ollama
@@ -277,6 +274,13 @@ Uruchom skrypt, który automatycznie tworzy buckety i kopiuje oba modele — **B
 
 Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI o Cloud Storage i rozmiary modeli:
+   > ```bash
+   > gemini "Co robi skrypt @ollama_models/setup_models.sh? Czym jest Cloud Storage bucket i dlaczego modele językowe LLM ważą kilka gigabajtów, a nie kilka megabajtów jak zwykłe programy?"
+   > ```
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-ollama_modelssetup_modelssh).
+
 ### 3.2 Tworzenie dedykowanego repozytorium na obraz zawierający Ollama
 
 Uruchom skrypt, który automatycznie tworzy repozytorium w Artifact Registry i buduje dedykowany obraz Docker z Ollama:
@@ -286,6 +290,13 @@ Uruchom skrypt, który automatycznie tworzy repozytorium w Artifact Registry i b
 ```
 
 Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
+
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI o konteneryzację modeli AI:
+   > ```bash
+   > gemini "Co robi skrypt @ollama_docker_image/setup_ollama_image.sh? Czym jest obraz Docker, dlaczego buduje się własny obraz zamiast użyć gotowego i do czego służy Artifact Registry?"
+   > ```
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-ollama_docker_imagesetup_ollama_imagesh).
 
 ### 3.3 Model LLM->[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct)
 1. Przejdź do katalogu `llm`
@@ -299,12 +310,11 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ```
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > **Zadanie dla Gemini CLI** — zapytaj AI o GPU w chmurze:
    > ```bash
-   > gemini "Co robi ten skrypt @llm/cloud_run.sh? Wyjaśnij każdą flagę komendy 'gcloud run deploy'."
+   > gemini "Co robi skrypt @llm/cloud_run.sh? Dlaczego model Bielik wymaga GPU NVIDIA L4 — czym fundamentalnie różni się przetwarzanie na GPU od CPU w kontekście modeli językowych?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmcloud_runsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmcloud_runsh).
 
 3. Uruchom skrypt utworzenie modelu LLM->[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) na [Cloud Run](https://cloud.google.com/run?hl=en) uruchamianym przez Ollama. Model pobrany za Google Cloud Storage
    ```bash
@@ -319,12 +329,11 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ```
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > **Zadanie dla Gemini CLI** — zapytaj AI o autoryzację JWT w API:
    > ```bash
-   > gemini "Co robi ten skrypt @llm/llm_test1.sh? Wyjaśnij jak działa autoryzacja i co oznaczają poszczególne pola w ciele zapytania JSON."
+   > gemini "Co robi skrypt @llm/llm_test1.sh? Wyjaśnij jak działa token JWT w Google Cloud — skąd pochodzi, jak długo jest ważny i co się stanie gdy wyślę zapytanie bez nagłówka Authorization?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmllm_test1sh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmllm_test1sh).
 
 6. Zadaj pierwsze pytanie modelowi Bielik i sprawdź jego odpowiedź
    ```bash
@@ -349,12 +358,11 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ```
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > **Zadanie dla Gemini CLI** — zapytaj AI o różnicę między modelem generatywnym a embeddingowym:
    > ```bash
-   > gemini "Co robi ten skrypt @embedding_model/cloud_run.sh? Wyjaśnij każdą flagę komendy gcloud run deploy. Czym różni się ta konfiguracja od wdrożenia modelu LLM?"
+   > gemini "Co robi skrypt @embedding_model/cloud_run.sh? Dlaczego model embeddingowy działa bez GPU, a Bielik go potrzebuje — co fundamentalnie różni generowanie tekstu od generowania wektora?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelcloud_runsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelcloud_runsh).
 
 3. Uruchom skrypt utworzenie modelu EMBEDDING->Gemma na [Cloud Run](https://cloud.google.com/run?hl=en) uruchamianym przez Ollama. Model pobrany za Google Cloud Storage
    ```bash
@@ -369,12 +377,11 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ```
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > **Zadanie dla Gemini CLI** — zapytaj AI o przestrzeń semantyczną:
    > ```bash
-   > gemini "Co robi ten skrypt @embedding_model/embedding_test1.sh? Czym różni się endpoint /api/embed od /api/chat i czym są embeddingi (wektory)?"
+   > gemini "Co robi skrypt @embedding_model/embedding_test1.sh? Wyjaśnij czym jest przestrzeń wektorowa — jak 2048 liczb może wyrażać 'znaczenie' tekstu i dlaczego zdania o podobnym sensie dają wektory bliskie sobie geometrycznie?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelembedding_test1sh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelembedding_test1sh).
 
 6. Wygeneruj pierwsze testowe embeddingi (wektory) dla przykładowego tekstu "Suwerenne AI po polsku — [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i RAG w Google Cloud".
    ```bash
@@ -409,11 +416,11 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
    > Celowo pomijamy tworzenie wirtualnego środowiska Python (`venv`). W warsztacie korzystamy z Cloud Shell, który jest tymczasowym środowiskiem uruchamianym od nowa po każdej sesji — instalacja globalna jest tu w zupełności wystarczająca. Wirtualne środowisko byłoby przydatne przy długotrwałym projekcie, gdzie chcemy izolować zależności między aplikacjami na tej samej maszynie.
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI czym jest ta biblioteka i do czego służy:
+   > **Zadanie dla Gemini CLI** — zapytaj AI o zarządzanie zależnościami w Pythonie:
    > ```bash
-   > gemini "Do czego służy biblioteka google-cloud-bigquery w Pythonie? Czym jest pip i dlaczego w tym przypadku nie potrzebujemy wirtualnego środowiska venv?"
+   > gemini "Do czego służy biblioteka google-cloud-bigquery w Pythonie? Czym jest pip, jak działa instalacja zależności i dlaczego w Cloud Shell pomijamy wirtualne środowisko venv?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#pip-install-google-cloud-bigquery).
 
 3. Przejrzyj kod skryptu inicjalizacyjnego
    ```bash
@@ -421,12 +428,11 @@ Projekt wykorzystuje BigQuery z funkcją Vector Search jako bazę z wiedzą kont
    ```
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > **Zadanie dla Gemini CLI** — zapytaj AI o projektowanie schematu dla Vector Search:
    > ```bash
-   > gemini "Co robi ten skrypt @vector_store/init_db.py? Wyjaśnij schemat tabeli BigQuery i dlaczego pole embedding ma typ FLOAT64 REPEATED."
+   > gemini "Co robi skrypt @vector_store/init_db.py? Dlaczego kolumna embedding ma typ FLOAT64 REPEATED a nie JSON ani STRING — jak BigQuery Vector Search korzysta z tego konkretnego typu do wyszukiwania podobnych wektorów?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-vector_storeinit_dbpy) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-vector_storeinit_dbpy).
 
 4. Uruchom skrypt inicjalizacyjny, który stworzy zbiór danych i tabelę w BigQuery
    ```bash
@@ -453,12 +459,11 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ```
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ta aplikacja:
+   > **Zadanie dla Gemini CLI** — zapytaj AI o architekturę systemu RAG:
    > ```bash
-   > gemini "Co robi plik @orchestration/main.py? Wyjaśnij każdy endpoint API i opisz przepływ danych w endpoincie /ask: od zapytania użytkownika do odpowiedzi modelu Bielik."
+   > gemini "Co robi plik @orchestration/main.py? Policz ile linii liczy ten plik i wyjaśnij jak FastAPI pozwala zbudować pełny system RAG — embedding, Vector Search, LLM — w tak zwartym kodzie."
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#plik-orchestrationmainpy) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#plik-orchestrationmainpy).
 
 2. Przejrzyj skrypt wdrożeniowy
    ```bash
@@ -466,11 +471,10 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ```
 
    > [!TIP]
-   > **Zadanie dla Gemini CLI** — zapytaj AI co robi ten skrypt:
+   > **Zadanie dla Gemini CLI** — zapytaj AI o dobre praktyki konfiguracji aplikacji:
    > ```bash
-   > gemini "Co robi ten skrypt @orchestration/cloud_run.sh? Dlaczego musi najpierw pobrać URL-e modeli i jak przekazuje je do aplikacji przez zmienne środowiskowe?"
+   > gemini "Co robi skrypt @orchestration/cloud_run.sh? Wyjaśnij dlaczego adresy URL modeli są przekazywane przez zmienne środowiskowe a nie wpisane na stałe w kodzie — czym jest zasada twelve-factor app?"
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-orchestrationcloud_runsh).
 
 3. Przejdź do katalogu `orchestration`
@@ -555,6 +559,13 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
         -F "file=@vector_store/hotel_rules.csv"
    ```
 
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI jak działa wysyłanie pliku przez HTTP:
+   > ```bash
+   > gemini "Co robi ta komenda curl? Wyjaśnij czym jest multipart/form-data, czym różni się flaga -F od -d w curl i jak endpoint /ingest po stronie serwera odbiera i przetwarza przesłany plik CSV."
+   > ```
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-curl-ingest).
+
 3. Zweryfikuj czy rekordy pojawiły się w BigQuery
 
    Otwórz [BigQuery w Google Cloud Console](https://console.cloud.google.com/bigquery), przejdź do tabeli `rag_dataset` → `hotel_rules` i kliknij przycisk **Preview** aby podejrzeć dane.
@@ -597,6 +608,13 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
         -H "Content-Type: application/json" \
         -d '{"query": "Ile kosztuje parking hotelowy?"}'
    ```
+
+   > [!TIP]
+   > **Zadanie dla Gemini CLI** — zapytaj AI o mechanizm RAG od środka:
+   > ```bash
+   > gemini "Prześledź krok po kroku co dzieje się w systemie gdy wysyłam zapytanie do endpointu /ask: od wektora zapytania, przez VECTOR_SEARCH w BigQuery, aż do odpowiedzi Bielika. Ile żądań HTTP wykonuje orchestration-api w tle obsługując jedno pytanie użytkownika?"
+   > ```
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-curl-ask).
 
    > [!TIP]
    > **Dla chętnych — odpowiednik SQL:** każde z powyższych zapytań wewnętrznie wykonuje Vector Search w BigQuery. Możesz zobaczyć jak to wygląda „pod maską", wklejając w edytorze BigQuery (zastąp `[...]` wektorem zwróconym przez `/api/embed`):
@@ -699,7 +717,6 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 >    ```bash
 >    gemini "Zmodyfikuj plik @orchestration/static/index.html nadając mu wygląd retro-terminala (zielony tekst na czarnym tle, czcionka monospace). Zachowaj całą funkcjonalność."
 >    ```
->    W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
 > 3. Przejrzyj zmiany w edytorze Cloud Shell:
 >    ```bash
 >    cloudshell edit orchestration/static/index.html

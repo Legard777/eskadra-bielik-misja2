@@ -153,4 +153,68 @@ Komenda nadaje Twojemu kontu uprawnienia do wywoływania usług Cloud Run. Oto c
 - **`--member=user:$(gcloud config get-value account)`** — automatycznie pobiera adres e-mail aktualnie zalogowanego użytkownika, dzięki czemu nie musisz wpisywać go ręcznie.
 - **`--role='roles/run.invoker'`** — nadaje rolę Cloud Run Invoker, niezbędną do wysyłania zapytań (np. przez `curl` lub przeglądarkę) do modeli i API wdrożonych na Cloud Run.
 
-W Google Cloud obowiązuje zasada najmniejszych uprawnień — nawet właściciel projektu musi jawnie przypisać tę rolę, aby komunikacja między komponentami przebiegała poprawnie.
+W Google Cloud obowiązuje zasada najmniejszych uprawnień — nawet właściciel projektu musi jawnie przypisać tę rolę, aby komunikacja między komponentami przebiegała poprawnie. Brak tej roli skutkuje błędem HTTP **403 Forbidden** — serwer wie kim jesteś (autentykacja), ale nie masz pozwolenia na tę operację (autoryzacja).
+
+---
+
+## Skrypt `ollama_models/setup_models.sh`
+
+Skrypt automatyzuje tworzenie bucketów Cloud Storage i kopiowanie modeli z centralnego bucketu organizatora warsztatu do Twojego projektu. Oto co robi każdy etap:
+
+- **Tworzenie bucketów** — `gcloud storage buckets create` zakłada prywatne buckety w Twoim projekcie w regionie `europe-west1`. Bucket to odpowiednik katalogu w chmurze — płaski kontener na pliki o dowolnym rozmiarze.
+- **Kopiowanie modeli** — `gcloud storage cp` kopiuje pliki modeli (`.gguf` lub paczki Ollama) z bucketu organizatora do Twojego bucketu. Kopiowanie odbywa się w sieci Google (nie przez Twój komputer), więc jest szybkie.
+- **Dlaczego modele ważą gigabajty?** — model językowy to ogromna macierz liczb (wagi sieci neuronowej). Bielik 4.5B ma 4,5 miliarda takich parametrów. Nawet przy kwantyzacji 8-bitowej (1 bajt na parametr) daje to ~4,5 GB. Zwykły program przechowuje instrukcje dla procesora — model przechowuje „wiedzę" zakodowaną w miliardach liczb.
+
+---
+
+## Skrypt `ollama_docker_image/setup_ollama_image.sh`
+
+Skrypt tworzy dedykowane repozytorium w Artifact Registry i buduje obraz Docker z silnikiem Ollama. Oto kluczowe elementy:
+
+- **Tworzenie repozytorium w Artifact Registry** — `gcloud artifacts repositories create` zakłada prywatny rejestr kontenerów. To odpowiednik Docker Hub, tyle że w Twoim projekcie Google Cloud — Cloud Run może pobierać obrazy bez dodatkowej autoryzacji.
+- **Budowanie obrazu Docker** — `gcloud builds submit` wysyła kod do Cloud Build, który buduje obraz na serwerach Google. Obraz zawiera silnik Ollama gotowy do uruchomienia na Cloud Run.
+- **Dlaczego własny obraz zamiast gotowego?** — gotowy obraz Ollama z Docker Hub nie wie skąd pobrać model przy starcie. Własny obraz zawiera skrypt startowy, który automatycznie pobiera model z bucketu Cloud Storage i ładuje go do pamięci przed przyjęciem pierwszego żądania.
+- **Jeden obraz, dwa modele** — ten sam obraz Ollama jest używany zarówno dla modelu Bielik (LLM), jak i EmbeddingGemma. Różnica jest tylko w zmiennej środowiskowej wskazującej który model pobrać z bucketu.
+
+---
+
+## `pip install google-cloud-bigquery`
+
+Komenda instaluje oficjalną bibliotekę Pythona do komunikacji z BigQuery. Oto co warto wiedzieć:
+
+- **`pip`** — package manager Pythona, odpowiednik `apt` w Linuksie czy `npm` w Node.js. Pobiera bibliotekę z repozytorium PyPI i instaluje ją wraz z zależnościami.
+- **`google-cloud-bigquery`** — biblioteka kliencka udostępniająca Pythonowe API do tworzenia tabel, wykonywania zapytań SQL i operacji na danych w BigQuery. Bez niej skrypt `init_db.py` nie mógłby się połączyć z usługą.
+- **Dlaczego bez `venv`?** — wirtualne środowisko (`python -m venv`) izoluje zależności między różnymi projektami na tej samej maszynie, aby nie kolidowały ze sobą. Cloud Shell to tymczasowa maszyna wirtualna uruchamiana od nowa po każdej sesji — nie ma tu długotrwałych projektów ani konfliktów zależności, więc instalacja globalna jest wystarczająca i szybsza.
+
+---
+
+## Komenda `curl` — endpoint `/ingest`
+
+```bash
+curl -X POST "$ORCHESTRATION_URL/ingest" -F "file=@vector_store/hotel_rules.csv"
+```
+
+Komenda wysyła plik CSV do endpointu `/ingest` aplikacji Orchestration, który zaindeksuje jego zawartość w BigQuery. Oto co oznaczają poszczególne elementy:
+
+- **`-X POST`** — typ żądania HTTP. `POST` służy do wysyłania danych na serwer (w odróżnieniu od `GET`, który tylko pobiera).
+- **`-F "file=@..."`** — flaga `-F` wysyła dane w formacie **multipart/form-data** — tym samym, którego używa przeglądarka przy uploadzie pliku przez formularz HTML. Prefiks `@` oznacza „weź zawartość tego pliku". Gdybyś użył `-d`, curl wysłałby tekst jako zwykłe ciało żądania — serwer nie rozpoznałby go jako pliku.
+- **Co robi endpoint `/ingest` po stronie serwera?** — dla każdego wiersza CSV wywołuje EmbeddingGemma (POST do `/api/embed`), odbiera wektor liczbowy i zapisuje parę `(tekst, wektor)` do tabeli BigQuery. Jedno wywołanie `/ingest` może więc wykonać dziesiątki żądań HTTP w tle.
+
+---
+
+## Komenda `curl` — endpoint `/ask`
+
+```bash
+curl -X POST "$ORCHESTRATION_URL/ask" \
+     -H "Content-Type: application/json" \
+     -d '{"query": "..."}'
+```
+
+Komenda wysyła zapytanie użytkownika do głównego endpointu RAG. Oto pełny przepływ tego, co dzieje się w tle:
+
+1. **Wektoryzacja zapytania** — orchestration-api wysyła tekst zapytania do EmbeddingGemma (`POST /api/embed`). W odpowiedzi dostaje wektor liczbowy (~2048 liczb).
+2. **Wyszukiwanie semantyczne** — orchestration-api wykonuje zapytanie SQL z funkcją `VECTOR_SEARCH` w BigQuery, które zwraca 3 dokumenty o wektorach najbliższych wektorowi zapytania (metryka kosinusowa).
+3. **Budowanie promptu** — odnalezione fragmenty dokumentów są doklejane do zapytania jako kontekst.
+4. **Generowanie odpowiedzi** — gotowy prompt trafia do modelu Bielik (`POST /api/chat`). Model generuje odpowiedź i odsyła ją przez orchestration-api z powrotem do `curl`.
+
+Jedno zapytanie użytkownika powoduje więc wykonanie **3 żądań HTTP** w tle: do EmbeddingGemma, do BigQuery i do Bielika.
