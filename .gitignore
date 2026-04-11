@@ -209,5 +209,11 @@ __marimo__/
 # Eskadra Bielik Misja 2 — dekoder artefaktów (tylko dla prowadzącego)
 decode_artifact.py
 
+# Katalog prowadzącego — nie dla uczestników
+prowadzacy/
+
+# macOS
+.DS_Store
+
 # Zaszyfrowane artefakty checkpointów (dane osobowe uczestników)
 cert_artifacts/*.enc
