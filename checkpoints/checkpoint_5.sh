@@ -31,7 +31,7 @@ ORCH_CREATED=$(gcloud run services describe orchestration-api \
     --format="value(metadata.creationTimestamp)" 2>/dev/null || true)
 ORCH_LAST=$(gcloud run services describe orchestration-api \
     --region "$REGION" \
-    --format="value(status.lastTransitionTime)" 2>/dev/null || true)
+    --format="value(status.conditions.type[RoutesReady].lastTransitionTime)" 2>/dev/null || true)
 
 if [ "$ORCH_STATUS" = "True" ]; then
     _print_ok "Status: Ready"
@@ -53,10 +53,10 @@ if [ "$ORCH_STATUS" = "True" ]; then
         --format="value(spec.template.spec.containers[0].env)" 2>/dev/null || true)
     LLM_ENV=$(gcloud run services describe orchestration-api \
         --region "$REGION" \
-        --format="value(spec.template.spec.containers[0].env[name=LLM_URL].value)" 2>/dev/null || true)
+        --format="value(spec.template.spec.containers[0].env[name][LLM_URL].value)" 2>/dev/null || true)
     EMBED_ENV=$(gcloud run services describe orchestration-api \
         --region "$REGION" \
-        --format="value(spec.template.spec.containers[0].env[name=EMBEDDING_URL].value)" 2>/dev/null || true)
+        --format="value(spec.template.spec.containers[0].env[name][EMBEDDING_URL].value)" 2>/dev/null || true)
 
     if [ -n "$LLM_ENV" ]; then
         _print_ok "LLM_URL skonfigurowany: $LLM_ENV"

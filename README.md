@@ -366,6 +366,16 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ./cloud_run.sh
    ```
 
+   > [!WARNING]
+   > **Brak kwoty GPU?** Jeśli pojawi się błąd:
+   > ```
+   > ERROR: You do not have quota for using GPUs without zonal redundancy.
+   > ```
+   > Użyj awaryjnego skryptu bez GPU. Odpowiedzi modelu będą bardzo wolne (1–5 minut na prompt), ale warsztat można kontynuować:
+   > ```bash
+   > ./cloud_run_no_gpu.sh
+   > ```
+
 4. Sprawdź czy usługa `bielik` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
 
 <details>
@@ -484,10 +494,12 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    cd vector_store
    ```
 
-2. Zainstaluj wymagane biblioteki
+2. Zainstaluj wymagane biblioteki i zweryfikuj ich działanie
    ```bash
-   pip install google-cloud-bigquery
+   ./install_deps.sh
    ```
+
+   Skrypt wykonuje trzy rzeczy: instaluje pakiet `google-cloud-bigquery` (z flagą `--quiet`, żeby wyciszyć zbędne logi pip), a następnie automatycznie sprawdza czy biblioteka daje się zaimportować — to szybka weryfikacja, że instalacja przebiegła bez błędów i środowisko jest gotowe do pracy.
 
    > [!NOTE]
    > Celowo pomijamy tworzenie wirtualnego środowiska Python (`venv`). W warsztacie korzystamy z Cloud Shell, który jest tymczasowym środowiskiem uruchamianym od nowa po każdej sesji — instalacja globalna jest tu w zupełności wystarczająca. Wirtualne środowisko byłoby przydatne przy długotrwałym projekcie, gdzie chcemy izolować zależności między aplikacjami na tej samej maszynie.
@@ -563,6 +575,16 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ```bash
    ./cloud_run.sh
    ```
+
+   > [!NOTE]
+   > W trakcie wdrożenia może pojawić się pytanie o utworzenie repozytorium Docker w Artifact Registry:
+   > ```
+   > Deploying from source requires an Artifact Registry Docker repository to store built containers.
+   > A repository named [cloud-run-source-deploy] in region [europe-west1] will be created.
+   >
+   > Do you want to continue (Y/n)?
+   > ```
+   > Wpisz `Y` i zatwierdź Enterem — to jednorazowy krok przy pierwszym wdrożeniu z kodu źródłowego.
 
 5. Po zakończeniu wdrożenia pobierz adres URL usługi i zapisz go do zmiennej środowiskowej
    ```bash
