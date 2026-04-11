@@ -40,7 +40,7 @@ if [ "$BIELIK_STATUS" = "True" ]; then
     [ -n "$BIELIK_GPU" ] && _print_ok "GPU: $BIELIK_GPU × NVIDIA L4"
 else
     _print_fail "Usługa bielik nie jest gotowa (status: ${BIELIK_STATUS:-BRAK})"
-    _print_skip "Sprawdź: cd llm && ./cloud_run.sh"
+    _print_skip "Sprawdź: cd llm && ./cloud_run.sh  (brak kwoty GPU? użyj: ./cloud_run_no_gpu.sh)"
     ERRORS=$((ERRORS+1))
 fi
 
