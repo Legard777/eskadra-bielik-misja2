@@ -576,6 +576,16 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ./cloud_run.sh
    ```
 
+   > [!NOTE]
+   > W trakcie wdrożenia może pojawić się pytanie o utworzenie repozytorium Docker w Artifact Registry:
+   > ```
+   > Deploying from source requires an Artifact Registry Docker repository to store built containers.
+   > A repository named [cloud-run-source-deploy] in region [europe-west1] will be created.
+   >
+   > Do you want to continue (Y/n)?
+   > ```
+   > Wpisz `Y` i zatwierdź Enterem — to jednorazowy krok przy pierwszym wdrożeniu z kodu źródłowego.
+
 5. Po zakończeniu wdrożenia pobierz adres URL usługi i zapisz go do zmiennej środowiskowej
    ```bash
    export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
