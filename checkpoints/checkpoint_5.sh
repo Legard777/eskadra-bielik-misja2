@@ -31,7 +31,7 @@ ORCH_CREATED=$(gcloud run services describe orchestration-api \
     --format="value(metadata.creationTimestamp)" 2>/dev/null || true)
 ORCH_LAST=$(gcloud run services describe orchestration-api \
     --region "$REGION" \
-    --format="value(status.lastTransitionTime)" 2>/dev/null || true)
+    --format="value(status.conditions.type[RoutesReady].lastTransitionTime)" 2>/dev/null || true)
 
 if [ "$ORCH_STATUS" = "True" ]; then
     _print_ok "Status: Ready"
