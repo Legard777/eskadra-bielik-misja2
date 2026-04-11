@@ -366,6 +366,16 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ./cloud_run.sh
    ```
 
+   > [!WARNING]
+   > **Brak kwoty GPU?** Jeśli pojawi się błąd:
+   > ```
+   > ERROR: You do not have quota for using GPUs without zonal redundancy.
+   > ```
+   > Użyj awaryjnego skryptu bez GPU. Odpowiedzi modelu będą bardzo wolne (1–5 minut na prompt), ale warsztat można kontynuować:
+   > ```bash
+   > ./cloud_run_no_gpu.sh
+   > ```
+
 4. Sprawdź czy usługa `bielik` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
 
 <details>
