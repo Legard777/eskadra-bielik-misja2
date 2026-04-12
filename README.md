@@ -494,10 +494,12 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    cd vector_store
    ```
 
-2. Zainstaluj wymagane biblioteki
+2. Zainstaluj wymagane biblioteki i zweryfikuj ich działanie
    ```bash
-   pip install google-cloud-bigquery
+   ./install_deps.sh
    ```
+
+   Skrypt wykonuje trzy rzeczy: instaluje pakiet `google-cloud-bigquery` (z flagą `--quiet`, żeby wyciszyć zbędne logi pip), a następnie automatycznie sprawdza czy biblioteka daje się zaimportować — to szybka weryfikacja, że instalacja przebiegła bez błędów i środowisko jest gotowe do pracy.
 
    > [!NOTE]
    > Celowo pomijamy tworzenie wirtualnego środowiska Python (`venv`). W warsztacie korzystamy z Cloud Shell, który jest tymczasowym środowiskiem uruchamianym od nowa po każdej sesji — instalacja globalna jest tu w zupełności wystarczająca. Wirtualne środowisko byłoby przydatne przy długotrwałym projekcie, gdzie chcemy izolować zależności między aplikacjami na tej samej maszynie.
