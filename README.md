@@ -2,7 +2,7 @@
 
 Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedzy w oparciu o model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i Google Cloud.
 
->[!WARNING]
+> [!WARNING]
 >**Materiał warsztatowy — wyłącznie do celów edukacyjnych.**
 >Kod i konfiguracja zawarte w tym repozytorium nie są przystosowane do wdrożeń produkcyjnych. Celowo pominięto m.in. uwierzytelnianie API, zarządzanie sekretami, monitoring oraz limity kosztów, aby uprościć przebieg warsztatu i skupić się na zrozumieniu architektury RAG.
 
@@ -68,7 +68,7 @@ Podstawowa architektura wdrażanego rozwiązania opiera się na poniższych serw
 
 Dodatkowo, dzięki prostemu interfejsowi graficznemu, aplikacja pozwala na wygodne porównanie i empiryczne przetestowanie "surowego" modelu [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) polegającego tylko na sobie w konfrontacji z bogatszą odpowiedzią modelu wspartego kontekstem RAG.
 
->[!TIP]
+> [!TIP]
 >Jeśli chcesz lepiej zrozumieć ideę RAG przed przystąpieniem do warsztatu, zapoznaj się z wprowadzeniem Google Cloud: [Retrieval-Augmented Generation](https://cloud.google.com/use-cases/retrieval-augmented-generation?hl=pl)
 
 ## Diagramy architektury
@@ -111,18 +111,18 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 ## 1. Przygotowanie projektu Google Cloud `~20 min`
 
->[!NOTE]
+> [!NOTE]
 >Przed warsztatem otrzymałeś instrukcję zapoznania się z procesem aktywacji kredytów Google Cloud (link w TIP poniżej) — ten krok nie powinien być dla Ciebie nowością.
 >
 >Jeżeli nie zapoznałeś się z instrukcją lub nie masz linka do aktywacji kredytów — **poinformuj prowadzącego natychmiast**, ponieważ bez aktywnego konta rozliczeniowego nie będziesz mógł kontynuować warsztatu.
 
 ### Krok 1.1 — Aktywacja konta rozliczeniowego z kredytami OnRamp
 
->[!NOTE]
+> [!NOTE]
 >Kredyty OnRamp pozwalają korzystać z Google Cloud **bez karty kredytowej**. Otrzymasz od prowadzącego indywidualny link do aktywacji kredytów.
 
 1. Otwórz otrzymany od prowadzącego link do aktywacji kredytów i postępuj zgodnie z instrukcjami
->[!TIP]
+> [!TIP]
 >Szczegółową instrukcję aktywacji kredytów znajdziesz w tym przewodniku: [Google Cloud Credits Redemption](https://codelabs.developers.google.com/codelabs/cloud-codelab-credits#1)
 
 2. Wypełnij formularz aktywacji — podaj imię i nazwisko, zaakceptuj regulamin
@@ -140,7 +140,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 ### Krok 1.2 — Utworzenie nowego projektu Google Cloud
 
 1. W górnym lewym rogu [Google Cloud Console](https://console.cloud.google.com) kliknij nazwę aktywnego projektu (lub napis **„Wybierz projekt"**) — otworzy się selektor projektów. Kliknij **Nowy projekt**
->[!TIP]
+> [!TIP]
 >Szczegółową instrukcję tworzenia projektu znajdziesz w tym przewodniku: [Google Cloud Credits Redemption — krok 2](https://codelabs.developers.google.com/codelabs/cloud-codelab-credits#2)
 
 2. Nadaj projektowi nazwę (np. `bielik-warsztat`) i jako konto rozliczeniowe wybierz konto aktywowane w poprzednim kroku
@@ -157,10 +157,10 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 </details>
 
->[!CAUTION]
+> [!CAUTION]
 >Nie pomyl nazwy projektu z ID projektu — nie zawsze są takie same. ID projektu widoczne jest pod nazwą podczas tworzenia i na stronie głównej konsoli.
 
->[!TIP]
+> [!TIP]
 >Możesz potwierdzić że kredyty są powiązane z projektem wchodząc w menu po lewej stronie: **Billing → Credits**
 
 ### Krok 1.3 — Otwarcie terminala Cloud Shell i sklonowanie repozytorium
@@ -179,14 +179,14 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ```bash
    gcloud auth list
    ```
->[!TIP]
+> [!TIP]
 >Jeżeli widoczne jest inne konto niż to z kredytami, zaloguj się komendą: `gcloud auth login`
 
 3. Potwierdź że aktywny jest właściwy projekt
    ```bash
    gcloud config get project
    ```
->[!TIP]
+> [!TIP]
 >Jeżeli projekt jest inny niż oczekiwany, zmień go komendą: `gcloud config set project <ID_TWOJEGO_PROJEKTU>`
 
 4. Sklonuj repozytorium z kodem warsztatu
@@ -207,7 +207,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 </details>
 
->[!TIP]
+> [!TIP]
 >Cloud Shell posiada wbudowany edytor graficzny — przydatny do przeglądania i edycji plików bez znajomości edytorów terminalowych. Na potrzeby tego warsztatu nie jest wymagany, jednak możesz go uruchomić w dowolnym momencie komendą `cloudshell workspace .` lub klikając przycisk **Open Editor** w górnym pasku Cloud Shell. Więcej informacji: [Cloud Shell Editor](https://docs.cloud.google.com/shell/docs/editor-overview)
 
 6. Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny:
@@ -232,7 +232,6 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    cat setup_env.sh
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zamiast czytać opis, zapytaj AI! Uruchom w terminalu:
    > ```bash
    > gemini "Co robi ten skrypt @setup_env.sh? Wyjaśnij każdą zmienną środowiskową."
@@ -245,14 +244,13 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    source setup_env.sh
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o różnicę między `source` a `./`:
    > ```bash
    > gemini "Jaka jest różnica między source setup_env.sh a ./setup_env.sh w bashu? Kiedy używać każdej z form?"
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#dlaczego-source-a-nie-setupenvsh).
 
-   >[!IMPORTANT]
+   > **Ważne**
    >Jeżeli z jakiegoś powodu musisz ponownie uruchomić terminal Cloud Shell, pamiętaj aby ponownie uruchomić skrypt `setup_env.sh` aby wczytać zmienne środowiskowe.
 
 5. Włącz potrzebne usługi w projekcie Google Cloud
@@ -263,7 +261,6 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    gcloud services enable bigquery.googleapis.com
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI dlaczego usługi są domyślnie wyłączone:
    > ```bash
    > gemini "Dlaczego usługi Google Cloud są domyślnie wyłączone? Wyjaśnij krótko każdą z włączanych usług: run, cloudbuild, artifactregistry, bigquery i co się stanie jeśli pominąć ten krok."
@@ -277,7 +274,6 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
     --role='roles/run.invoker'
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o model bezpieczeństwa Google Cloud:
    > ```bash
    > gemini "Wyjaśnij czym jest IAM w Google Cloud i jak działa rola roles/run.invoker. Co się stanie gdy wywołam curl bez tej roli — jaki błąd HTTP i dlaczego?"
@@ -291,10 +287,10 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ./skrypty/request_access.sh
    ```
 
-   > [!IMPORTANT]
+   > **Ważne**
    > Jeśli po 30 sekundach skrypt zgłosi brak dostępu — poinformuj prowadzącego. Bez dostępu do bucketu nie będziesz mógł wykonać kroku 3.
 
-   > [!TIP]
+   > **Wskazówka**
    > Możesz ręcznie sprawdzić dostęp w dowolnym momencie:
    > ```bash
    > gcloud storage ls gs://$BUCKET_NAME_SOURCE
@@ -319,7 +315,6 @@ Uruchom skrypt, który automatycznie tworzy buckety i kopiuje oba modele — **[
 
 Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o Cloud Storage i rozmiary modeli:
    > ```bash
    > gemini "Co robi skrypt @ollama_models/setup_models.sh? Czym jest Cloud Storage bucket i dlaczego modele językowe LLM ważą kilka gigabajtów, a nie kilka megabajtów jak zwykłe programy?"
@@ -336,7 +331,6 @@ Uruchom skrypt, który automatycznie tworzy repozytorium w Artifact Registry i b
 
 Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o konteneryzację modeli AI:
    > ```bash
    > gemini "Co robi skrypt @ollama_docker_image/setup_ollama_image.sh? Czym jest obraz Docker, dlaczego buduje się własny obraz zamiast użyć gotowego i do czego służy Artifact Registry?"
@@ -354,7 +348,6 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    cat cloud_run.sh
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o GPU w chmurze:
    > ```bash
    > gemini "Co robi skrypt @llm/cloud_run.sh? Dlaczego model Bielik wymaga GPU NVIDIA L4 — czym fundamentalnie różni się przetwarzanie na GPU od CPU w kontekście modeli językowych?"
@@ -366,7 +359,6 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ./cloud_run.sh
    ```
 
-   > [!WARNING]
    > **Brak kwoty GPU?** Jeśli pojawi się błąd:
    > ```
    > ERROR: You do not have quota for using GPUs without zonal redundancy.
@@ -391,7 +383,6 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    cat llm_test1.sh
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o autoryzację JWT w API:
    > ```bash
    > gemini "Co robi skrypt @llm/llm_test1.sh? Wyjaśnij jak działa token JWT w Google Cloud — skąd pochodzi, jak długo jest ważny i co się stanie gdy wyślę zapytanie bez nagłówka Authorization?"
@@ -428,7 +419,6 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    cat cloud_run.sh
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o różnicę między modelem generatywnym a embeddingowym:
    > ```bash
    > gemini "Co robi skrypt @embedding_model/cloud_run.sh? Dlaczego model embeddingowy działa bez GPU, a Bielik go potrzebuje — co fundamentalnie różni generowanie tekstu od generowania wektora?"
@@ -455,7 +445,6 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    cat embedding_test1.sh
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o przestrzeń semantyczną:
    > ```bash
    > gemini "Co robi skrypt @embedding_model/embedding_test1.sh? Wyjaśnij czym jest przestrzeń wektorowa — jak 2048 liczb może wyrażać 'znaczenie' tekstu i dlaczego zdania o podobnym sensie dają wektory bliskie sobie geometrycznie?"
@@ -501,10 +490,9 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
 
    Skrypt wykonuje trzy rzeczy: instaluje pakiet `google-cloud-bigquery` (z flagą `--quiet`, żeby wyciszyć zbędne logi pip), a następnie automatycznie sprawdza czy biblioteka daje się zaimportować — to szybka weryfikacja, że instalacja przebiegła bez błędów i środowisko jest gotowe do pracy.
 
-   > [!NOTE]
+   > **Uwaga**
    > Celowo pomijamy tworzenie wirtualnego środowiska Python (`venv`). W warsztacie korzystamy z Cloud Shell, który jest tymczasowym środowiskiem uruchamianym od nowa po każdej sesji — instalacja globalna jest tu w zupełności wystarczająca. Wirtualne środowisko byłoby przydatne przy długotrwałym projekcie, gdzie chcemy izolować zależności między aplikacjami na tej samej maszynie.
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o zarządzanie zależnościami w Pythonie:
    > ```bash
    > gemini "Do czego służy biblioteka google-cloud-bigquery w Pythonie? Czym jest pip, jak działa instalacja zależności i dlaczego w Cloud Shell pomijamy wirtualne środowisko venv?"
@@ -516,7 +504,6 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    cat init_db.py
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o projektowanie schematu dla Vector Search:
    > ```bash
    > gemini "Co robi skrypt @vector_store/init_db.py? Dlaczego kolumna embedding ma typ FLOAT64 REPEATED a nie JSON ani STRING — jak BigQuery Vector Search korzysta z tego konkretnego typu do wyszukiwania podobnych wektorów?"
@@ -547,7 +534,6 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    cat orchestration/main.py
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o architekturę systemu RAG:
    > ```bash
    > gemini "Co robi plik @orchestration/main.py? Policz ile linii liczy ten plik i wyjaśnij jak FastAPI pozwala zbudować pełny system RAG — embedding, Vector Search, LLM — w tak zwartym kodzie."
@@ -559,7 +545,6 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    cat orchestration/cloud_run.sh
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o dobre praktyki konfiguracji aplikacji:
    > ```bash
    > gemini "Co robi skrypt @orchestration/cloud_run.sh? Wyjaśnij dlaczego adresy URL modeli są przekazywane przez zmienne środowiskowe a nie wpisane na stałe w kodzie — czym jest zasada twelve-factor app?"
@@ -576,7 +561,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ./cloud_run.sh
    ```
 
-   > [!NOTE]
+   > **Uwaga**
    > W trakcie wdrożenia może pojawić się pytanie o utworzenie repozytorium Docker w Artifact Registry:
    > ```
    > Deploying from source requires an Artifact Registry Docker repository to store built containers.
@@ -591,7 +576,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
    ```
 
-   > [!NOTE]
+   > **Uwaga**
    > Zmienna `$ORCHESTRATION_URL` będzie potrzebna w kolejnych krokach do wysyłania zapytań przez `curl`. Jak wszystkie zmienne środowiskowe — działa tylko w bieżącym terminalu.
 
 6. Wróć do głównego katalogu
@@ -615,22 +600,22 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 > [!IMPORTANT]
 > **Powrót po przerwie — sprawdź terminal przed kontynuacją.**
 > Cloud Shell automatycznie rozłącza się po okresie bezczynności, co usuwa wszystkie zmienne środowiskowe z pamięci. Jeśli robiłeś przerwę, uruchom poniższe komendy przed przejściem do kroku 6:
-
+>
 > 1. Przejdź do katalogu projektu
 >    ```bash
 >    cd ~/eskadra-bielik-misja2
 >    ```
-
+>
 > 2. Załaduj zmienne środowiskowe
 >    ```bash
 >    source setup_env.sh
 >    ```
-
+>
 > 3. Odtwórz adres URL usługi Orchestration API
 >    ```bash
 >    export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
 >    ```
-
+>
 > Jeśli nie robiłeś przerwy i terminal był aktywny — możesz pominąć ten krok.
 
 ---
@@ -649,7 +634,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    | `id` | Unikalny identyfikator rekordu |
    | `text` | Treść dokumentu — zasada hotelowa w języku naturalnym |
 
-   > [!NOTE]
+   > **Uwaga**
    > Po wgraniu danych przez endpoint `/ingest` aplikacja automatycznie doda trzecią kolumnę: **`embedding`** — wygenerowany przez [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) wektor liczbowy reprezentujący znaczenie tekstu. To właśnie ta kolumna umożliwia semantyczne wyszukiwanie w [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search).
 
 2. Wgraj przykładowe dane do [BigQuery](https://cloud.google.com/bigquery?hl=en) z pliku CSV
@@ -658,7 +643,6 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
         -F "file=@vector_store/hotel_rules.csv"
    ```
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI jak działa wysyłanie pliku przez HTTP:
    > ```bash
    > gemini "Co robi ta komenda curl? Wyjaśnij czym jest multipart/form-data, czym różni się flaga -F od -d w curl i jak endpoint /ingest po stronie serwera odbiera i przetwarza przesłany plik CSV."
@@ -669,10 +653,9 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
    Otwórz [BigQuery w Google Cloud Console](https://console.cloud.google.com/bigquery), przejdź do tabeli `rag_dataset` → `hotel_rules` i kliknij przycisk **Preview** aby podejrzeć dane.
 
-   > [!TIP]
    > **Preview jest bezpłatny** — nie wykonuje zapytania SQL i nie zużywa limitu darmowych zapytań BigQuery. To najszybszy sposób sprawdzenia czy dane zostały załadowane poprawnie.
 
-   > [!NOTE]
+   > **Uwaga**
    > Dane tekstowe w kolumnach `id`, `content` widoczne są natychmiast. Indeksowanie kolumny `embedding` na potrzeby Vector Search może chwilę potrwać — to normalne i nie blokuje kolejnych kroków.
 
 <details>
@@ -683,7 +666,6 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 </details>
 
-   > [!TIP]
    > **Dla chętnych — weryfikacja SQL:** jeśli chcesz zobaczyć dane zapytaniem, wklej w edytorze BigQuery:
    > ```sql
    > SELECT id, content, ARRAY_LENGTH(embedding) AS embedding_dimensions
@@ -724,14 +706,12 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 </details>
 
-   > [!TIP]
    > **Zadanie dla Gemini CLI** — zapytaj AI o mechanizm RAG od środka:
    > ```bash
    > gemini "Prześledź krok po kroku co dzieje się w systemie gdy wysyłam zapytanie do endpointu /ask: od wektora zapytania, przez VECTOR_SEARCH w BigQuery, aż do odpowiedzi Bielika. Ile żądań HTTP wykonuje orchestration-api w tle obsługując jedno pytanie użytkownika?"
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-curl-ask).
 
-   > [!TIP]
    > **Dla chętnych — odpowiednik SQL:** każde z powyższych zapytań wewnętrznie wykonuje Vector Search w BigQuery. Możesz zobaczyć jak to wygląda „pod maską", wklejając w edytorze BigQuery (zastąp `[...]` wektorem zwróconym przez `/api/embed`):
    > ```sql
    > SELECT base.content, distance
@@ -919,7 +899,7 @@ Usługi [Cloud Run](https://cloud.google.com/run?hl=en) skalują się automatycz
      --region $REGION \
      --no-allow-unauthenticated
    ```
-   > [!NOTE]
+   > **Uwaga**
    > Po tej zmianie dostęp do Web UI i API będzie wymagał tokenu autoryzacyjnego Google. Aby wygenerować token: `gcloud auth print-identity-token`
 
 3. Zweryfikuj usunięcie repozytoriów:
@@ -996,7 +976,7 @@ Dominującą pozycją jest GPU NVIDIA L4 używany przez model [Bielik](https://o
 | Artifact Registry | `ollama-repo` + `cloud-run-source-deploy` | ~$0.01/mies. |
 | **Łącznie** | | **~$3.91** |
 
->[!IMPORTANT]
+> [!IMPORTANT]
 >Uruchom skrypt `cleanup.sh` niezwłocznie po zakończeniu warsztatu. Usługi [Cloud Run](https://cloud.google.com/run?hl=en) z GPU naliczają koszty przez cały czas działania instancji — nawet gdy nikt z nich aktywnie nie korzysta.
 
 ### Optymalizacje dla środowisk produkcyjnych [Cloud Run](https://cloud.google.com/run?hl=en)
