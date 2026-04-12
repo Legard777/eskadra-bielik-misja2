@@ -232,7 +232,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    cat setup_env.sh
    ```
 
-   > **Zadanie dla Gemini CLI** — zamiast czytać opis, zapytaj AI! Uruchom w terminalu:
+   > **🤖 Zadanie dla Gemini CLI** — zamiast czytać opis, zapytaj AI! Uruchom w terminalu:
    > ```bash
    > gemini "Co robi ten skrypt @setup_env.sh? Wyjaśnij każdą zmienną środowiskową."
    > ```
@@ -244,7 +244,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    source setup_env.sh
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o różnicę między `source` a `./`:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o różnicę między `source` a `./`:
    > ```bash
    > gemini "Jaka jest różnica między source setup_env.sh a ./setup_env.sh w bashu? Kiedy używać każdej z form?"
    > ```
@@ -261,7 +261,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    gcloud services enable bigquery.googleapis.com
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI dlaczego usługi są domyślnie wyłączone:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI dlaczego usługi są domyślnie wyłączone:
    > ```bash
    > gemini "Dlaczego usługi Google Cloud są domyślnie wyłączone? Wyjaśnij krótko każdą z włączanych usług: run, cloudbuild, artifactregistry, bigquery i co się stanie jeśli pominąć ten krok."
    > ```
@@ -274,7 +274,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
     --role='roles/run.invoker'
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o model bezpieczeństwa Google Cloud:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o model bezpieczeństwa Google Cloud:
    > ```bash
    > gemini "Wyjaśnij czym jest IAM w Google Cloud i jak działa rola roles/run.invoker. Co się stanie gdy wywołam curl bez tej roli — jaki błąd HTTP i dlaczego?"
    > ```
@@ -315,7 +315,7 @@ Uruchom skrypt, który automatycznie tworzy buckety i kopiuje oba modele — **[
 
 Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o Cloud Storage i rozmiary modeli:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o Cloud Storage i rozmiary modeli:
    > ```bash
    > gemini "Co robi skrypt @ollama_models/setup_models.sh? Czym jest Cloud Storage bucket i dlaczego modele językowe LLM ważą kilka gigabajtów, a nie kilka megabajtów jak zwykłe programy?"
    > ```
@@ -331,7 +331,7 @@ Uruchom skrypt, który automatycznie tworzy repozytorium w Artifact Registry i b
 
 Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o konteneryzację modeli AI:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o konteneryzację modeli AI:
    > ```bash
    > gemini "Co robi skrypt @ollama_docker_image/setup_ollama_image.sh? Czym jest obraz Docker, dlaczego buduje się własny obraz zamiast użyć gotowego i do czego służy Artifact Registry?"
    > ```
@@ -348,7 +348,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    cat cloud_run.sh
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o GPU w chmurze:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o GPU w chmurze:
    > ```bash
    > gemini "Co robi skrypt @llm/cloud_run.sh? Dlaczego model Bielik wymaga GPU NVIDIA L4 — czym fundamentalnie różni się przetwarzanie na GPU od CPU w kontekście modeli językowych?"
    > ```
@@ -383,7 +383,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    cat llm_test1.sh
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o autoryzację JWT w API:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o autoryzację JWT w API:
    > ```bash
    > gemini "Co robi skrypt @llm/llm_test1.sh? Wyjaśnij jak działa token JWT w Google Cloud — skąd pochodzi, jak długo jest ważny i co się stanie gdy wyślę zapytanie bez nagłówka Authorization?"
    > ```
@@ -419,7 +419,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    cat cloud_run.sh
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o różnicę między modelem generatywnym a embeddingowym:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o różnicę między modelem generatywnym a embeddingowym:
    > ```bash
    > gemini "Co robi skrypt @embedding_model/cloud_run.sh? Dlaczego model embeddingowy działa bez GPU, a Bielik go potrzebuje — co fundamentalnie różni generowanie tekstu od generowania wektora?"
    > ```
@@ -445,7 +445,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    cat embedding_test1.sh
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o przestrzeń semantyczną:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o przestrzeń semantyczną:
    > ```bash
    > gemini "Co robi skrypt @embedding_model/embedding_test1.sh? Wyjaśnij czym jest przestrzeń wektorowa — jak 2048 liczb może wyrażać 'znaczenie' tekstu i dlaczego zdania o podobnym sensie dają wektory bliskie sobie geometrycznie?"
    > ```
@@ -493,7 +493,7 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    > **Uwaga**
    > Celowo pomijamy tworzenie wirtualnego środowiska Python (`venv`). W warsztacie korzystamy z Cloud Shell, który jest tymczasowym środowiskiem uruchamianym od nowa po każdej sesji — instalacja globalna jest tu w zupełności wystarczająca. Wirtualne środowisko byłoby przydatne przy długotrwałym projekcie, gdzie chcemy izolować zależności między aplikacjami na tej samej maszynie.
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o zarządzanie zależnościami w Pythonie:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o zarządzanie zależnościami w Pythonie:
    > ```bash
    > gemini "Do czego służy biblioteka google-cloud-bigquery w Pythonie? Czym jest pip, jak działa instalacja zależności i dlaczego w Cloud Shell pomijamy wirtualne środowisko venv?"
    > ```
@@ -504,7 +504,7 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    cat init_db.py
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o projektowanie schematu dla Vector Search:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o projektowanie schematu dla Vector Search:
    > ```bash
    > gemini "Co robi skrypt @vector_store/init_db.py? Dlaczego kolumna embedding ma typ FLOAT64 REPEATED a nie JSON ani STRING — jak BigQuery Vector Search korzysta z tego konkretnego typu do wyszukiwania podobnych wektorów?"
    > ```
@@ -534,7 +534,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    cat orchestration/main.py
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o architekturę systemu RAG:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o architekturę systemu RAG:
    > ```bash
    > gemini "Co robi plik @orchestration/main.py? Policz ile linii liczy ten plik i wyjaśnij jak FastAPI pozwala zbudować pełny system RAG — embedding, Vector Search, LLM — w tak zwartym kodzie."
    > ```
@@ -545,7 +545,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    cat orchestration/cloud_run.sh
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o dobre praktyki konfiguracji aplikacji:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o dobre praktyki konfiguracji aplikacji:
    > ```bash
    > gemini "Co robi skrypt @orchestration/cloud_run.sh? Wyjaśnij dlaczego adresy URL modeli są przekazywane przez zmienne środowiskowe a nie wpisane na stałe w kodzie — czym jest zasada twelve-factor app?"
    > ```
@@ -643,7 +643,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
         -F "file=@vector_store/hotel_rules.csv"
    ```
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI jak działa wysyłanie pliku przez HTTP:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI jak działa wysyłanie pliku przez HTTP:
    > ```bash
    > gemini "Co robi ta komenda curl? Wyjaśnij czym jest multipart/form-data, czym różni się flaga -F od -d w curl i jak endpoint /ingest po stronie serwera odbiera i przetwarza przesłany plik CSV."
    > ```
@@ -706,7 +706,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 </details>
 
-   > **Zadanie dla Gemini CLI** — zapytaj AI o mechanizm RAG od środka:
+   > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o mechanizm RAG od środka:
    > ```bash
    > gemini "Prześledź krok po kroku co dzieje się w systemie gdy wysyłam zapytanie do endpointu /ask: od wektora zapytania, przez VECTOR_SEARCH w BigQuery, aż do odpowiedzi Bielika. Ile żądań HTTP wykonuje orchestration-api w tle obsługując jedno pytanie użytkownika?"
    > ```
@@ -814,7 +814,7 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 ### Eksperymenty — zmień wygląd interfejsu
 
 > [!TIP]
-> **Zadanie dla Gemini CLI** — zmień motyw kolorystyczny interfejsu Web UI!
+> **🤖 Zadanie dla Gemini CLI** — zmień motyw kolorystyczny interfejsu Web UI!
 >
 > 1. Odblokuj plik interfejsu do edycji:
 >    ```bash
