@@ -16,13 +16,12 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 | 3 | Uruchomienie modeli Bielik i EmbeddingGemma na Cloud Run | 15 min | **20** |
 | 4 | Inicjalizacja wektorowej bazy danych w BigQuery | 5 min | **5** |
 | 5 | Uruchomienie API (Orchestration) na Cloud Run | 10 min | **10** |
-| — | **Przerwa — lunch / poczęstunek / kawa / herbata / sok** | **30 min** | — |
 | 6 | Testowanie API — zasilanie bazy i pierwsze zapytania RAG | 10 min | **10** |
 | 7 | Przegląd API i architektury kodu | 10 min | **5** |
 | 8 | Interfejs Web UI — porównanie modelu z RAG i bez RAG + eksperymenty | 20 min | **10** |
 | 9 | Certyfikat ukończenia warsztatu | 10 min | — |
 | 10 | Czyszczenie zasobów Google Cloud | 5 min | — |
-| 11 | Networking | 30 min | — |
+| 11 | **Lunch i networking** | **60 min** | — |
 | | **Łącznie** | **~180 min** | **75 pkt** |
 
 ---
@@ -589,35 +588,6 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 ---
 
-## ☕ Przerwa — lunch / poczęstunek / kawa / herbata / sok `~30 min`
-
-> Wszystkie komponenty są wdrożone i gotowe. Po przerwie przetestujemy całe rozwiązanie RAG w akcji.
-
----
-
-> [!IMPORTANT]
-> **Powrót po przerwie — sprawdź terminal przed kontynuacją.**
-> Cloud Shell automatycznie rozłącza się po okresie bezczynności, co usuwa wszystkie zmienne środowiskowe z pamięci. Jeśli robiłeś przerwę, uruchom poniższe komendy przed przejściem do kroku 6:
->
-> 1. Przejdź do katalogu projektu
->    ```bash
->    cd ~/eskadra-bielik-misja2
->    ```
->
-> 2. Załaduj zmienne środowiskowe
->    ```bash
->    source setup_env.sh
->    ```
->
-> 3. Odtwórz adres URL usługi Orchestration API
->    ```bash
->    export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
->    ```
->
-> Jeśli nie robiłeś przerwy i terminal był aktywny — możesz pominąć ten krok.
-
----
-
 ## 6. Testowanie API — Zasilanie i Wyszukiwanie (RAG) `~10 min`
 
 1. Przejrzyj plik z przykładowymi danymi
@@ -924,9 +894,9 @@ Jeśli chcesz mieć 100% pewności braku kosztów lub zamierzasz zakończyć pra
    - **Artifact Registry:** [console.cloud.google.com/artifacts](https://console.cloud.google.com/artifacts)
    - **Cloud Storage:** [console.cloud.google.com/storage](https://console.cloud.google.com/storage)
 
-## 11. Networking `~30 min`
+## 11. Lunch i networking `~60 min`
 
-Właśnie zbudowałeś działający system RAG oparty na polskim modelu językowym i Google Cloud. Czas porozmawiać z innymi uczestnikami — może przy kawie.
+Właśnie zbudowałeś działający system RAG oparty na polskim modelu językowym i Google Cloud. Czas na jedzenie i rozmowę z innymi uczestnikami.
 
 ### Tematy do rozmowy
 
@@ -980,3 +950,30 @@ Dominującą pozycją jest GPU NVIDIA L4 używany przez model [Bielik](https://o
 ### Optymalizacje dla środowisk produkcyjnych [Cloud Run](https://cloud.google.com/run?hl=en)
 
 Konfiguracja użyta w tym warsztacie jest celowo uproszczona. Dla zastosowań produkcyjnych Google [Cloud Run](https://cloud.google.com/run?hl=en) dokumentuje szereg optymalizacji - szczegóły: [Cloud Run GPU Best Practices](https://docs.cloud.google.com/run/docs/configuring/services/gpu-best-practices)
+
+---
+
+## FAQ
+
+### Co zrobić jeśli Cloud Shell się rozłączy?
+
+Cloud Shell automatycznie rozłącza się po kilku minutach bezczynności. Może się to zdarzyć podczas warsztatu — szczególnie przy słabszym połączeniu Wi-Fi. Rozłączenie usuwa wszystkie zmienne środowiskowe z pamięci sesji, ale **nie usuwa plików ani wdrożonych usług Google Cloud**.
+
+Aby wznowić pracę, wykonaj poniższe trzy komendy:
+
+1. Przejdź do katalogu projektu
+   ```bash
+   cd ~/eskadra-bielik-misja2
+   ```
+
+2. Załaduj zmienne środowiskowe
+   ```bash
+   source setup_env.sh
+   ```
+
+3. Odtwórz adres URL usługi Orchestration API
+   ```bash
+   export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
+   ```
+
+Po wykonaniu tych kroków możesz kontynuować od miejsca, w którym przerwałeś.
