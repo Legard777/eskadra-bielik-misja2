@@ -279,6 +279,41 @@ header {
   background: rgba(59,130,246,.1); border:1px solid rgba(59,130,246,.28); color:#60a5fa;
 }
 
+/* ── LANGUAGE SWITCH ── */
+.lang-switch {
+  display: flex;
+  border: 1px solid rgba(59,130,246,.28);
+  border-radius: 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: #3a5a78;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: 4px 11px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .2s, color .2s;
+  line-height: 1;
+}
+.lang-btn.active {
+  background: rgba(59,130,246,.18);
+  color: #93c5fd;
+}
+.lang-btn:hover:not(.active) {
+  background: rgba(59,130,246,.06);
+  color: #60a5fa;
+}
+.lang-sep {
+  width: 1px;
+  background: rgba(59,130,246,.22);
+  align-self: stretch;
+}
+
 /* ── PROGRESS ── */
 .progress-wrap { padding:5px 22px; background:var(--bg2); border-bottom:1px solid var(--border); flex-shrink:0; }
 .progress-steps { display:flex; gap:5px; }
@@ -399,6 +434,11 @@ header {
     <div class="logo-fb" id="hdr-fb"><span>🦅</span><span>Eskadra Bielik</span></div>
   </div>
   <div class="badge" id="hdr-badge">Misja 2 · RAG · Google Cloud · Bielik + BigQuery</div>
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn active" data-lang="pl" onclick="setLang('pl')">PL</button>
+    <div class="lang-sep"></div>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
 </header>
 
 <!-- ══ PROGRESS ══ -->
@@ -857,12 +897,26 @@ function buildSteps() {
 }
 let STEPS = buildSteps();
 
+/* ── Language switch ── */
+function setLang(newLang) {
+  if (lang === newLang) return;
+  lang = newLang;
+  localStorage.setItem('eb-lang', lang);
+  document.documentElement.lang = lang;
+  applyLang();
+}
+
 /* ── Apply language to all DOM elements + rebuild STEPS ── */
 function applyLang() {
   const lp = getLangPack();
   if (!lp) return;
   const ui = lp.ui;
   STEPS = buildSteps();
+
+  /* lang switch buttons */
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
 
   /* splash */
   document.getElementById('splash-title').textContent = ui.splash.title;
