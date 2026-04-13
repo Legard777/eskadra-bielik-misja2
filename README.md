@@ -358,7 +358,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ./cloud_run.sh
    ```
 
-   > **🚫 Brak kwoty GPU?** Jeśli pojawi się błąd:
+   > **🚫 Brak dostępnego GPU w wybranym regionie? Może tak być! GPU to cenny towar 🎰💎** Jeśli pojawi się błąd:
    > ```
    > ERROR: You do not have quota for using GPUs without zonal redundancy.
    > ```
