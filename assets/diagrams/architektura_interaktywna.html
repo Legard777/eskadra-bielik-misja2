@@ -399,6 +399,42 @@ header {
 @keyframes certPop   { 0%{transform:scale(.8) translateY(10px);opacity:0} 60%{transform:scale(1.06) translateY(-2px);opacity:1} 100%{transform:scale(1);opacity:1} }
 @keyframes compPop   { 0%{filter:brightness(.5)} 30%{filter:brightness(2.6) drop-shadow(0 0 14px rgba(255,255,255,.55))} 65%{filter:brightness(1.4)} 100%{filter:brightness(1)} }
 .comp-popping { animation: compPop .65s cubic-bezier(.17,.67,.35,1.1) forwards; }
+
+/* ── COMPONENT TOOLTIP ── */
+#comp-tooltip {
+  position: fixed;
+  z-index: 800;
+  max-width: 232px;
+  background: #080f1c;
+  border: 1px solid rgba(59,130,246,.42);
+  border-radius: 9px;
+  padding: 10px 14px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .18s, transform .18s;
+  box-shadow: 0 6px 28px rgba(0,0,0,.55), 0 0 0 1px rgba(59,130,246,.08), 0 0 18px rgba(59,130,246,.1);
+}
+#comp-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+#ctt-title {
+  font-size: 11px; font-weight: 700;
+  color: #93c5fd; margin-bottom: 6px;
+  letter-spacing: .03em;
+}
+#ctt-desc {
+  font-size: 10.5px; color: #5a7a96;
+  line-height: 1.58;
+}
+#ctt-tech {
+  font-size: 9px; color: #2a4060;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 7px; padding-top: 7px;
+  border-top: 1px solid rgba(59,130,246,.14);
+  letter-spacing: .02em;
+}
 </style>
 </head>
 <body>
@@ -881,6 +917,13 @@ header {
 </nav>
 
 </div><!-- /monitor-shell -->
+
+<!-- ══ COMPONENT TOOLTIP ══ -->
+<div id="comp-tooltip">
+  <div id="ctt-title"></div>
+  <div id="ctt-desc"></div>
+  <div id="ctt-tech"></div>
+</div>
 
 <script src="i18n.js"></script>
 <script>
@@ -1512,6 +1555,76 @@ function dismissSplash() {
   resize();
   window.addEventListener('resize', resize);
   requestAnimationFrame(draw);
+})();
+
+/* ── COMPONENT TOOLTIPS ── */
+(function initTooltips() {
+  const tip    = document.getElementById('comp-tooltip');
+  const tTitle = document.getElementById('ctt-title');
+  const tDesc  = document.getElementById('ctt-desc');
+  const tTech  = document.getElementById('ctt-tech');
+  if (!tip) return;
+
+  /* Technical (non-translated) labels */
+  const TECH = {
+    'c-orch':     'FastAPI · POST /ask · POST /ingest',
+    'c-bielik':   'SpeakLeash/bielik-4.5b · Ollama · GPU L4',
+    'c-gemma':    'embeddinggemma · text → vector · CPU',
+    'c-bigquery': 'VECTOR_SEARCH COSINE · top_k = 3',
+    'c-storage':  'gs://ollama-bucket/ · GGUF',
+    'c-registry': 'ollama-repo · Docker image',
+    'c-shell':    'gcloud · curl · Gemini CLI',
+    'c-user':     'HTTP · Web UI · GET /',
+    'c-swagger':  'GET /docs · OpenAPI 3.x',
+    'c-webui':    'GET / · /ask vs /ask_direct'
+  };
+
+  const IDS = Object.keys(TECH);
+  let mx = 0, my = 0, tipTimer = null;
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+  function positionTip() {
+    const W = window.innerWidth, H = window.innerHeight;
+    const tw = tip.offsetWidth || 232, th = tip.offsetHeight || 90;
+    let x = mx + 18, y = my + 14;
+    if (x + tw > W - 8) x = mx - tw - 18;
+    if (y + th > H - 8) y = my - th - 14;
+    tip.style.left = x + 'px';
+    tip.style.top  = y + 'px';
+  }
+
+  IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.style.cursor = 'default';
+
+    el.addEventListener('mouseenter', () => {
+      clearTimeout(tipTimer);
+      tipTimer = setTimeout(() => {
+        const lp   = getLangPack();
+        const data = lp && lp.tooltips && lp.tooltips[id];
+        if (!data) return;
+        tTitle.textContent = data.title;
+        tDesc.textContent  = data.desc;
+        const tech = TECH[id];
+        tTech.textContent    = tech || '';
+        tTech.style.display  = tech ? '' : 'none';
+        positionTip();
+        tip.classList.add('visible');
+      }, 320);
+    });
+
+    el.addEventListener('mousemove', () => {
+      if (tip.classList.contains('visible')) positionTip();
+    });
+
+    el.addEventListener('mouseleave', () => {
+      clearTimeout(tipTimer);
+      tip.classList.remove('visible');
+    });
+  });
 })();
 </script>
 </body>
