@@ -7,10 +7,14 @@ set -e
 
 PORT=8080
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PAGE="architektura_interaktywna.html"
 
 echo "Serwer uruchomiony na porcie ${PORT}"
-echo "Adres lokalny : http://localhost:${PORT}/${PAGE}"
+echo ""
+echo "Dostępne diagramy:"
+echo "  http://localhost:${PORT}/architektura_interaktywna.html"
+echo "  http://localhost:${PORT}/architektura_interaktywna_ingestion.html"
+echo "  http://localhost:${PORT}/architektura_interaktywna_rag.html"
+echo ""
 echo "Cloud Shell   : kliknij 'Web Preview' > 'Preview on port ${PORT}'"
 echo "Zatrzymaj     : Ctrl+C"
 echo ""
