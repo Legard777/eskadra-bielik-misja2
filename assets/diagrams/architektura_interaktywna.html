@@ -400,6 +400,41 @@ header {
 @keyframes compPop   { 0%{filter:brightness(.5)} 30%{filter:brightness(2.6) drop-shadow(0 0 14px rgba(255,255,255,.55))} 65%{filter:brightness(1.4)} 100%{filter:brightness(1)} }
 .comp-popping { animation: compPop .65s cubic-bezier(.17,.67,.35,1.1) forwards; }
 
+/* ── SCORE COUNTER ── */
+.score-wrap {
+  position: relative;
+  opacity: 0; transition: opacity .4s;
+}
+.score-wrap.visible { opacity: 1; }
+.score-total {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(245,158,11,.07);
+  border: 1px solid rgba(245,158,11,.22);
+  border-radius: 7px; padding: 7px 12px;
+}
+.score-star { font-size: 13px; line-height: 1; }
+#score-val {
+  font-size: 18px; font-weight: 800; color: #fbbf24;
+  min-width: 28px; text-align: right; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+#score-suffix {
+  font-size: 10px; color: #8a6010; font-weight: 600;
+  letter-spacing: .04em; align-self: flex-end; margin-bottom: 1px;
+}
+.score-plus {
+  position: absolute; top: 2px; right: 8px;
+  font-size: 11px; font-weight: 700; color: #fbbf24;
+  pointer-events: none; opacity: 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+.score-plus.pop { animation: scorePop 1.3s ease-out forwards; }
+@keyframes scorePop {
+  0%   { opacity: 1;   transform: translateY(0)     scale(1.15); }
+  20%  { opacity: 1;   transform: translateY(-6px)  scale(1); }
+  100% { opacity: 0;   transform: translateY(-26px) scale(.9); }
+}
+
 /* ── HELP BUTTON ── */
 .help-btn {
   width: 26px; height: 26px;
@@ -974,6 +1009,14 @@ header {
   <div class="panel-desc" id="p-desc">Pełna architektura systemu RAG. Wszystkie komponenty nieaktywne — zacznij krok po kroku!</div>
   <div class="cp-badge" id="p-cp"><span>✅</span><span id="p-cp-name">checkpoint</span></div>
   <div class="pts-badge" id="p-pts"><span>🏅</span><span id="p-pts-val">punkty</span></div>
+  <div class="score-wrap" id="score-wrap">
+    <div class="score-total">
+      <span class="score-star">⭐</span>
+      <span id="score-val">0</span>
+      <span id="score-suffix">/ 75 pkt</span>
+    </div>
+    <div class="score-plus" id="score-plus"></div>
+  </div>
   <div class="active-list">
     <h5 id="active-list-title">Aktywne komponenty</h5>
     <div id="p-active"></div>
@@ -1014,16 +1057,16 @@ let lang = localStorage.getItem('eb-lang') || 'pl';
 
 /* ── STEPS BASE (only non-text data — all labels live in i18n.js) ── */
 const STEPS_BASE = [
-  { cp: null,                     active: [],                                                                                                                                                                                                                          flows: [] },
-  { cp: "checkpoint_1.sh",        active: ["c-gcp","c-shell"],                                                                                                                                                                                                         flows: [] },
-  { cp: "checkpoint_2.sh",        active: ["c-gcp","c-shell","c-storage","c-registry"],                                                                                                                                                                                flows: [] },
-  { cp: "checkpoint_3.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box"],                                                                                                                             flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma"] },
-  { cp: "checkpoint_4.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-bigquery"],                                                                                                                flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma"] },
-  { cp: "checkpoint_5.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch"],                                                                                       flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq"] },
-  { cp: "checkpoint_6.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch"],                                                                                       flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-shell-orch"] },
-  { cp: "checkpoint_7.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-swagger"],                                                                           flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-shell-orch","f-orch-swagger"] },
-  { cp: "checkpoint_8.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-user","c-swagger","c-webui"],                                                        flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-user-orch","f-orch-swagger","f-orch-webui"] },
-  { cp: "certyfikat_generate.sh", active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-user","c-swagger","c-webui","c-certificate"], flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-user-orch","f-orch-swagger","f-orch-webui"] }
+  { cp: null,                     pts_val:  0, active: [],                                                                                                                                                                                                                          flows: [] },
+  { cp: "checkpoint_1.sh",        pts_val:  5, active: ["c-gcp","c-shell"],                                                                                                                                                                                                         flows: [] },
+  { cp: "checkpoint_2.sh",        pts_val: 10, active: ["c-gcp","c-shell","c-storage","c-registry"],                                                                                                                                                                                flows: [] },
+  { cp: "checkpoint_3.sh",        pts_val: 20, active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box"],                                                                                                                             flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma"] },
+  { cp: "checkpoint_4.sh",        pts_val:  5, active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-bigquery"],                                                                                                                flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma"] },
+  { cp: "checkpoint_5.sh",        pts_val: 10, active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch"],                                                                                       flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq"] },
+  { cp: "checkpoint_6.sh",        pts_val: 10, active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch"],                                                                                       flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-shell-orch"] },
+  { cp: "checkpoint_7.sh",        pts_val:  5, active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-swagger"],                                                                           flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-shell-orch","f-orch-swagger"] },
+  { cp: "checkpoint_8.sh",        pts_val: 10, active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-user","c-swagger","c-webui"],                                                        flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-user-orch","f-orch-swagger","f-orch-webui"] },
+  { cp: "certyfikat_generate.sh", pts_val:  0, active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-user","c-swagger","c-webui","c-certificate"], flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-user-orch","f-orch-swagger","f-orch-webui"] }
 ];
 
 /* ── i18n helpers ── */
@@ -1035,6 +1078,58 @@ function buildSteps() {
   return STEPS_BASE.map((base, i) => Object.assign({}, base, (src && src.steps[i]) || {}));
 }
 let STEPS = buildSteps();
+
+/* ── SCORE COUNTER ── */
+const PTS_TOTAL = 75;
+let _shownScore = 0;
+let _scoreAnim  = null;
+
+function getCumulativeScore(idx) {
+  let total = 0;
+  for (let i = 0; i <= idx && i < STEPS_BASE.length; i++) {
+    total += STEPS_BASE[i].pts_val || 0;
+  }
+  return total;
+}
+
+function animateScore(from, to) {
+  if (_scoreAnim) cancelAnimationFrame(_scoreAnim);
+  const el = document.getElementById('score-val');
+  if (!el) return;
+  const DURATION = 700;
+  const start = performance.now();
+  function tick(now) {
+    const t    = Math.min((now - start) / DURATION, 1);
+    const ease = 1 - Math.pow(1 - t, 3);          /* cubic ease-out */
+    el.textContent = Math.round(from + (to - from) * ease);
+    if (t < 1) _scoreAnim = requestAnimationFrame(tick);
+    else        el.textContent = to;
+  }
+  _scoreAnim = requestAnimationFrame(tick);
+}
+
+function showScorePlus(gain) {
+  const el   = document.getElementById('score-plus');
+  const ui   = getLangPack() && getLangPack().ui;
+  const unit = (ui && ui.score && ui.score.plusUnit) || 'pkt';
+  if (!el) return;
+  el.textContent = `+${gain} ${unit}`;
+  el.classList.remove('pop');
+  void el.offsetWidth;
+  el.classList.add('pop');
+}
+
+function updateScore() {
+  const newScore = getCumulativeScore(cur);
+  const wrap = document.getElementById('score-wrap');
+  if (wrap) wrap.classList.toggle('visible', cur > 0);
+  if (newScore !== _shownScore) {
+    const gain = newScore - _shownScore;
+    animateScore(_shownScore, newScore);
+    if (gain > 0) showScorePlus(gain);
+    _shownScore = newScore;
+  }
+}
 
 /* ── Keyboard shortcuts overlay ── */
 let shortcutsOpen = false;
@@ -1118,6 +1213,9 @@ function applyLang() {
   document.querySelectorAll('.ps').forEach((el, i) => {
     el.title = ui.progressDot.replace('{i}', i);
   });
+
+  /* score suffix refresh on lang change */
+  _shownScore = -1;   /* force re-render of suffix + animation */
 
   render();
 }
@@ -1339,6 +1437,12 @@ function render() {
   const ptsEl = document.getElementById('p-pts');
   if (s.cp)  { document.getElementById('p-cp-name').textContent = s.cp;  cpEl.classList.add('visible');  } else { cpEl.classList.remove('visible'); }
   if (s.pts) { document.getElementById('p-pts-val').textContent = s.pts; ptsEl.classList.add('visible'); } else { ptsEl.classList.remove('visible'); }
+
+  /* score suffix (language-aware) */
+  const _scUi = getLangPack() && getLangPack().ui;
+  const scoreSuffix = document.getElementById('score-suffix');
+  if (scoreSuffix && _scUi && _scUi.score) scoreSuffix.textContent = _scUi.score.suffix;
+  updateScore();
 
   /* active list */
   const listEl = document.getElementById('p-active');

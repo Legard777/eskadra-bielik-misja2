@@ -26,7 +26,8 @@ window.I18N = {
       svgLabels: {
         user: "Użytkownik / Browser"
       },
-      progressDot: "Krok {i}"
+      progressDot: "Krok {i}",
+      score: { suffix: "/ 75 pkt", plusUnit: "pkt" }
     },
 
     steps: [
@@ -203,7 +204,8 @@ window.I18N = {
       svgLabels: {
         user: "User / Browser"
       },
-      progressDot: "Step {i}"
+      progressDot: "Step {i}",
+      score: { suffix: "/ 75 pts", plusUnit: "pts" }
     },
 
     steps: [
