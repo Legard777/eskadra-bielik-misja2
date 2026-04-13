@@ -111,9 +111,9 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 ## 1. Przygotowanie projektu Google Cloud `~20 min`
 
 > [!NOTE]
->Przed warsztatem otrzymałeś instrukcję zapoznania się z procesem aktywacji kredytów Google Cloud (link w TIP poniżej) — ten krok nie powinien być dla Ciebie nowością.
+>Przed warsztatem została przesłana instrukcja zapoznania się z procesem aktywacji kredytów Google Cloud (link w TIP poniżej) — ten krok nie powinien być nowością.
 >
->Jeżeli nie zapoznałeś się z instrukcją lub nie masz linka do aktywacji kredytów — **poinformuj prowadzącego natychmiast**, ponieważ bez aktywnego konta rozliczeniowego nie będziesz mógł kontynuować warsztatu.
+>Jeżeli instrukcja nie dotarła lub nie ma dostępu do linka aktywacji kredytów — **poinformuj prowadzącego natychmiast**, ponieważ bez aktywnego konta rozliczeniowego kontynuowanie warsztatu nie będzie możliwe.
 
 ### Krok 1.1 — Aktywacja konta rozliczeniowego z kredytami OnRamp
 
@@ -287,7 +287,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ```
 
    > ⚠️ 
-   > Jeśli po 30 sekundach skrypt zgłosi brak dostępu — poinformuj prowadzącego. Bez dostępu do bucketu nie będziesz mógł wykonać kroku 3.
+   > Jeśli po 30 sekundach skrypt zgłosi brak dostępu — poinformuj prowadzącego. Bez dostępu do bucketu wykonanie kroku 3 nie będzie możliwe.
 
    > 💡 
    > Możesz ręcznie sprawdzić dostęp w dowolnym momencie:
@@ -964,4 +964,4 @@ Aby wznowić pracę, wykonaj poniższe trzy komendy:
    export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
    ```
 
-Po wykonaniu tych kroków możesz kontynuować od miejsca, w którym przerwałeś.
+Po wykonaniu tych kroków możesz kontynuować od miejsca, w którym nastąpiło rozłączenie.
