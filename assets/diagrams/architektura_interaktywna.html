@@ -280,6 +280,15 @@ header {
 }
 
 /* ── LANGUAGE SWITCH ── */
+#splash .lang-switch {
+  position: absolute;
+  top: 22px;
+  right: 28px;
+  border-color: rgba(59,130,246,.35);
+}
+#splash .lang-btn       { color: #2a4a68; }
+#splash .lang-btn.active { background: rgba(59,130,246,.22); color: #93c5fd; }
+#splash .lang-sep        { background: rgba(59,130,246,.3); }
 .lang-switch {
   display: flex;
   border: 1px solid rgba(59,130,246,.28);
@@ -396,6 +405,11 @@ header {
 
 <!-- ══ SPLASH ══ -->
 <div id="splash">
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="pl" onclick="setLang('pl')">PL</button>
+    <div class="lang-sep"></div>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
   <div id="splash-inner">
     <img id="splash-logo"
          src="https://eskadra.bielik.ai/wp-content/uploads/2025/07/EB-poziom-biale.svg"
