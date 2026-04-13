@@ -1579,6 +1579,20 @@ function dismissSplash() {
     'c-webui':    'GET / · /ask vs /ask_direct'
   };
 
+  const FLOW_TECH = {
+    'f-shell-orch':     'curl -X POST · HTTP/1.1',
+    'f-user-orch':      'HTTP GET / · POST /ask',
+    'f-orch-bielik':    'POST /api/chat · JSON stream',
+    'f-orch-gemma':     'POST /embed · vector[768]',
+    'f-orch-bq':        'VECTOR_SEARCH · top_k=3 · COSINE',
+    'f-storage-bielik': 'gsutil cp · GGUF model',
+    'f-storage-gemma':  'gsutil cp · GGUF embed model',
+    'f-registry-bielik':'docker pull · GPU L4',
+    'f-registry-gemma': 'docker pull · CPU',
+    'f-orch-swagger':   'GET /docs · OpenAPI 3.x',
+    'f-orch-webui':     'GET / · HTML/JS'
+  };
+
   const IDS = Object.keys(TECH);
   let mx = 0, my = 0, tipTimer = null;
 
@@ -1594,6 +1608,47 @@ function dismissSplash() {
     tip.style.top  = y + 'px';
   }
 
+  /* ── Flow arrow tooltips ── */
+  const svg = document.getElementById('arch');
+  Object.keys(FLOW_TECH).forEach(fid => {
+    const path = document.getElementById(fid);
+    if (!path || !svg) return;
+
+    /* invisible hit-area: same shape, 16px transparent stroke */
+    const hit = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    hit.setAttribute('d', path.getAttribute('d'));
+    hit.setAttribute('fill', 'none');
+    hit.style.cssText = 'stroke:transparent;stroke-width:16;pointer-events:stroke;cursor:crosshair;';
+    path.parentNode.insertBefore(hit, path.nextSibling);
+
+    hit.addEventListener('mouseenter', () => {
+      if (!STEPS[cur] || !STEPS[cur].flows.includes(fid)) return;
+      clearTimeout(tipTimer);
+      tipTimer = setTimeout(() => {
+        const lp   = getLangPack();
+        const data = lp && lp.flows && lp.flows[fid];
+        if (!data) return;
+        tTitle.textContent  = data.title;
+        tDesc.textContent   = data.desc;
+        const tech = FLOW_TECH[fid];
+        tTech.textContent   = tech || '';
+        tTech.style.display = tech ? '' : 'none';
+        positionTip();
+        tip.classList.add('visible');
+      }, 220);
+    });
+
+    hit.addEventListener('mousemove', () => {
+      if (tip.classList.contains('visible')) positionTip();
+    });
+
+    hit.addEventListener('mouseleave', () => {
+      clearTimeout(tipTimer);
+      tip.classList.remove('visible');
+    });
+  });
+
+  /* ── Component tooltips ── */
   IDS.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
