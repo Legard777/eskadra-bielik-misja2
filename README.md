@@ -74,7 +74,7 @@ Dodatkowo, dzięki prostemu interfejsowi graficznemu, aplikacja pozwala na wygod
 
 ## Diagramy architektury
 
-![Diagram architektury RAG](assets/gifs-animated/krok-0-architecture-640px-high-1-compress.gif)
+![Diagram architektury RAG](assets/gifs-animated/krok-0-architecture-640px-high-compress.gif)
 
 Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu [`architektura/`](architektura/):
 
