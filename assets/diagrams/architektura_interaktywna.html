@@ -398,7 +398,7 @@ header {
          onerror="this.style.display='none';document.getElementById('hdr-fb').style.display='flex'">
     <div class="logo-fb" id="hdr-fb"><span>🦅</span><span>Eskadra Bielik</span></div>
   </div>
-  <div class="badge">Misja 2 · RAG · Google Cloud · Bielik + BigQuery</div>
+  <div class="badge" id="hdr-badge">Misja 2 · RAG · Google Cloud · Bielik + BigQuery</div>
 </header>
 
 <!-- ══ PROGRESS ══ -->
@@ -697,7 +697,7 @@ header {
         fill="#080f18" stroke="#162030" stroke-width="1.5"
         class="comp-rect" style="transition:fill .6s,stroke .6s"/>
   <text x="356" y="42" font-size="22" class="comp-icon" style="transition:opacity .6s">👤</text>
-  <text x="390" y="32" font-size="11" font-weight="600" fill="#1e3048"
+  <text id="lbl-user" x="390" y="32" font-size="11" font-weight="600" fill="#1e3048"
         font-family="Inter,sans-serif" class="comp-label" style="transition:fill .6s">Użytkownik / Browser</text>
   <text x="390" y="48" font-size="9" fill="#132036"
         font-family="JetBrains Mono,monospace" class="comp-sub" style="transition:fill .6s">Web UI</text>
@@ -812,7 +812,7 @@ header {
   <div class="cp-badge" id="p-cp"><span>✅</span><span id="p-cp-name">checkpoint</span></div>
   <div class="pts-badge" id="p-pts"><span>🏅</span><span id="p-pts-val">punkty</span></div>
   <div class="active-list">
-    <h5>Aktywne komponenty</h5>
+    <h5 id="active-list-title">Aktywne komponenty</h5>
     <div id="p-active"></div>
   </div>
 </div>
@@ -822,93 +822,83 @@ header {
 <!-- NAV -->
 <nav class="nav">
   <button class="nav-btn" id="btn-prev" onclick="go(-1)">← Wstecz</button>
-  <div class="nav-ctr">Krok <strong id="nav-cur">0</strong> / <strong>9</strong></div>
+  <div class="nav-ctr" id="nav-ctr">Krok <strong id="nav-cur">0</strong> / <strong>9</strong></div>
   <button class="nav-btn primary" id="btn-next" onclick="go(1)">Dalej →</button>
 </nav>
 
 </div><!-- /monitor-shell -->
 
+<script src="i18n.js"></script>
 <script>
-/* ── STEPS ── */
-const STEPS = [
-  {
-    title:"Architektura RAG — start",
-    desc:"Pełna architektura systemu RAG zbudowanego w Google Cloud. Każdy krok warsztatu aktywuje kolejne komponenty.",
-    cp:null, pts:null, active:[], flows:[], items:[]
-  },
-  {
-    title:"Krok 1 — Google Cloud Project",
-    desc:"Aktywacja konta z kredytami OnRamp, utworzenie projektu Google Cloud i otwarcie Cloud Shell z repozytorium.",
-    cp:"checkpoint_1.sh", pts:"+5 pkt",
-    active:["c-gcp","c-shell"],
-    flows:[],
-    items:["Google Cloud Project","Konto rozliczeniowe (OnRamp)","Cloud Shell","Gemini CLI"]
-  },
-  {
-    title:"Krok 2 — Konfiguracja usług",
-    desc:"Włączenie wymaganych API: Cloud Run, Cloud Build, Artifact Registry, BigQuery. Przyznanie uprawnień IAM.",
-    cp:"checkpoint_2.sh", pts:"+10 pkt",
-    active:["c-gcp","c-shell","c-storage","c-registry"],
-    flows:[],
-    items:["Cloud Run API","BigQuery API","Artifact Registry API","Cloud Build API","IAM roles/run.invoker"]
-  },
-  {
-    title:"Krok 3 — Bielik LLM + EmbeddingGemma",
-    desc:"Kopiowanie modeli do Cloud Storage, budowanie obrazu Docker z Ollama, wdrożenie obu modeli na Cloud Run.",
-    cp:"checkpoint_3.sh", pts:"+20 pkt",
-    active:["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box"],
-    flows:["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma"],
-    items:["Cloud Storage (modele GGUF)","Artifact Registry (Ollama Docker)","Bielik LLM (Cloud Run #1 + GPU L4 + Ollama)","EmbeddingGemma (Cloud Run #2 + Ollama, CPU)"]
-  },
-  {
-    title:"Krok 4 — BigQuery Vector Search",
-    desc:"Inicjalizacja bazy wektorowej: dataset rag_dataset i tabela hotel_rules z kolumną embedding (FLOAT64 REPEATED).",
-    cp:"checkpoint_4.sh", pts:"+5 pkt",
-    active:["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-bigquery"],
-    flows:["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma"],
-    items:["BigQuery dataset: rag_dataset","Tabela: hotel_rules","Kolumna embedding FLOAT64 REPEATED","Vector Search COSINE"]
-  },
-  {
-    title:"Krok 5 — Orchestration API",
-    desc:"Wdrożenie aplikacji FastAPI na Cloud Run. Orchestration łączy EmbeddingGemma, BigQuery i Bielik w jeden przepływ RAG.",
-    cp:"checkpoint_5.sh", pts:"+10 pkt",
-    active:["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch"],
-    flows:["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq"],
-    items:["Orchestration API (FastAPI)","POST /ingest — zasilanie bazy","POST /ask — zapytanie RAG","POST /ask_direct — bez RAG","GET /records — przeglądarka"]
-  },
-  {
-    title:"Krok 6 — Testowanie API (curl z Cloud Shell)",
-    desc:"Wysyłanie danych CSV przez curl z Cloud Shell: /ingest (embed + BigQuery) i /ask (RAG pipeline).",
-    cp:"checkpoint_6.sh", pts:"+10 pkt",
-    active:["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch"],
-    flows:["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-shell-orch"],
-    items:["curl z Cloud Shell → /ingest","POST /ingest → EmbeddingGemma → BigQuery","curl z Cloud Shell → /ask","POST /ask → embed → VECTOR_SEARCH → Bielik","Brak Web UI — tylko terminal"]
-  },
-  {
-    title:"Krok 7 — Interfejs API (Swagger)",
-    desc:"Dokumentacja i testowanie API przez Swagger UI (/docs) otwierane w przeglądarce.",
-    cp:"checkpoint_7.sh", pts:"+5 pkt",
-    active:["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-swagger"],
-    flows:["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-shell-orch","f-orch-swagger"],
-    items:["Swagger UI (GET /docs)","ReDoc (GET /redoc)","Interaktywne testowanie endpointów","OpenAPI schema"]
-  },
-  {
-    title:"Krok 8 — Interfejs Użytkownika (Web UI)",
-    desc:"Użytkownik otwiera Web UI w przeglądarce. Porównanie: Bielik bez RAG vs Bielik + RAG z BigQuery.",
-    cp:"checkpoint_8.sh", pts:"+10 pkt",
-    active:["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-user","c-swagger","c-webui"],
-    flows:["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-user-orch","f-orch-swagger","f-orch-webui"],
-    items:["Web UI (GET /) — otwarta w przeglądarce","Lewa: Bielik bez RAG (/ask_direct)","Prawa: Bielik + RAG (/ask)","Sekcja 'Użyty kontekst' z BigQuery","Eksperymenty z motywem kolorów (Gemini CLI)"]
-  },
-  {
-    title:"Krok 9 — Certyfikat Ukończenia 🏆",
-    desc:"Gratulacje! Pełna architektura RAG wdrożona i działająca. Generuj zaszyfrowany certyfikat i wyślij prowadzącemu.",
-    cp:"certyfikat_generate.sh", pts:"75 pkt łącznie!",
-    active:["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-user","c-swagger","c-webui","c-certificate"],
-    flows:["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-user-orch","f-orch-swagger","f-orch-webui"],
-    items:["Certyfikat: cert_artifacts/checkpoint_N.enc","./checkpoints/certyfikat_generate.sh","cloudshell dl checkpoint_certyfikat.enc","Misja 2 zakończona! 🦅"]
-  }
+/* ── LANGUAGE ── */
+let lang = localStorage.getItem('eb-lang') || 'pl';
+
+/* ── STEPS BASE (only non-text data — all labels live in i18n.js) ── */
+const STEPS_BASE = [
+  { cp: null,                     active: [],                                                                                                                                                                                                                          flows: [] },
+  { cp: "checkpoint_1.sh",        active: ["c-gcp","c-shell"],                                                                                                                                                                                                         flows: [] },
+  { cp: "checkpoint_2.sh",        active: ["c-gcp","c-shell","c-storage","c-registry"],                                                                                                                                                                                flows: [] },
+  { cp: "checkpoint_3.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box"],                                                                                                                             flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma"] },
+  { cp: "checkpoint_4.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-bigquery"],                                                                                                                flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma"] },
+  { cp: "checkpoint_5.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch"],                                                                                       flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq"] },
+  { cp: "checkpoint_6.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch"],                                                                                       flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-shell-orch"] },
+  { cp: "checkpoint_7.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-swagger"],                                                                           flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-shell-orch","f-orch-swagger"] },
+  { cp: "checkpoint_8.sh",        active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-user","c-swagger","c-webui"],                                                        flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-user-orch","f-orch-swagger","f-orch-webui"] },
+  { cp: "certyfikat_generate.sh", active: ["c-gcp","c-shell","c-storage","c-registry","c-bielik","c-gemma","c-cr-bielik","c-cr-gemma-box","c-cr-orch-box","c-bigquery","c-orch","c-user","c-swagger","c-webui","c-certificate"], flows: ["f-storage-bielik","f-storage-gemma","f-registry-bielik","f-registry-gemma","f-orch-bielik","f-orch-gemma","f-orch-bq","f-user-orch","f-orch-swagger","f-orch-webui"] }
 ];
+
+/* ── i18n helpers ── */
+function getLangPack() {
+  return (window.I18N && window.I18N[lang]) ? window.I18N[lang] : window.I18N && window.I18N['pl'];
+}
+function buildSteps() {
+  const src = getLangPack();
+  return STEPS_BASE.map((base, i) => Object.assign({}, base, (src && src.steps[i]) || {}));
+}
+let STEPS = buildSteps();
+
+/* ── Apply language to all DOM elements + rebuild STEPS ── */
+function applyLang() {
+  const lp = getLangPack();
+  if (!lp) return;
+  const ui = lp.ui;
+  STEPS = buildSteps();
+
+  /* splash */
+  document.getElementById('splash-title').textContent = ui.splash.title;
+  document.getElementById('splash-sub').textContent   = ui.splash.sub;
+  document.getElementById('splash-hint').textContent  = ui.splash.hint;
+
+  /* header badge */
+  const badgeEl = document.getElementById('hdr-badge');
+  if (badgeEl) badgeEl.textContent = ui.badge;
+
+  /* nav buttons */
+  document.getElementById('btn-prev').textContent = ui.nav.prev;
+  document.getElementById('btn-next').textContent = ui.nav.next;
+
+  /* nav counter label */
+  const navCtr = document.getElementById('nav-ctr');
+  if (navCtr) {
+    const curVal = document.getElementById('nav-cur') ? document.getElementById('nav-cur').textContent : cur;
+    navCtr.innerHTML = `${ui.nav.step} <strong id="nav-cur">${curVal}</strong> / <strong>${STEPS_BASE.length - 1}</strong>`;
+  }
+
+  /* panel */
+  const altEl = document.getElementById('active-list-title');
+  if (altEl) altEl.textContent = ui.panel.activeComponents;
+
+  /* SVG user label */
+  const userLbl = document.getElementById('lbl-user');
+  if (userLbl) userLbl.textContent = ui.svgLabels.user;
+
+  /* progress dots */
+  document.querySelectorAll('.ps').forEach((el, i) => {
+    el.title = ui.progressDot.replace('{i}', i);
+  });
+
+  render();
+}
 
 /* ── COLORS ── */
 const COMP_COLORS = {
@@ -1118,7 +1108,9 @@ function render() {
   document.getElementById('nav-cur').textContent = cur;
 
   /* panel */
-  document.getElementById('p-step').textContent  = `Krok ${cur} z ${STEPS.length - 1}`;
+  const _ui = getLangPack() && getLangPack().ui;
+  const _stepOfTpl = (_ui && _ui.panel && _ui.panel.stepOf) || 'Krok {n} z {total}';
+  document.getElementById('p-step').textContent = _stepOfTpl.replace('{n}', cur).replace('{total}', STEPS.length - 1);
   document.getElementById('p-title').textContent = s.title;
   document.getElementById('p-desc').textContent  = s.desc;
   const cpEl  = document.getElementById('p-cp');
@@ -1339,10 +1331,11 @@ function dismissSplash() {
 (function init() {
   /* build progress dots */
   const wrap = document.getElementById('psteps');
-  STEPS.forEach((_, i) => {
+  STEPS_BASE.forEach((_, i) => {
     const d = document.createElement('div');
     d.className = 'ps';
-    d.title = `Krok ${i}`;
+    const _dotTpl = (getLangPack() && getLangPack().ui && getLangPack().ui.progressDot) || 'Krok {i}';
+    d.title = _dotTpl.replace('{i}', i);
     d.onclick = () => { clearStepAnim(); cur = i; render(); };
     wrap.appendChild(d);
   });
@@ -1375,7 +1368,7 @@ function dismissSplash() {
   style.textContent = `@keyframes pulseGlow { 0%,100%{opacity:.7} 50%{opacity:1} }`;
   document.getElementById('arch').prepend(style);
 
-  render();
+  applyLang();
 })();
 
 /* ── STAR FIELD ── */
