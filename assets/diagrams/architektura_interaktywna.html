@@ -400,6 +400,56 @@ header {
 @keyframes compPop   { 0%{filter:brightness(.5)} 30%{filter:brightness(2.6) drop-shadow(0 0 14px rgba(255,255,255,.55))} 65%{filter:brightness(1.4)} 100%{filter:brightness(1)} }
 .comp-popping { animation: compPop .65s cubic-bezier(.17,.67,.35,1.1) forwards; }
 
+/* ── PRINT CAPTION (hidden in screen mode) ── */
+#print-caption { display: none; }
+
+/* ── PRINT / PDF EXPORT ── */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    animation: none !important; transition: none !important;
+  }
+  @page { size: A4 landscape; margin: 10mm; }
+
+  /* hide all chrome */
+  #splash, #boot, #stars-canvas, body::before, .space-corner,
+  header, .progress-wrap, .panel, nav.nav,
+  #shortcuts-overlay, #comp-tooltip,
+  #step-veil, #step-scan, #step-scan2,
+  .score-wrap { display: none !important; }
+
+  body {
+    background: #000814 !important;
+    padding: 0 !important; margin: 0 !important;
+    height: auto !important; overflow: visible !important;
+    display: block !important;
+  }
+  #monitor-shell {
+    display: block !important; overflow: visible !important;
+    box-shadow: none !important; border-radius: 0 !important;
+    animation: none !important;
+  }
+  #monitor-shell::before, #monitor-shell::after { display: none !important; }
+  .main { display: block !important; overflow: visible !important; height: auto !important; }
+  .diagram-area {
+    display: block !important; width: 100% !important;
+    height: auto !important; padding: 0 !important; overflow: visible !important;
+  }
+  .diagram-area svg { width: 100% !important; height: auto !important; }
+
+  /* show caption below diagram */
+  #print-caption {
+    display: flex !important;
+    justify-content: space-between; align-items: baseline; gap: 12mm;
+    margin-top: 4mm; padding-top: 3mm;
+    border-top: 0.4pt solid rgba(59,130,246,.45);
+  }
+  #pc-step  { font-size: 7.5pt; color: #60a5fa; font-weight: 700; letter-spacing: .06em; flex-shrink: 0; }
+  #pc-title { font-size: 9pt;   color: #e2e8f0; font-weight: 600; flex: 1; }
+  #pc-brand { font-size: 7pt;   color: #2a4060; letter-spacing: .04em; flex-shrink: 0; }
+}
+
 /* ── SCORE COUNTER ── */
 .score-wrap {
   position: relative;
@@ -597,6 +647,7 @@ header {
     <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
   </div>
   <button class="help-btn" id="btn-help" onclick="toggleShortcuts()" title="Keyboard shortcuts">?</button>
+  <button class="help-btn" id="btn-print" onclick="doPrint()" title="Export PDF">🖨</button>
 </header>
 
 <!-- ══ PROGRESS ══ -->
@@ -1000,6 +1051,11 @@ header {
 <div id="step-veil"></div>
 <div id="step-scan"></div>
 <div id="step-scan2"></div>
+<div id="print-caption">
+  <div id="pc-step"></div>
+  <div id="pc-title"></div>
+  <div id="pc-brand">Eskadra Bielik · Misja 2 · RAG Architecture · Google Cloud</div>
+</div>
 </div><!-- /diagram-area -->
 
 <!-- SIDE PANEL -->
@@ -1130,6 +1186,9 @@ function updateScore() {
     _shownScore = newScore;
   }
 }
+
+/* ── Print / PDF export ── */
+function doPrint() { window.print(); }
 
 /* ── Keyboard shortcuts overlay ── */
 let shortcutsOpen = false;
@@ -1438,6 +1497,17 @@ function render() {
   if (s.cp)  { document.getElementById('p-cp-name').textContent = s.cp;  cpEl.classList.add('visible');  } else { cpEl.classList.remove('visible'); }
   if (s.pts) { document.getElementById('p-pts-val').textContent = s.pts; ptsEl.classList.add('visible'); } else { ptsEl.classList.remove('visible'); }
 
+  /* print caption sync */
+  const _pcStep  = document.getElementById('pc-step');
+  const _pcTitle = document.getElementById('pc-title');
+  const _pcBrand = document.getElementById('pc-brand');
+  const _prtUi   = getLangPack() && getLangPack().ui;
+  if (_pcStep)  _pcStep.textContent  = _stepOfTpl.replace('{n}', cur).replace('{total}', STEPS.length - 1);
+  if (_pcTitle) _pcTitle.textContent = s.title || '';
+  if (_pcBrand && _prtUi && _prtUi.print) _pcBrand.textContent = _prtUi.print.brand;
+  const _btnPrint = document.getElementById('btn-print');
+  if (_btnPrint && _prtUi && _prtUi.print) _btnPrint.title = _prtUi.print.btnTitle;
+
   /* score suffix (language-aware) */
   const _scUi = getLangPack() && getLangPack().ui;
   const scoreSuffix = document.getElementById('score-suffix');
@@ -1677,7 +1747,8 @@ function dismissSplash() {
       }
       return;
     }
-    if (e.key === '?')      { e.preventDefault(); toggleShortcuts(); return; }
+    if (e.key === '?')           { e.preventDefault(); toggleShortcuts(); return; }
+    if (e.key === 'p' || e.key === 'P') { e.preventDefault(); doPrint(); return; }
     if (e.key === 'Escape') { if (shortcutsOpen) { closeShortcuts(); return; } }
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);

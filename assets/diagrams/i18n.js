@@ -177,8 +177,13 @@ window.I18N = {
         { keys: ["←", "↑"],  desc: "Poprzedni krok" },
         { keys: ["0 – 9"],   desc: "Skocz bezpośrednio do kroku" },
         { keys: ["?"],       desc: "Pokaż / ukryj ten panel" },
-        { keys: ["Esc"],     desc: "Zamknij panel" }
+        { keys: ["Esc"],     desc: "Zamknij panel" },
+        { keys: ["P"],       desc: "Eksportuj jako PDF" }
       ]
+    },
+    print: {
+      btnTitle: "Eksportuj jako PDF",
+      brand:    "Eskadra Bielik · Misja 2 · RAG Architecture · Google Cloud"
     }
   },
 
@@ -355,8 +360,13 @@ window.I18N = {
         { keys: ["←", "↑"],  desc: "Previous step" },
         { keys: ["0 – 9"],   desc: "Jump directly to step" },
         { keys: ["?"],       desc: "Show / hide this panel" },
-        { keys: ["Esc"],     desc: "Close panel" }
+        { keys: ["Esc"],     desc: "Close panel" },
+        { keys: ["P"],       desc: "Export as PDF" }
       ]
+    },
+    print: {
+      btnTitle: "Export as PDF",
+      brand:    "Eskadra Bielik · Mission 2 · RAG Architecture · Google Cloud"
     }
   }
 
