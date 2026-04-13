@@ -287,10 +287,10 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ./skrypty/request_access.sh
    ```
 
-   > **⚠️ Ważne**
+   > ⚠️ 
    > Jeśli po 30 sekundach skrypt zgłosi brak dostępu — poinformuj prowadzącego. Bez dostępu do bucketu nie będziesz mógł wykonać kroku 3.
 
-   > **💡 Wskazówka**
+   > 💡 
    > Możesz ręcznie sprawdzić dostęp w dowolnym momencie:
    > ```bash
    > gcloud storage ls gs://$BUCKET_NAME_SOURCE
@@ -574,7 +574,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
    ```
 
-   > **⚠️ Uwaga**
+   > ⚠️ 
    > Zmienna `$ORCHESTRATION_URL` będzie potrzebna w kolejnych krokach do wysyłania zapytań przez `curl`. Jak wszystkie zmienne środowiskowe — działa tylko w bieżącym terminalu.
 
 6. Wróć do głównego katalogu
