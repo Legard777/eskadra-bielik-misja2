@@ -287,10 +287,10 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ./skrypty/request_access.sh
    ```
 
-   > **Ważne**
+   > **⚠️ Ważne**
    > Jeśli po 30 sekundach skrypt zgłosi brak dostępu — poinformuj prowadzącego. Bez dostępu do bucketu nie będziesz mógł wykonać kroku 3.
 
-   > **Wskazówka**
+   > **💡 Wskazówka**
    > Możesz ręcznie sprawdzić dostęp w dowolnym momencie:
    > ```bash
    > gcloud storage ls gs://$BUCKET_NAME_SOURCE
@@ -360,7 +360,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ```
 
    > [!WARNING]
-   > **Brak kwoty GPU?** Jeśli pojawi się błąd:
+   > **🚫 Brak kwoty GPU?** Jeśli pojawi się błąd:
    > ```
    > ERROR: You do not have quota for using GPUs without zonal redundancy.
    > ```
@@ -492,7 +492,7 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    Skrypt wykonuje trzy rzeczy: instaluje pakiet `google-cloud-bigquery` (z flagą `--quiet`, żeby wyciszyć zbędne logi pip), a następnie automatycznie sprawdza czy biblioteka daje się zaimportować — to szybka weryfikacja, że instalacja przebiegła bez błędów i środowisko jest gotowe do pracy.
 
    > [!NOTE]
-   > Celowo pomijamy tworzenie wirtualnego środowiska Python (`venv`). W warsztacie korzystamy z Cloud Shell, który jest tymczasowym środowiskiem uruchamianym od nowa po każdej sesji — instalacja globalna jest tu w zupełności wystarczająca. Wirtualne środowisko byłoby przydatne przy długotrwałym projekcie, gdzie chcemy izolować zależności między aplikacjami na tej samej maszynie.
+   > 📝 Celowo pomijamy tworzenie wirtualnego środowiska Python (`venv`). W warsztacie korzystamy z Cloud Shell, który jest tymczasowym środowiskiem uruchamianym od nowa po każdej sesji — instalacja globalna jest tu w zupełności wystarczająca. Wirtualne środowisko byłoby przydatne przy długotrwałym projekcie, gdzie chcemy izolować zależności między aplikacjami na tej samej maszynie.
 
    > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o zarządzanie zależnościami w Pythonie:
    > ```bash
@@ -563,7 +563,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ```
 
    > [!NOTE]
-   > W trakcie wdrożenia może pojawić się pytanie o utworzenie repozytorium Docker w Artifact Registry:
+   > 🐳 W trakcie wdrożenia może pojawić się pytanie o utworzenie repozytorium Docker w Artifact Registry:
    > ```
    > Deploying from source requires an Artifact Registry Docker repository to store built containers.
    > A repository named [cloud-run-source-deploy] in region [europe-west1] will be created.
@@ -577,7 +577,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
    ```
 
-   > **Uwaga**
+   > **⚠️ Uwaga**
    > Zmienna `$ORCHESTRATION_URL` będzie potrzebna w kolejnych krokach do wysyłania zapytań przez `curl`. Jak wszystkie zmienne środowiskowe — działa tylko w bieżącym terminalu.
 
 6. Wróć do głównego katalogu
@@ -635,7 +635,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    | `id` | Unikalny identyfikator rekordu |
    | `text` | Treść dokumentu — zasada hotelowa w języku naturalnym |
 
-   > **Uwaga**
+   > **⚠️ Uwaga**
    > Po wgraniu danych przez endpoint `/ingest` aplikacja automatycznie doda trzecią kolumnę: **`embedding`** — wygenerowany przez [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) wektor liczbowy reprezentujący znaczenie tekstu. To właśnie ta kolumna umożliwia semantyczne wyszukiwanie w [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search).
 
 2. Wgraj przykładowe dane do [BigQuery](https://cloud.google.com/bigquery?hl=en) z pliku CSV
@@ -656,7 +656,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
    > **Preview jest bezpłatny** — nie wykonuje zapytania SQL i nie zużywa limitu darmowych zapytań BigQuery. To najszybszy sposób sprawdzenia czy dane zostały załadowane poprawnie.
 
-   > **Uwaga**
+   > **⏳ Uwaga**
    > Dane tekstowe w kolumnach `id`, `content` widoczne są natychmiast. Indeksowanie kolumny `embedding` na potrzeby Vector Search może chwilę potrwać — to normalne i nie blokuje kolejnych kroków.
 
 <details>
@@ -900,7 +900,7 @@ Usługi [Cloud Run](https://cloud.google.com/run?hl=en) skalują się automatycz
      --region $REGION \
      --no-allow-unauthenticated
    ```
-   > **Uwaga**
+   > **🔐 Uwaga**
    > Po tej zmianie dostęp do Web UI i API będzie wymagał tokenu autoryzacyjnego Google. Aby wygenerować token: `gcloud auth print-identity-token`
 
 3. Zweryfikuj usunięcie repozytoriów:
