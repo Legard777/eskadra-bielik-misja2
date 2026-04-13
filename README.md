@@ -634,7 +634,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 </details>
 
-   > **Dla chętnych — weryfikacja SQL:** jeśli chcesz zobaczyć dane zapytaniem, wklej w edytorze BigQuery:
+   > **🔍 Dla chętnych — weryfikacja SQL:** jeśli chcesz zobaczyć dane zapytaniem, wklej w edytorze BigQuery:
    > ```sql
    > SELECT id, content, ARRAY_LENGTH(embedding) AS embedding_dimensions
    > FROM `rag_dataset.hotel_rules`
