@@ -400,6 +400,78 @@ header {
 @keyframes compPop   { 0%{filter:brightness(.5)} 30%{filter:brightness(2.6) drop-shadow(0 0 14px rgba(255,255,255,.55))} 65%{filter:brightness(1.4)} 100%{filter:brightness(1)} }
 .comp-popping { animation: compPop .65s cubic-bezier(.17,.67,.35,1.1) forwards; }
 
+/* ── HELP BUTTON ── */
+.help-btn {
+  width: 26px; height: 26px;
+  background: transparent;
+  border: 1px solid rgba(59,130,246,.28);
+  border-radius: 50%;
+  color: #3a5a78; font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all .2s; line-height: 1;
+}
+.help-btn:hover {
+  border-color: rgba(59,130,246,.65);
+  color: #60a5fa;
+  background: rgba(59,130,246,.1);
+  box-shadow: 0 0 10px rgba(59,130,246,.25);
+}
+
+/* ── SHORTCUTS OVERLAY ── */
+#shortcuts-overlay {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(4,10,20,.78);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .22s;
+  backdrop-filter: blur(4px);
+}
+#shortcuts-overlay.visible { opacity: 1; pointer-events: auto; }
+#shortcuts-card {
+  background: #070d1a;
+  border: 1px solid rgba(59,130,246,.42);
+  border-radius: 12px;
+  padding: 24px 28px 20px;
+  min-width: 330px;
+  box-shadow: 0 8px 48px rgba(0,0,0,.7), 0 0 32px rgba(59,130,246,.12);
+  animation: scCardIn .22s ease-out;
+}
+@keyframes scCardIn {
+  from { transform: scale(.94) translateY(8px); opacity: 0; }
+  to   { transform: scale(1)   translateY(0);   opacity: 1; }
+}
+#sc-title {
+  font-size: 11px; font-weight: 700; color: #60a5fa;
+  letter-spacing: .12em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+#sc-rows { display: flex; flex-direction: column; gap: 2px; }
+.sc-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(59,130,246,.07);
+}
+.sc-row:last-child { border-bottom: none; }
+.sc-keys {
+  display: flex; gap: 5px;
+  min-width: 96px; justify-content: flex-end; flex-shrink: 0;
+}
+.sc-key {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #0d1828; border: 1px solid rgba(59,130,246,.3);
+  border-bottom-width: 2px;
+  border-radius: 5px; padding: 3px 9px;
+  font-size: 11px; font-family: 'JetBrains Mono', monospace;
+  color: #7ab4f0; white-space: nowrap;
+  box-shadow: 0 1px 0 rgba(0,0,0,.4);
+}
+.sc-desc { font-size: 11.5px; color: #4a6a88; line-height: 1.4; }
+#sc-hint {
+  margin-top: 14px; font-size: 9.5px; color: #1e3050;
+  text-align: center; letter-spacing: .06em;
+}
+
 /* ── COMPONENT TOOLTIP ── */
 #comp-tooltip {
   position: fixed;
@@ -489,6 +561,7 @@ header {
     <div class="lang-sep"></div>
     <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
   </div>
+  <button class="help-btn" id="btn-help" onclick="toggleShortcuts()" title="Keyboard shortcuts">?</button>
 </header>
 
 <!-- ══ PROGRESS ══ -->
@@ -918,6 +991,15 @@ header {
 
 </div><!-- /monitor-shell -->
 
+<!-- ══ SHORTCUTS OVERLAY ══ -->
+<div id="shortcuts-overlay" onclick="closeShortcuts()">
+  <div id="shortcuts-card" onclick="event.stopPropagation()">
+    <div id="sc-title">Skróty klawiszowe</div>
+    <div id="sc-rows"></div>
+    <div id="sc-hint">Naciśnij ? lub Esc aby zamknąć</div>
+  </div>
+</div>
+
 <!-- ══ COMPONENT TOOLTIP ══ -->
 <div id="comp-tooltip">
   <div id="ctt-title"></div>
@@ -953,6 +1035,35 @@ function buildSteps() {
   return STEPS_BASE.map((base, i) => Object.assign({}, base, (src && src.steps[i]) || {}));
 }
 let STEPS = buildSteps();
+
+/* ── Keyboard shortcuts overlay ── */
+let shortcutsOpen = false;
+
+function toggleShortcuts() { shortcutsOpen ? closeShortcuts() : openShortcuts(); }
+
+function openShortcuts() {
+  const lp = getLangPack();
+  if (!lp || !lp.shortcuts) return;
+  const sc = lp.shortcuts;
+  document.getElementById('sc-title').textContent = sc.title;
+  document.getElementById('sc-hint').textContent  = sc.closeHint;
+  const rows = document.getElementById('sc-rows');
+  rows.innerHTML = '';
+  sc.keys.forEach(row => {
+    const div = document.createElement('div');
+    div.className = 'sc-row';
+    const keysHtml = row.keys.map(k => `<span class="sc-key">${k}</span>`).join('');
+    div.innerHTML = `<div class="sc-keys">${keysHtml}</div><div class="sc-desc">${row.desc}</div>`;
+    rows.appendChild(div);
+  });
+  document.getElementById('shortcuts-overlay').classList.add('visible');
+  shortcutsOpen = true;
+}
+
+function closeShortcuts() {
+  document.getElementById('shortcuts-overlay').classList.remove('visible');
+  shortcutsOpen = false;
+}
 
 /* ── Language switch ── */
 function setLang(newLang) {
@@ -1462,6 +1573,8 @@ function dismissSplash() {
       }
       return;
     }
+    if (e.key === '?')      { e.preventDefault(); toggleShortcuts(); return; }
+    if (e.key === 'Escape') { if (shortcutsOpen) { closeShortcuts(); return; } }
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);
     /* klawisze 0–9 skaczą bezpośrednio do kroku */

@@ -166,6 +166,18 @@ window.I18N = {
       'f-registry-gemma':{ title: "Registry → Gemma",            desc: "Artifact Registry dostarcza obraz Docker z Ollama do Cloud Run #2 (EmbeddingGemma, CPU) przy wdrożeniu." },
       'f-orch-swagger':  { title: "API → Swagger UI",            desc: "Orchestration API serwuje interaktywną dokumentację OpenAPI pod /docs." },
       'f-orch-webui':    { title: "API → Web UI",                desc: "Orchestration API serwuje interfejs użytkownika HTML pod GET /." }
+    },
+
+    shortcuts: {
+      title:     "Skróty klawiszowe",
+      closeHint: "Naciśnij ? lub Esc aby zamknąć",
+      keys: [
+        { keys: ["→", "↓"],  desc: "Następny krok" },
+        { keys: ["←", "↑"],  desc: "Poprzedni krok" },
+        { keys: ["0 – 9"],   desc: "Skocz bezpośrednio do kroku" },
+        { keys: ["?"],       desc: "Pokaż / ukryj ten panel" },
+        { keys: ["Esc"],     desc: "Zamknij panel" }
+      ]
     }
   },
 
@@ -331,6 +343,18 @@ window.I18N = {
       'f-registry-gemma':{ title: "Registry → Gemma",            desc: "Artifact Registry delivers the Ollama Docker image to Cloud Run #2 (EmbeddingGemma, CPU) on deployment." },
       'f-orch-swagger':  { title: "API → Swagger UI",            desc: "Orchestration API serves the interactive OpenAPI documentation at /docs." },
       'f-orch-webui':    { title: "API → Web UI",                desc: "Orchestration API serves the HTML user interface at GET /." }
+    },
+
+    shortcuts: {
+      title:     "Keyboard shortcuts",
+      closeHint: "Press ? or Esc to close",
+      keys: [
+        { keys: ["→", "↓"],  desc: "Next step" },
+        { keys: ["←", "↑"],  desc: "Previous step" },
+        { keys: ["0 – 9"],   desc: "Jump directly to step" },
+        { keys: ["?"],       desc: "Show / hide this panel" },
+        { keys: ["Esc"],     desc: "Close panel" }
+      ]
     }
   }
 
