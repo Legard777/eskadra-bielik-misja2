@@ -359,6 +359,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ./cloud_run.sh
    ```
 
+   > [!WARNING]
    > **Brak kwoty GPU?** Jeśli pojawi się błąd:
    > ```
    > ERROR: You do not have quota for using GPUs without zonal redundancy.
@@ -490,7 +491,7 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
 
    Skrypt wykonuje trzy rzeczy: instaluje pakiet `google-cloud-bigquery` (z flagą `--quiet`, żeby wyciszyć zbędne logi pip), a następnie automatycznie sprawdza czy biblioteka daje się zaimportować — to szybka weryfikacja, że instalacja przebiegła bez błędów i środowisko jest gotowe do pracy.
 
-   > **Uwaga**
+   > [!NOTE]
    > Celowo pomijamy tworzenie wirtualnego środowiska Python (`venv`). W warsztacie korzystamy z Cloud Shell, który jest tymczasowym środowiskiem uruchamianym od nowa po każdej sesji — instalacja globalna jest tu w zupełności wystarczająca. Wirtualne środowisko byłoby przydatne przy długotrwałym projekcie, gdzie chcemy izolować zależności między aplikacjami na tej samej maszynie.
 
    > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o zarządzanie zależnościami w Pythonie:
@@ -561,7 +562,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ./cloud_run.sh
    ```
 
-   > **Uwaga**
+   > [!NOTE]
    > W trakcie wdrożenia może pojawić się pytanie o utworzenie repozytorium Docker w Artifact Registry:
    > ```
    > Deploying from source requires an Artifact Registry Docker repository to store built containers.
