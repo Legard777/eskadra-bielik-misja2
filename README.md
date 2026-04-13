@@ -6,6 +6,8 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 >**Materiał warsztatowy — wyłącznie do celów edukacyjnych.**
 >Kod i konfiguracja zawarte w tym repozytorium nie są przystosowane do wdrożeń produkcyjnych. Celowo pominięto m.in. uwierzytelnianie API, zarządzanie sekretami, monitoring oraz limity kosztów, aby uprościć przebieg warsztatu i skupić się na zrozumieniu architektury RAG.
 
+![Eskadra Bielik — Misja 2](assets/gifs-animated/krok-0-splash-640px-high-compress.gif)
+
 ## Agenda warsztatu
 
 | # | Temat | Czas | Punkty |
@@ -72,6 +74,8 @@ Dodatkowo, dzięki prostemu interfejsowi graficznemu, aplikacja pozwala na wygod
 
 ## Diagramy architektury
 
+![Diagram architektury RAG](assets/gifs-animated/krok-0-architecture-640px-high-1-compress.gif)
+
 Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu [`architektura/`](architektura/):
 
 | Plik | Zawartość |
@@ -109,6 +113,8 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 
 ## 1. Przygotowanie projektu Google Cloud `~20 min`
+
+![Krok 1 — Przygotowanie projektu Google Cloud](assets/gifs-animated/krok-1-640px-high-compress.gif)
 
 > [!NOTE]
 >Przed warsztatem została przesłana instrukcja zapoznania się z procesem aktywacji kredytów Google Cloud (link w TIP poniżej) — ten krok nie powinien być nowością.
@@ -216,6 +222,8 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 ## 2. Konfiguracja zmiennych środowiskowych i usług Google Cloud `~5 min`
 
+![Krok 2 — Konfiguracja zmiennych środowiskowych](assets/gifs-animated/krok-2-640px-high-compress.gif)
+
 1. Nadaj prawa wykonywania wszystkim skryptom `.sh` *(z wyjątkiem `setup_env.sh`, który uruchamiamy przez `source` — nie wymaga bitu wykonywalności)*
    ```bash
    bash skrypty/make_scripts_executable.sh
@@ -301,6 +309,8 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ```
 
 ## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na [Cloud Run](https://cloud.google.com/run?hl=en) `~15 min`
+
+![Krok 3 — Uruchomienie modeli Bielik i EmbeddingGemma](assets/gifs-animated/krok-3-640px-high-compress.gif)
 
 Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim** w tym samym terminalu.
 
@@ -475,6 +485,8 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 ## 4. Inicjalizacja wektorowej bazy danych w BigQuery `~5 min`
 
+![Krok 4 — Inicjalizacja BigQuery](assets/gifs-animated/krok-4-640px-high-compress.gif)
+
 Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkcją Vector Search jako bazę z wiedzą kontekstową.
 
 1. Przejdź do katalogu `vector_store`
@@ -524,6 +536,8 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    ```
 
 ## 5. Uruchomienie API (Orchestration) na [Cloud Run](https://cloud.google.com/run?hl=en) `~10 min`
+
+![Krok 5 — Uruchomienie API Orchestration](assets/gifs-animated/krok-5-640px-high-compress.gif)
 
 Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embeddingowy, [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search) i model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) w jeden przepływ i udostępnia go przez API oraz interfejs Web UI.
 
@@ -589,6 +603,8 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 ---
 
 ## 6. Testowanie API — Zasilanie i Wyszukiwanie (RAG) `~10 min`
+
+![Krok 6 — Testowanie API RAG](assets/gifs-animated/krok-6-640px-high-compress.gif)
 
 1. Przejrzyj plik z przykładowymi danymi
    ```bash
@@ -688,6 +704,8 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 ## 7. Interfejs Programistyczny (API) `~10 min`
 
+![Krok 7 — Interfejs API i Swagger UI](assets/gifs-animated/krok-7-640px-high-compress.gif)
+
 Aplikacja udostępnia proste API stworzone przy pomocy frameworka *FastAPI*, pozwalające nie tylko na zasilanie bazy wiedzy, ale również na zadawanie pytań.
 
 Aplikacja definiuje w pliku `orchestration/main.py` następujące ścieżki:
@@ -724,6 +742,8 @@ Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny, który
 ```
 
 ## 8. Interfejs Użytkownika (Web UI) `~20 min`
+
+![Krok 8 — Interfejs Web UI](assets/gifs-animated/krok-8-640px-high-compress.gif)
 
 Oprócz interfejsu API, aplikacja udostępnia również prostą nakładkę WWW. Całość pozwala na wygodne sprawdzenie i porównanie działania bazowego modelu [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) z modelem [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) wspartym przez RAG.
 
@@ -800,6 +820,8 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
    ```
 
 ## 9. Certyfikat ukończenia warsztatu `~10 min`
+
+![Krok 9 — Certyfikat ukończenia warsztatu](assets/gifs-animated/krok-9-640px-high-compress.gif)
 
 Gratulacje — warsztat dobiegł końca! Wygeneruj zaszyfrowany certyfikat zawierający wszystkie 8 checkpointów i prześlij go prowadzącemu.
 
