@@ -680,18 +680,6 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-curl-ask).
 
-   > **Dla chętnych — odpowiednik SQL:** każde z powyższych zapytań wewnętrznie wykonuje Vector Search w BigQuery. Możesz zobaczyć jak to wygląda „pod maską", wklejając w edytorze BigQuery (zastąp `[...]` wektorem zwróconym przez `/api/embed`):
-   > ```sql
-   > SELECT base.content, distance
-   > FROM VECTOR_SEARCH(
-   >   TABLE `rag_dataset.hotel_rules`,
-   >   'embedding',
-   >   (SELECT [...] AS embedding),
-   >   top_k => 3,
-   >   distance_type => 'COSINE'
-   > )
-   > ```
-   > Wynik to 3 dokumenty semantycznie najbliższe zapytaniu — dokładnie to, co aplikacja wysyła jako kontekst do modelu [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct).
 
 5. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
    ```bash
