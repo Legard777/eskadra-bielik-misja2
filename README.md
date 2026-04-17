@@ -6,9 +6,7 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 >**Materiał warsztatowy — wyłącznie do celów edukacyjnych.**
 >Kod i konfiguracja zawarte w tym repozytorium nie są przystosowane do wdrożeń produkcyjnych. Celowo pominięto m.in. uwierzytelnianie API, zarządzanie sekretami, monitoring oraz limity kosztów, aby uprościć przebieg warsztatu i skupić się na zrozumieniu architektury RAG.
 
-![Eskadra Bielik — Misja 2](assets/gifs-animated/krok-0-splash-640px-high-compress.gif)
-
-<video src="[assets/videos/krok-0-splash-original-hd-ok.mp4](https://github.com/user-attachments/assets/5e0f5dca-dca6-4b87-be20-0ef5834bd746)" controls width="720" autoplay muted loop preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
+<video src="https://github.com/user-attachments/assets/5e0f5dca-dca6-4b87-be20-0ef5834bd746" controls width="720" autoplay muted loop preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 ## Agenda warsztatu
 
