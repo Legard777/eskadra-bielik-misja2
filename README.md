@@ -8,6 +8,8 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 
 ![Eskadra Bielik — Misja 2](assets/gifs-animated/krok-0-splash-640px-high-compress.gif)
 
+<video src="assets/videos/krok-0-splash-original-hd-ok.mp4" controls width="720" autoplay muted loop preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
+
 ## Agenda warsztatu
 
 | # | Temat | Czas | Punkty |
