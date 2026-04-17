@@ -6,7 +6,7 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 >**Materiał warsztatowy — wyłącznie do celów edukacyjnych.**
 >Kod i konfiguracja zawarte w tym repozytorium nie są przystosowane do wdrożeń produkcyjnych. Celowo pominięto m.in. uwierzytelnianie API, zarządzanie sekretami, monitoring oraz limity kosztów, aby uprościć przebieg warsztatu i skupić się na zrozumieniu architektury RAG.
 
-<video src="https://github.com/user-attachments/assets/5e0f5dca-dca6-4b87-be20-0ef5834bd746" controls width="720" autoplay muted loop preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
+<video src="https://github.com/user-attachments/assets/5e0f5dca-dca6-4b87-be20-0ef5834bd746" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 ## Agenda warsztatu
 
@@ -74,7 +74,7 @@ Dodatkowo, dzięki prostemu interfejsowi graficznemu, aplikacja pozwala na wygod
 
 ## Diagramy architektury
 
-![Diagram architektury RAG](assets/gifs-animated/krok-0-architecture-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/5e0f5dca-dca6-4b87-be20-0ef5834bd746" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu [`architektura/`](architektura/):
 
@@ -114,7 +114,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 ## 1. Przygotowanie projektu Google Cloud `~20 min`
 
-![Krok 1 — Przygotowanie projektu Google Cloud](assets/gifs-animated/krok-1-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/8d0bf96a-1460-4bd4-8c52-cf389c8533dd" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 > [!NOTE]
 >Przed warsztatem została przesłana instrukcja zapoznania się z procesem aktywacji kredytów Google Cloud (link w TIP poniżej) — ten krok nie powinien być nowością.
@@ -222,7 +222,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 ## 2. Konfiguracja zmiennych środowiskowych i usług Google Cloud `~5 min`
 
-![Krok 2 — Konfiguracja zmiennych środowiskowych](assets/gifs-animated/krok-2-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/cbdfc7ed-948d-4812-bafc-4c9e5294ed12" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 1. Nadaj prawa wykonywania wszystkim skryptom `.sh` *(z wyjątkiem `setup_env.sh`, który uruchamiamy przez `source` — nie wymaga bitu wykonywalności)*
    ```bash
@@ -310,7 +310,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 ## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na [Cloud Run](https://cloud.google.com/run?hl=en) `~15 min`
 
-![Krok 3 — Uruchomienie modeli Bielik i EmbeddingGemma](assets/gifs-animated/krok-3-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/f99a57cd-ce05-433d-adf6-20b02587d3a2" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 Poniższe kroki przeprowadzą Cię przez wdrożenie obu modeli **jeden po drugim** w tym samym terminalu.
 
@@ -485,7 +485,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 ## 4. Inicjalizacja wektorowej bazy danych w BigQuery `~5 min`
 
-![Krok 4 — Inicjalizacja BigQuery](assets/gifs-animated/krok-4-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/41f2dc1a-ad88-4853-93b1-5b5de27a209a" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkcją Vector Search jako bazę z wiedzą kontekstową.
 
@@ -537,7 +537,7 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
 
 ## 5. Uruchomienie API (Orchestration) na [Cloud Run](https://cloud.google.com/run?hl=en) `~10 min`
 
-![Krok 5 — Uruchomienie API Orchestration](assets/gifs-animated/krok-5-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/7d0b06cb-cf73-43a5-be40-9e8b9b4c340e" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embeddingowy, [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search) i model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) w jeden przepływ i udostępnia go przez API oraz interfejs Web UI.
 
@@ -604,7 +604,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 ## 6. Testowanie API — Zasilanie i Wyszukiwanie (RAG) `~10 min`
 
-![Krok 6 — Testowanie API RAG](assets/gifs-animated/krok-6-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/507b8e79-e72e-45b6-805f-50d63fb20bad" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 1. Przejrzyj plik z przykładowymi danymi
    ```bash
@@ -704,7 +704,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 ## 7. Interfejs Programistyczny (API) `~10 min`
 
-![Krok 7 — Interfejs API i Swagger UI](assets/gifs-animated/krok-7-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/5fb575ad-a61a-437d-8ab0-dcc0989e9ac3" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 Aplikacja udostępnia proste API stworzone przy pomocy frameworka *FastAPI*, pozwalające nie tylko na zasilanie bazy wiedzy, ale również na zadawanie pytań.
 
@@ -743,7 +743,7 @@ Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny, który
 
 ## 8. Interfejs Użytkownika (Web UI) `~20 min`
 
-![Krok 8 — Interfejs Web UI](assets/gifs-animated/krok-8-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/5b7f87a2-5a9b-491d-acc8-b7f02e44bffa" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 Oprócz interfejsu API, aplikacja udostępnia również prostą nakładkę WWW. Całość pozwala na wygodne sprawdzenie i porównanie działania bazowego modelu [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) z modelem [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) wspartym przez RAG.
 
@@ -821,7 +821,7 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 
 ## 9. Certyfikat ukończenia warsztatu `~10 min`
 
-![Krok 9 — Certyfikat ukończenia warsztatu](assets/gifs-animated/krok-9-640px-high-compress.gif)
+<video src="https://github.com/user-attachments/assets/ebc7ba37-28a9-458e-9d9f-5de22e621b9c" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 Gratulacje — warsztat dobiegł końca! Wygeneruj zaszyfrowany certyfikat zawierający wszystkie 8 checkpointów i prześlij go prowadzącemu.
 
