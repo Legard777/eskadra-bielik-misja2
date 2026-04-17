@@ -682,6 +682,31 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
         -d '{"query": "Ile kosztuje parking hotelowy?"}'
    ```
 
+   > **🔍 Dla chętnych — VECTOR_SEARCH bezpośrednio w BigQuery:** chcesz zobaczyć jak wygląda wyszukiwanie wektorowe od środka? Wykonaj je samodzielnie w dwóch krokach.
+   >
+   > **Krok 1** — pobierz wektor zapytania przez curl:
+   > ```bash
+   > curl -X POST "$EMBEDDING_URL/api/embed" \
+   >   -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
+   >   -H "Content-Type: application/json" \
+   >   -d '{"model": "embeddinggemma", "input": "Jak często mierzyć chlor?"}'
+   > ```
+   > Skopiuj tablicę liczb z pola `embeddings[0]` w odpowiedzi JSON.
+   >
+   > **Krok 2** — wklej wektor do edytora [BigQuery](https://console.cloud.google.com/bigquery) i uruchom zapytanie:
+   > ```sql
+   > SELECT base.id, base.content, distance
+   > FROM VECTOR_SEARCH(
+   >   TABLE `rag_dataset.hotel_rules`,
+   >   'embedding',
+   >   (SELECT [0.123, -0.456, 0.789, /* ... wklej tutaj swój wektor ... */] AS embedding),
+   >   top_k => 3,
+   >   distance_type => 'COSINE'
+   > )
+   > ORDER BY distance ASC
+   > ```
+   > Kolumna `distance` to odległość kosinusowa (0 = identyczny, 1 = ortogonalny) — im mniejsza, tym lepiej dopasowany dokument. Dokładnie to samo robi `orchestration-api` za kulisami przy każdym zapytaniu `/ask`.
+
 <details>
 <summary>📸 Podgląd 11 — Przykładowa odpowiedź RAG z endpointu /ask</summary>
 
