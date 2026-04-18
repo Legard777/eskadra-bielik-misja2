@@ -668,6 +668,13 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```
    > Kolumna `embedding_dimensions` pokaże ile wymiarów ma wygenerowany wektor.
 
+   > [!NOTE]
+   > Wynik to **738** — stała właściwość modelu `embeddinggemma`, zakodowana w jego wagach. Aplikacja tej liczby nie konfiguruje ani nie skraca — po prostu przekazuje tablicę zwróconą przez model do BigQuery. Każdy model embeddingowy ma inny wymiar (np. modele BERT-base: 768, modele large: 1024, niektóre nowe: 2048+). Wyższy wymiar nie zawsze oznacza lepszą jakość — liczy się architektura i dane treningowe modelu.
+
+   > **🧌 Dla Smerfa Marudy — czy da się zmienić wymiar wektora?**
+   >
+   > Tak, ale wymaga zamiany modelu embeddingowego na inny (np. `nomic-embed-text` → 768 wymiarów). BigQuery **nie wymaga** zmiany schematu tabeli — `FLOAT64 REPEATED` przyjmuje tablicę dowolnej długości — ale wszystkie rekordy w tabeli muszą mieć wektory tego samego wymiaru, bo inaczej `VECTOR_SEARCH` porównuje jabłka z pomarańczami. Zmiana modelu wymaga więc: zamiany modelu w `embedding_model/`, wyczyszczenia tabeli BigQuery i ponownego przejścia przez kroki 4–6.
+
 4. Wykonaj testowe zapytania RAG
 
    Pytanie o częstotliwość pomiaru chloru w basenie:
