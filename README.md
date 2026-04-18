@@ -2,6 +2,9 @@
 
 Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedzy w oparciu o model [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i Google Cloud.
 
+> [!NOTE]
+> To repozytorium jest forkiem projektu [eskadra-bielik-misja2](https://github.com/avedave/eskadra-bielik-misja2) autorstwa [Dawida Ostrowskiego](https://github.com/avedave). Oficjalna wersja oryginalna dostępna jest pod adresem: https://github.com/avedave/eskadra-bielik-misja2. Niniejsza wersja zawiera dodatkowe modyfikacje i rozszerzenia względem oryginału.
+
 > [!WARNING]
 >**Materiał warsztatowy — wyłącznie do celów edukacyjnych.**
 >Kod i konfiguracja zawarte w tym repozytorium nie są przystosowane do wdrożeń produkcyjnych. Celowo pominięto m.in. uwierzytelnianie API, zarządzanie sekretami, monitoring oraz limity kosztów, aby uprościć przebieg warsztatu i skupić się na zrozumieniu architektury RAG.
