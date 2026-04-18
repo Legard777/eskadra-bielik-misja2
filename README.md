@@ -997,7 +997,7 @@ Dominującą pozycją jest GPU NVIDIA L4 używany przez model [Bielik](https://o
 | **Łącznie** | | **~$3.91** |
 
 > [!IMPORTANT]
->Uruchom skrypt `cleanup.sh` niezwłocznie po zakończeniu warsztatu. Usługi [Cloud Run](https://cloud.google.com/run?hl=en) z GPU naliczają koszty przez cały czas działania instancji — nawet gdy nikt z nich aktywnie nie korzysta.
+>Usługi [Cloud Run](https://cloud.google.com/run?hl=en) automatycznie skalują do zera gdy nikt ich nie odpytuje — po zakończeniu warsztatu nie naliczają kosztów. Jedynym stałym kosztem są repozytoria Artifact Registry (~$0.01/mies.). Uruchom skrypt `cleanup_minimal.sh` jeśli chcesz je usunąć, lub `cleanup.sh` aby usunąć wszystkie zasoby.
 
 ### Optymalizacje dla środowisk produkcyjnych [Cloud Run](https://cloud.google.com/run?hl=en)
 
