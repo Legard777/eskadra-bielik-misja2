@@ -240,6 +240,10 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ```
 
    > **🤖 Zadanie dla Gemini CLI** — zamiast czytać opis, zapytaj AI! Uruchom w terminalu:
+
+   > [!NOTE]
+   > **Gemini CLI jest pre-zainstalowany w Cloud Shell** i uwierzytelnia się automatycznie Twoimi danymi Google. Przy pierwszym uruchomieniu może pojawić się prośba o akceptację warunków użytkowania — zatwierdź ją i kontynuuj. Komendę zamykającą Gemini CLI to `/quit`.
+
    > ```bash
    > gemini "Co robi ten skrypt @setup_env.sh? Wyjaśnij każdą zmienną środowiskową."
    > ```
@@ -262,11 +266,11 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 5. Włącz potrzebne usługi w projekcie Google Cloud
    ```bash
-   gcloud services enable run.googleapis.com
-   gcloud services enable cloudbuild.googleapis.com
-   gcloud services enable artifactregistry.googleapis.com
-   gcloud services enable bigquery.googleapis.com
+   gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com bigquery.googleapis.com
    ```
+
+   > [!TIP]
+   > Podanie wielu usług w jednej komendzie to najlepsza praktyka — jedno wywołanie API zamiast czterech, wyraźnie szybsze. Możesz też włączać je osobno (`gcloud services enable run.googleapis.com`, itd.) — efekt jest identyczny, tylko wolniej.
 
    > **🤖 Zadanie dla Gemini CLI** — zapytaj AI dlaczego usługi są domyślnie wyłączone:
    > ```bash
@@ -363,7 +367,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmcloud_runsh).
 
-3. Uruchom skrypt utworzenie modelu LLM->[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) na [Cloud Run](https://cloud.google.com/run?hl=en) uruchamianym przez Ollama. Model pobrany za Google Cloud Storage
+3. Uruchom skrypt wdrażający model LLM->[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) na [Cloud Run](https://cloud.google.com/run?hl=en) z silnikiem Ollama. Model zostanie pobrany z Google Cloud Storage
    ```bash
    ./cloud_run.sh
    ```
@@ -434,7 +438,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    > ```
    > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelcloud_runsh).
 
-3. Uruchom skrypt utworzenie modelu EMBEDDING->Gemma na [Cloud Run](https://cloud.google.com/run?hl=en) uruchamianym przez Ollama. Model pobrany za Google Cloud Storage
+3. Uruchom skrypt wdrażający model EMBEDDING->Gemma na [Cloud Run](https://cloud.google.com/run?hl=en) z silnikiem Ollama. Model zostanie pobrany z Google Cloud Storage
    ```bash
    ./cloud_run.sh
    ```
@@ -620,6 +624,8 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
    > ⚠️ 
    > Po wgraniu danych przez endpoint `/ingest` aplikacja automatycznie doda trzecią kolumnę: **`embedding`** — wygenerowany przez [EmbeddingGemma](https://deepmind.google/models/gemma/embeddinggemma/) wektor liczbowy reprezentujący znaczenie tekstu. To właśnie ta kolumna umożliwia semantyczne wyszukiwanie w [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search).
+   >
+   > 📌 **Uwaga na nazwy kolumn:** kolumna CSV o nazwie `text` jest zapisywana w BigQuery pod nazwą **`content`** — tak zdefiniowany jest schemat tabeli. W podglądzie BigQuery zobaczysz kolumny `id`, `content` i `embedding` (nie `text`).
 
 2. Wgraj przykładowe dane do [BigQuery](https://cloud.google.com/bigquery?hl=en) z pliku CSV
    ```bash
@@ -685,6 +691,12 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > **🔍 Dla chętnych — VECTOR_SEARCH bezpośrednio w BigQuery:** chcesz zobaczyć jak wygląda wyszukiwanie wektorowe od środka? Wykonaj je samodzielnie w dwóch krokach.
    >
    > **Krok 1** — pobierz wektor zapytania przez curl:
+   >
+   > Najpierw pobierz i zapisz adres URL usługi embedding:
+   > ```bash
+   > export EMBEDDING_URL=$(gcloud run services describe embedding-gemma --region $REGION --format="value(status.url)")
+   > ```
+   > Następnie wyślij zapytanie:
    > ```bash
    > curl -X POST "$EMBEDDING_URL/api/embed" \
    >   -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
@@ -727,7 +739,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ./checkpoints/checkpoint_6.sh
    ```
 
-## 7. Interfejs Programistyczny (API) `~10 min`
+## 7. Przegląd API i architektury kodu `~10 min`
 
 <video src="https://github.com/user-attachments/assets/5fb575ad-a61a-437d-8ab0-dcc0989e9ac3" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
@@ -864,12 +876,9 @@ cloudshell dl cert_artifacts/checkpoint_certyfikat.enc
 ```
 
 > [!TIP]
-> Komenda `cloudshell dl` automatycznie pobiera plik do folderu Pobrane na Twoim lokalnym komputerze. Plik jest zaszyfrowany — możesz go przesłać prowadzącemu przez dowolny kanał (email, Slack, formularz).
+> Komenda `cloudshell dl` automatycznie pobiera plik do folderu Pobrane na Twoim lokalnym komputerze. Plik jest zaszyfrowany i zawiera potwierdzenie wykonania wszystkich etapów warsztatu powiązane z Twoim kontem Google Cloud i projektem — możesz go przesłać prowadzącemu przez dowolny kanał (email, Slack, formularz).
 
 Wyślij pobrany plik `checkpoint_certyfikat.enc` prowadzącemu.
-
-> [!TIP]
-> Plik jest zaszyfrowany — możesz go przesłać przez dowolny kanał (email, formularz, Slack). Zawiera potwierdzenie wykonania wszystkich etapów warsztatu powiązane z Twoim kontem Google Cloud i projektem.
 
 ---
 
@@ -1010,3 +1019,45 @@ Aby wznowić pracę, wykonaj poniższe trzy komendy:
    ```
 
 Po wykonaniu tych kroków możesz kontynuować od miejsca, w którym nastąpiło rozłączenie.
+
+### Co zrobić jeśli pojawia się błąd braku GPU quota?
+
+Jeśli podczas uruchamiania modelu Bielik pojawia się komunikat:
+```
+ERROR: You do not have quota for using GPUs without zonal redundancy.
+```
+
+Użyj awaryjnego skryptu bez GPU — jest w tym samym katalogu `llm/`:
+```bash
+./cloud_run_no_gpu.sh
+```
+
+Odpowiedzi modelu będą wolniejsze (1–5 minut na prompt), ale warsztat można w pełni kontynuować. Poinformuj prowadzącego — może odblokować quota na Twoim projekcie.
+
+### Co zrobić jeśli skrypt checkpoint nie przechodzi?
+
+Sprawdź kolejno:
+
+1. Czy jesteś w głównym katalogu projektu (`eskadra-bielik-misja2`)?
+   ```bash
+   pwd
+   ```
+2. Czy zmienne środowiskowe są załadowane?
+   ```bash
+   echo $PROJECT_ID
+   ```
+   Jeśli puste — uruchom `source setup_env.sh`.
+3. Czy wszystkie wymagane usługi Cloud Run mają status **Ready** w [Cloud Console → Cloud Run](https://console.cloud.google.com/run)?
+4. Jeśli checkpoint nadal nie przechodzi — poinformuj prowadzącego i podaj treść komunikatu błędu.
+
+### Co zrobić jeśli `curl` zwraca błąd lub pustą odpowiedź?
+
+Najpierw sprawdź czy zmienna `$ORCHESTRATION_URL` jest ustawiona:
+```bash
+echo $ORCHESTRATION_URL
+```
+Jeśli jest pusta — ustaw ją ponownie:
+```bash
+export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
+```
+Jeśli zmienna jest ustawiona, a curl nadal zwraca błąd `403` — sprawdź czy masz nadane uprawnienie `roles/run.invoker` (krok 2.6).
