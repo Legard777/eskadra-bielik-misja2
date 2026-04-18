@@ -251,7 +251,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > gemini "Co robi ten skrypt @setup_env.sh? Wyjaśnij każdą zmienną środowiskową."
    > ```
    > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-setupenvsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa, dlatego dwie osoby zadające to samo pytanie mogą otrzymać różne, ale równie poprawne wyjaśnienia.
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-setupenvsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa, dlatego dwie osoby zadające to samo pytanie mogą otrzymać różne, ale równie poprawne wyjaśnienia.
 
 4. Uruchom skrypt `setup_env.sh`
    ```bash
@@ -262,7 +262,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```bash
    > gemini "Jaka jest różnica między source setup_env.sh a ./setup_env.sh w bashu? Kiedy używać każdej z form?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#dlaczego-source-a-nie-setupenvsh).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#dlaczego-source-a-nie-setupenvsh).
 
    > **Ważne**
    >Jeżeli z jakiegoś powodu musisz ponownie uruchomić terminal Cloud Shell, pamiętaj aby ponownie uruchomić skrypt `setup_env.sh` aby wczytać zmienne środowiskowe.
@@ -279,7 +279,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```bash
    > gemini "Dlaczego usługi Google Cloud są domyślnie wyłączone? Wyjaśnij krótko każdą z włączanych usług: run, cloudbuild, artifactregistry, bigquery i co się stanie jeśli pominąć ten krok."
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komendy-gcloud-services-enable).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#komendy-gcloud-services-enable).
 
 6. Uzyskaj uprawnienia do wywoływania usług [Cloud Run](https://cloud.google.com/run?hl=en)
    ```bash
@@ -292,7 +292,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > ```bash
    > gemini "Wyjaśnij czym jest IAM w Google Cloud i jak działa rola roles/run.invoker. Co się stanie gdy wywołam curl bez tej roli — jaki błąd HTTP i dlaczego?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-gcloud-projects-add-iam-policy-binding).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#komenda-gcloud-projects-add-iam-policy-binding).
 
 7. Zażądaj dostępu do bucketu z modelami Ollama
 
@@ -335,7 +335,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    > ```bash
    > gemini "Co robi skrypt @ollama_models/setup_models.sh? Czym jest Cloud Storage bucket i dlaczego modele językowe LLM ważą kilka gigabajtów, a nie kilka megabajtów jak zwykłe programy?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-ollama_modelssetup_modelssh).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-ollama_modelssetup_modelssh).
 
 ### 3.2 Tworzenie dedykowanego repozytorium na obraz zawierający Ollama
 
@@ -351,7 +351,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    > ```bash
    > gemini "Co robi skrypt @ollama_docker_image/setup_ollama_image.sh? Czym jest obraz Docker, dlaczego buduje się własny obraz zamiast użyć gotowego i do czego służy Artifact Registry?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-ollama_docker_imagesetup_ollama_imagesh).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-ollama_docker_imagesetup_ollama_imagesh).
 
 ### 3.3 Model LLM->[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct)
 1. Przejdź do katalogu `llm`
@@ -368,7 +368,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    > ```bash
    > gemini "Co robi skrypt @llm/cloud_run.sh? Dlaczego model Bielik wymaga GPU NVIDIA L4 — czym fundamentalnie różni się przetwarzanie na GPU od CPU w kontekście modeli językowych?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmcloud_runsh).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-llmcloud_runsh).
 
 3. Uruchom skrypt wdrażający model LLM->[Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) na [Cloud Run](https://cloud.google.com/run?hl=en) z silnikiem Ollama. Model zostanie pobrany z Google Cloud Storage
    ```bash
@@ -403,7 +403,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    > ```bash
    > gemini "Co robi skrypt @llm/llm_test1.sh? Wyjaśnij jak działa token JWT w Google Cloud — skąd pochodzi, jak długo jest ważny i co się stanie gdy wyślę zapytanie bez nagłówka Authorization?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-llmllm_test1sh).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-llmllm_test1sh).
 
 6. Zadaj pierwsze pytanie modelowi [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i sprawdź jego odpowiedź
    ```bash
@@ -439,7 +439,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    > ```bash
    > gemini "Co robi skrypt @embedding_model/cloud_run.sh? Dlaczego model embeddingowy działa bez GPU, a Bielik go potrzebuje — co fundamentalnie różni generowanie tekstu od generowania wektora?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelcloud_runsh).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-embedding_modelcloud_runsh).
 
 3. Uruchom skrypt wdrażający model EMBEDDING->Gemma na [Cloud Run](https://cloud.google.com/run?hl=en) z silnikiem Ollama. Model zostanie pobrany z Google Cloud Storage
    ```bash
@@ -465,7 +465,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    > ```bash
    > gemini "Co robi skrypt @embedding_model/embedding_test1.sh? Wyjaśnij czym jest przestrzeń wektorowa — jak 2048 liczb może wyrażać 'znaczenie' tekstu i dlaczego zdania o podobnym sensie dają wektory bliskie sobie geometrycznie?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-embedding_modelembedding_test1sh).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-embedding_modelembedding_test1sh).
 
 6. Wygeneruj pierwsze testowe embeddingi (wektory) dla przykładowego tekstu "Suwerenne AI po polsku — [Bielik](https://ollama.com/SpeakLeash/bielik-4.5b-v3.0-instruct) i RAG w Google Cloud".
    ```bash
@@ -514,7 +514,7 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    > ```bash
    > gemini "Do czego służy biblioteka google-cloud-bigquery w Pythonie? Czym jest pip, jak działa instalacja zależności i dlaczego w Cloud Shell pomijamy wirtualne środowisko venv?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#pip-install-google-cloud-bigquery).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#pip-install-google-cloud-bigquery).
 
 3. Przejrzyj kod skryptu inicjalizacyjnego
    ```bash
@@ -525,7 +525,7 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    > ```bash
    > gemini "Co robi skrypt @vector_store/init_db.py? Dlaczego kolumna embedding ma typ FLOAT64 REPEATED a nie JSON ani STRING — jak BigQuery Vector Search korzysta z tego konkretnego typu do wyszukiwania podobnych wektorów?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-vector_storeinit_dbpy).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-vector_storeinit_dbpy).
 
 4. Uruchom skrypt inicjalizacyjny, który stworzy zbiór danych i tabelę w [BigQuery](https://cloud.google.com/bigquery?hl=en)
    ```bash
@@ -557,7 +557,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```bash
    > gemini "Co robi plik @orchestration/main.py? Policz ile linii liczy ten plik i wyjaśnij jak FastAPI pozwala zbudować pełny system RAG — embedding, Vector Search, LLM — w tak zwartym kodzie."
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#plik-orchestrationmainpy).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#plik-orchestrationmainpy).
 
 2. Przejrzyj skrypt wdrożeniowy
    ```bash
@@ -568,7 +568,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```bash
    > gemini "Co robi skrypt @orchestration/cloud_run.sh? Wyjaśnij dlaczego adresy URL modeli są przekazywane przez zmienne środowiskowe a nie wpisane na stałe w kodzie — czym jest zasada twelve-factor app?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#skrypt-orchestrationcloud_runsh).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-orchestrationcloud_runsh).
 
 3. Przejdź do katalogu `orchestration`
    ```bash
@@ -640,7 +640,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```bash
    > gemini "Co robi ta komenda curl? Wyjaśnij czym jest multipart/form-data, czym różni się flaga -F od -d w curl i jak endpoint /ingest po stronie serwera odbiera i przetwarza przesłany plik CSV."
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-curl-ingest).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#komenda-curl-ingest).
 
 3. Zweryfikuj czy rekordy pojawiły się w [BigQuery](https://cloud.google.com/bigquery?hl=en)
 
@@ -741,7 +741,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```bash
    > gemini "Prześledź krok po kroku co dzieje się w systemie gdy wysyłam zapytanie do endpointu /ask: od wektora zapytania, przez VECTOR_SEARCH w BigQuery, aż do odpowiedzi Bielika. Ile żądań HTTP wykonuje orchestration-api w tle obsługując jedno pytanie użytkownika?"
    > ```
-   > Porównaj swoją odpowiedź z [opisem referencyjnym](script_descriptions.md#komenda-curl-ask).
+   > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#komenda-curl-ask).
 
 
 5. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
@@ -1070,4 +1070,26 @@ Jeśli jest pusta — ustaw ją ponownie:
 ```bash
 export ORCHESTRATION_URL=$(gcloud run services describe orchestration-api --region $REGION --format="value(status.url)")
 ```
+
+---
+
+## Licencja
+
+Projekt jest udostępniony na licencji **Apache License 2.0** — szczegółowy tekst znajdziesz w pliku [LICENSE](LICENSE).
+
+### Czym Apache 2.0 różni się od innych popularnych licencji?
+
+| Licencja | Użycie komercyjne | Modyfikacje | Patent | Copyleft |
+|---|---|---|---|---|
+| **Apache 2.0** | tak | tak (z informacją o zmianach) | jawna ochrona patentowa | brak |
+| MIT | tak | tak | brak ochrony | brak |
+| GPL v3 | tak | tak, ale kod pochodny musi być GPL | jawna ochrona | silny |
+| BSD 2-Clause | tak | tak | brak ochrony | brak |
+
+**Co to oznacza w praktyce?**
+
+- **Możesz** używać, kopiować, modyfikować i dystrybuować kod — również komercyjnie.
+- **Musisz** zachować informację o oryginalnej licencji i autorach oraz oznaczyć pliki, które zmodyfikowałeś.
+- **Dostajesz** jawną ochronę patentową od każdego współtwórcy — jeśli ktoś wniósł kod, nie może Cię później pozwać za naruszenie swojego patentu związanego z tym kodem.
+- **Nie musisz** udostępniać kodu pochodnego na tej samej licencji (w odróżnieniu od GPL).
 Jeśli zmienna jest ustawiona, a curl nadal zwraca błąd `403` — sprawdź czy masz nadane uprawnienie `roles/run.invoker` (krok 2.6).
