@@ -892,7 +892,6 @@ Usługi [Cloud Run](https://cloud.google.com/run?hl=en) skalują się automatycz
 
 1. Wróć do głównego katalogu i uruchom minimalny skrypt czyszczący:
    ```bash
-   cd ~/eskadra-bielik-misja2
    ./skrypty/cleanup_minimal.sh
    ```
 
@@ -917,7 +916,6 @@ Jeśli chcesz mieć 100% pewności braku kosztów lub zamierzasz zakończyć pra
 
 1. Wróć do głównego katalogu projektu i uruchom pełny skrypt czyszczący:
    ```bash
-   cd ~/eskadra-bielik-misja2
    ./skrypty/cleanup.sh
    ```
 
@@ -998,7 +996,7 @@ Aby wznowić pracę, wykonaj poniższe trzy komendy:
 
 1. Przejdź do katalogu projektu
    ```bash
-   cd ~/eskadra-bielik-misja2
+   cd eskadra-bielik-misja2
    ```
 
 2. Załaduj zmienne środowiskowe
