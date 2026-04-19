@@ -90,6 +90,20 @@ Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu 
 | [`05_mapa_repozytorium.md`](architektura/05_mapa_repozytorium.md) | Struktura plików i ich rola w architekturze |
 | [`prompty_nano_banana.md`](architektura/prompty_nano_banana.md) | Prompty dla agentów AI — spójność architektoniczna |
 
+### Nagrania wideo
+
+**Pipeline ingestion — ładowanie danych do BigQuery**
+
+<a href="https://youtu.be/D0qCltR8UJQ" target="_blank">
+  <img src="https://img.youtube.com/vi/D0qCltR8UJQ/0.jpg" alt="RAG Ingestion Steps" width="480">
+</a>
+
+**Pipeline RAG — zapytanie → embedding → BQ → LLM → odpowiedź**
+
+<a href="https://youtu.be/D7s8duHl7sQ" target="_blank">
+  <img src="https://img.youtube.com/vi/D7s8duHl7sQ/0.jpg" alt="RAG Query Steps" width="480">
+</a>
+
 <details>
 <summary>📸 Podgląd 01 — Diagram architektury RAG</summary>
 
