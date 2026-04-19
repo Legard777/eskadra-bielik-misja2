@@ -91,14 +91,6 @@ Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu 
 | [`prompty_nano_banana.md`](architektura/prompty_nano_banana.md) | Prompty dla agentów AI — spójność architektoniczna |
 
 <details>
-<summary>📸 Podgląd 01 — Diagram architektury RAG</summary>
-
-![Screenshot 01 — Diagram architektury RAG](assets/screenshot-01-architektura-rag.png)
-> *Do uzupełnienia: wizualny diagram przedstawiający przepływ danych — od zapytania użytkownika, przez embedding i Vector Search w BigQuery, aż po odpowiedź modelu Bielik.*
-
-</details>
-
-<details>
 <summary>▶ Nagranie — Pipeline ingestion: ładowanie danych do BigQuery</summary>
 
 <a href="https://youtu.be/D0qCltR8UJQ" target="_blank">
