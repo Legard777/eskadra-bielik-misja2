@@ -91,7 +91,7 @@ Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu 
 | [`prompty_nano_banana.md`](architektura/prompty_nano_banana.md) | Prompty dla agentów AI — spójność architektoniczna |
 
 <details>
-<summary>▶ Nagranie — Pipeline ingestion: ładowanie danych do BigQuery</summary>
+<summary>▶️ Nagranie — Pipeline ingestion: ładowanie danych do BigQuery</summary>
 
 <a href="https://youtu.be/D0qCltR8UJQ" target="_blank">
   <img src="https://img.youtube.com/vi/D0qCltR8UJQ/0.jpg" alt="RAG Ingestion Steps" width="480">
@@ -100,7 +100,7 @@ Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu 
 </details>
 
 <details>
-<summary>▶ Nagranie — Pipeline RAG: zapytanie → embedding → BQ → LLM → odpowiedź</summary>
+<summary>▶️ Nagranie — Pipeline RAG: zapytanie → embedding → BQ → LLM → odpowiedź</summary>
 
 <a href="https://youtu.be/D7s8duHl7sQ" target="_blank">
   <img src="https://img.youtube.com/vi/D7s8duHl7sQ/0.jpg" alt="RAG Query Steps" width="480">
