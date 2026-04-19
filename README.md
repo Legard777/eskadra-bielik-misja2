@@ -1017,6 +1017,24 @@ Konfiguracja użyta w tym warsztacie jest celowo uproszczona. Dla zastosowań pr
 
 ## FAQ
 
+<details>
+<summary>▶️ Nagranie — Zmiana języka z Polskiego na Angielski w Google Cloud Platform</summary>
+
+<a href="https://youtu.be/SfFSuInW_RE" target="_blank">
+  <img src="https://img.youtube.com/vi/SfFSuInW_RE/0.jpg" alt="Zmiana języka z Polskiego na Angielski w Google Cloud Platform" width="480">
+</a>
+
+</details>
+
+<details>
+<summary>▶️ Nagranie — Zmiana wyglądu z "light" na "dark" w Google Cloud Platform</summary>
+
+<a href="https://youtu.be/iOqdKGNks7Y" target="_blank">
+  <img src="https://img.youtube.com/vi/iOqdKGNks7Y/0.jpg" alt="Zmiana wyglądu z light na dark w Google Cloud Platform" width="480">
+</a>
+
+</details>
+
 ### Co zrobić jeśli Cloud Shell się rozłączy?
 
 Cloud Shell automatycznie rozłącza się po kilku minutach bezczynności. Może się to zdarzyć podczas warsztatu — szczególnie przy słabszym połączeniu Wi-Fi. Rozłączenie usuwa wszystkie zmienne środowiskowe z pamięci sesji, ale **nie usuwa plików ani wdrożonych usług Google Cloud**.
