@@ -147,6 +147,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 3. Potwierdź że konto rozliczeniowe zostało aktywowane — pojawi się komunikat o przyznaniu kredytów
 
+<!-- 
 <details>
 <summary>📸 Podgląd 02 — Potwierdzenie aktywacji kredytów</summary>
 
@@ -154,6 +155,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 > *Do uzupełnienia: ekran potwierdzający przyznanie kredytów OnRamp — komunikat sukcesu z kwotą kredytów i datą wygaśnięcia.*
 
 </details>
+-->
 
 ### Krok 1.2 — Utworzenie nowego projektu Google Cloud
 
@@ -167,6 +169,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 4. Upewnij się że nowo utworzony projekt jest aktywny (widoczny w selektorze projektów w górnym pasku)
 
+<!-- 
 <details>
 <summary>📸 Podgląd 03 — Selektor projektów i nowy projekt</summary>
 
@@ -174,6 +177,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 > *Do uzupełnienia: górny pasek Google Cloud Console z otwartym selektorem projektów i podświetlonym przyciskiem "Nowy projekt".*
 
 </details>
+-->
 
 > [!CAUTION]
 >Nie pomyl nazwy projektu z ID projektu — nie zawsze są takie same. ID projektu widoczne jest pod nazwą podczas tworzenia i na stronie głównej konsoli.
@@ -185,6 +189,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
 1. Otwórz terminal Cloud Shell klikając ikonę **`>_`** w górnym pasku Google Cloud Console ([dokumentacja](https://cloud.google.com/shell/docs))
 
+<!-- 
 <details>
 <summary>📸 Podgląd 04 — Ikona Cloud Shell w górnym pasku</summary>
 
@@ -192,6 +197,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 > *Do uzupełnienia: górny pasek Google Cloud Console z podświetloną ikoną terminala `>_` (Cloud Shell).*
 
 </details>
+-->
 
 2. Zweryfikuj że zalogowane jest właściwe konto
    ```bash
@@ -217,6 +223,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    cd eskadra-bielik-misja2
    ```
 
+<!-- 
 <details>
 <summary>📸 Podgląd 05 — Terminal Cloud Shell po sklonowaniu repozytorium</summary>
 
@@ -224,6 +231,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 > *Do uzupełnienia: terminal Cloud Shell pokazujący pomyślne wykonanie `git clone` i przejście do katalogu projektu — widoczny prompt z ścieżką `~/eskadra-bielik-misja2`.*
 
 </details>
+-->
 
 > [!TIP]
 >Cloud Shell posiada wbudowany edytor graficzny — przydatny do przeglądania i edycji plików bez znajomości edytorów terminalowych. Na potrzeby tego warsztatu nie jest wymagany, jednak możesz go uruchomić w dowolnym momencie komendą `cloudshell workspace .` lub klikając przycisk **Open Editor** w górnym pasku Cloud Shell. Więcej informacji: [Cloud Shell Editor](https://docs.cloud.google.com/shell/docs/editor-overview)
@@ -254,8 +262,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 
    > **🤖 Zadanie dla Gemini CLI** — zamiast czytać opis, zapytaj AI! Uruchom w terminalu:
 
-   > [!NOTE]
-   > **Gemini CLI jest pre-zainstalowany w Cloud Shell** i uwierzytelnia się automatycznie Twoimi danymi Google. Przy pierwszym uruchomieniu może pojawić się prośba o akceptację warunków użytkowania — zatwierdź ją i kontynuuj. Komendę zamykającą Gemini CLI to `/quit`.
+   > ℹ️ **Gemini CLI jest pre-zainstalowany w Cloud Shell** i uwierzytelnia się automatycznie Twoimi danymi Google. Przy pierwszym uruchomieniu może pojawić się prośba o akceptację warunków użytkowania — zatwierdź ją i kontynuuj. Komendę zamykającą Gemini CLI to `/quit`.
 
    > ```bash
    > gemini "Co robi ten skrypt @setup_env.sh? Wyjaśnij każdą zmienną środowiskową."
@@ -282,8 +289,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com bigquery.googleapis.com
    ```
 
-   > [!TIP]
-   > Podanie wielu usług w jednej komendzie to najlepsza praktyka — jedno wywołanie API zamiast czterech, wyraźnie szybsze. Możesz też włączać je osobno (`gcloud services enable run.googleapis.com`, itd.) — efekt jest identyczny, tylko wolniej.
+   > 💡 Podanie wielu usług w jednej komendzie to najlepsza praktyka — jedno wywołanie API zamiast czterech, wyraźnie szybsze. Możesz też włączać je osobno (`gcloud services enable run.googleapis.com`, itd.) — efekt jest identyczny, tylko wolniej.
 
    > **🤖 Zadanie dla Gemini CLI** — zapytaj AI dlaczego usługi są domyślnie wyłączone:
    > ```bash
@@ -396,6 +402,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 4. Sprawdź czy usługa `bielik` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
 
+<!-- 
 <details>
 <summary>📸 Podgląd 06 — Usługa bielik w Cloud Run ze statusem Ready</summary>
 
@@ -403,6 +410,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 > *Do uzupełnienia: widok listy usług Cloud Run w Google Cloud Console — usługa `bielik` z zielonym statusem "Ready" i adresem URL.*
 
 </details>
+-->
 
 5. Przejrzyj zawartość pliku `llm_test1.sh` w tym katalogu
    ```bash
@@ -420,6 +428,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ./llm_test1.sh
    ```
 
+<!-- 
 <details>
 <summary>📸 Podgląd 07 — Przykładowa odpowiedź modelu Bielik</summary>
 
@@ -427,6 +436,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 > *Do uzupełnienia: terminal pokazujący odpowiedź modelu Bielik na pierwsze testowe zapytanie — widoczny JSON z polem `response` zawierającym tekst po polsku.*
 
 </details>
+-->
 
 7. Wróć do głównego katalogu projektu
    ```bash
@@ -458,6 +468,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 
 4. Sprawdź czy usługa `embedding-gemma` pojawiła się w [Cloud Console → Cloud Run → Services](https://console.cloud.google.com/run) i ma status **Ready**
 
+<!-- 
 <details>
 <summary>📸 Podgląd 08 — Usługa embedding-gemma w Cloud Run ze statusem Ready</summary>
 
@@ -465,6 +476,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 > *Do uzupełnienia: widok listy usług Cloud Run — obie usługi `bielik` i `embedding-gemma` widoczne z zielonym statusem "Ready".*
 
 </details>
+-->
 
 5. Przejrzyj zawartość pliku `embedding_model/embedding_test1.sh`
    ```bash
@@ -482,6 +494,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ./embedding_test1.sh
    ```
 
+<!-- 
 <details>
 <summary>📸 Podgląd 09 — Przykładowy wektor embedding z modelu EmbeddingGemma</summary>
 
@@ -489,6 +502,7 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
 > *Do uzupełnienia: terminal pokazujący odpowiedź modelu EmbeddingGemma — fragment tablicy liczb zmiennoprzecinkowych (embeddings) reprezentujących znaczenie tekstu.*
 
 </details>
+-->
 
 7. Wróć do głównego katalogu projektu
    ```bash
