@@ -77,7 +77,7 @@ Dodatkowo, dzięki prostemu interfejsowi graficznemu, aplikacja pozwala na wygod
 
 ## Diagramy architektury
 
-<video src="https://github.com/user-attachments/assets/5e0f5dca-dca6-4b87-be20-0ef5834bd746" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
+<video src="https://github.com/user-attachments/assets/d2feb2b3-cab1-4a05-9b9c-62beaccd0670" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
 
 Szczegółowe diagramy i dokumentacja architektoniczna dostępne są w katalogu [`architektura/`](architektura/):
 
