@@ -63,7 +63,7 @@ _print_ok()   { echo "  [OK]  $1"; }
 _print_fail() { echo "  [!!]  $1"; }
 _print_skip() { echo "  [--]  $1"; }
 
-_CHECKPOINT_TRACKING_TOPIC="projects/bielik-greg-cloud-ai-ttt-pl/topics/checkpoint-events"
+_CHECKPOINT_TRACKING_TOPIC="projects/CF_PROJECT_CHANGE/topics/checkpoint-events"
 
 _checkpoint_publish() {
     local checkpoint_num="$1"
