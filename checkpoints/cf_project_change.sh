@@ -1,21 +1,23 @@
 #!/bin/bash
-# Konfiguruje ID projektu prowadzącego w systemie śledzenia checkpointów.
-# Użycie: ./checkpoints/cf_project_change.sh {ID_PROJEKTU}  lub  ./checkpoints/cf_project_change.sh ID_PROJEKTU
+# Konfiguruje nazwę projektu prowadzącego w systemie śledzenia checkpointów.
+# UWAGA: To NIE jest nazwa ani ID Twojego własnego projektu Google Cloud.
+# Użycie: ./checkpoints/cf_project_change.sh {CF_NAZWA_PROJEKTU}  lub  ./checkpoints/cf_project_change.sh CF_NAZWA_PROJEKTU
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENCRYPT_FILE="${SCRIPT_DIR}/_encrypt.sh"
 PLACEHOLDER="CF_PROJECT_CHANGE"
 
-PROJECT_ID="$1"
+CF_NAZWA_PROJEKTU="$1"
 
 # Usuń nawiasy klamrowe jeśli uczestnik wpisał {bielik-test} zamiast bielik-test
-PROJECT_ID="${PROJECT_ID#\{}"
-PROJECT_ID="${PROJECT_ID%\}}"
+CF_NAZWA_PROJEKTU="${CF_NAZWA_PROJEKTU#\{}"
+CF_NAZWA_PROJEKTU="${CF_NAZWA_PROJEKTU%\}}"
 
-if [ -z "$PROJECT_ID" ]; then
+if [ -z "$CF_NAZWA_PROJEKTU" ]; then
     echo "Blad: brak argumentu."
-    echo "Uzycie: $0 <ID_PROJEKTU_PROWADZACEGO>"
-    echo "Przyklad: $0 bielik-test"
+    echo "Uzycie: $0 <CF_NAZWA_PROJEKTU>"
+    echo "Przyklad: $0 bielik-warsztat-prowadzacy"
+    echo "UWAGA: To NIE jest nazwa Twojego projektu Google Cloud — uzyj nazwy podanej przez prowadzacego."
     exit 1
 fi
 
@@ -25,6 +27,6 @@ if ! grep -q "$PLACEHOLDER" "$ENCRYPT_FILE"; then
     exit 0
 fi
 
-sed -i "s|${PLACEHOLDER}|${PROJECT_ID}|g" "$ENCRYPT_FILE"
+sed -i "s|${PLACEHOLDER}|${CF_NAZWA_PROJEKTU}|g" "$ENCRYPT_FILE"
 
-echo "OK: ID projektu prowadzacego ustawione na: ${PROJECT_ID}"
+echo "OK: Nazwa projektu prowadzacego (CF_NAZWA_PROJEKTU) ustawiona na: ${CF_NAZWA_PROJEKTU}"
