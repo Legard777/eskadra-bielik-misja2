@@ -1406,6 +1406,75 @@ Gratulacje — warsztat dobiegł końca! Wygeneruj zaszyfrowany certyfikat zawie
 ./checkpoints/certyfikat_generate.sh
 ```
 
+<details>
+<summary>▶️ Przykładowe wyjście — certyfikat wygenerowany pomyślnie</summary>
+
+```text
+======================================================
+ CERTYFIKAT UKOŃCZENIA — Eskadra Bielik Misja 2
+ RAG w oparciu o model Bielik i Google Cloud
+======================================================
+
+Weryfikacja checkpointów:
+  [OK]  Checkpoint 1 — obecny ([dane dynamiczne, np. 512] bajtów, zapisany: [dane dynamiczne, np. 2026-04-29T10:20:00Z])
+  [OK]  Checkpoint 2 — obecny ([dane dynamiczne] bajtów, zapisany: [dane dynamiczne])
+  [OK]  Checkpoint 3 — obecny ([dane dynamiczne] bajtów, zapisany: [dane dynamiczne])
+  [OK]  Checkpoint 4 — obecny ([dane dynamiczne] bajtów, zapisany: [dane dynamiczne])
+  [OK]  Checkpoint 5 — obecny ([dane dynamiczne] bajtów, zapisany: [dane dynamiczne])
+  [OK]  Checkpoint 6 — obecny ([dane dynamiczne] bajtów, zapisany: [dane dynamiczne])
+  [OK]  Checkpoint 7 — obecny ([dane dynamiczne] bajtów, zapisany: [dane dynamiczne])
+  [OK]  Checkpoint 8 — obecny ([dane dynamiczne] bajtów, zapisany: [dane dynamiczne])
+
+Końcowy stan usług Cloud Run:
+  [OK]  bielik: Ready — [dane dynamiczne, np. https://bielik-abc123-ew.a.run.app]
+  [OK]  embedding-gemma: Ready — [dane dynamiczne, np. https://embedding-gemma-abc123-ew.a.run.app]
+  [OK]  orchestration-api: Ready — [dane dynamiczne, np. https://orchestration-api-abc123-ew.a.run.app]
+
+Sumy kontrolne artefaktów:
+  checkpoint_1: [dane dynamiczne — pierwsze 16 znaków SHA256]...
+  checkpoint_2: [dane dynamiczne]...
+  checkpoint_3: [dane dynamiczne]...
+  checkpoint_4: [dane dynamiczne]...
+  checkpoint_5: [dane dynamiczne]...
+  checkpoint_6: [dane dynamiczne]...
+  checkpoint_7: [dane dynamiczne]...
+  checkpoint_8: [dane dynamiczne]...
+
+======================================================
+ Generowanie zaszyfrowanego certyfikatu...
+
+======================================================
+  *** WARSZTAT ESKADRA BIELIK - MISJA 2 ***
+  *** UKONCZONY POMYSLNIE! ***
+======================================================
+
+  Uczestnik : [dane dynamiczne, np. jan.kowalski@gmail.com]
+  Projekt   : [dane dynamiczne, np. bielik-warsztat-20260429-jk]
+  Czas      : [dane dynamiczne, np. 2026-04-29T13:45:00Z]
+
+  Wynik: 75 / 75 pkt
+  [##############################] 100%
+
+  Checkpointy zaliczone: 8 / 8
+  [OK]  Krok 1  + 5 pkt  Projekt Google Cloud
+  [OK]  Krok 2  +10 pkt  Konfiguracja usług i uprawnień
+  [OK]  Krok 3  +20 pkt  Modele Bielik + EmbeddingGemma na Cloud Run
+  [OK]  Krok 4  + 5 pkt  Wektorowa baza danych BigQuery
+  [OK]  Krok 5  +10 pkt  API Orchestration na Cloud Run
+  [OK]  Krok 6  +10 pkt  Zasilanie bazy i zapytania RAG
+  [OK]  Krok 7  + 5 pkt  Przegląd API i architektury
+  [OK]  Krok 8  +10 pkt  Interfejs Web UI
+
+======================================================
+  Pobierz certyfikat na swoj komputer:
+  cloudshell dl cert_artifacts/checkpoint_certyfikat.enc
+
+  Nastepnie wyslij plik prowadzacemu.
+======================================================
+```
+
+</details>
+
 Po pomyślnym wykonaniu pobierz plik certyfikatu na swój komputer za pomocą wbudowanej komendy Cloud Shell:
 
 ```bash
