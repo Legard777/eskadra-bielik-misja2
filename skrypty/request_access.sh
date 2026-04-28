@@ -72,7 +72,6 @@ echo "======================================================"
 echo ""
 if [ "$ACCESS_GRANTED" = true ]; then
     echo "[OK] Dostęp przyznany! Widzisz zawartość bucketu źródłowego."
-    echo "     Możesz przejść do kroku 3."
 else
     echo "[!!] Brak dostępu do gs://$BUCKET_NAME_SOURCE po 60 sekundach."
     echo ""
