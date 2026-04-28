@@ -248,6 +248,50 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ./checkpoints/checkpoint_1.sh
    ```
 
+<details>
+<summary>▶️ Przykładowe wyjście — checkpoint zaliczony</summary>
+
+```text
+======================================================
+ CHECKPOINT 1 — Przygotowanie projektu Google Cloud
+======================================================
+
+[1.1] Konto Google Cloud:
+  [OK]  Zalogowane konto: [dane dynamiczne, np. jan.kowalski@gmail.com]
+
+[1.2] Projekt Google Cloud:
+  [OK]  Aktywny projekt: [dane dynamiczne, np. bielik-warsztat-20260429-jk]
+
+[1.3] Dostęp do projektu:
+  [OK]  Projekt istnieje i jest dostępny (stan: ACTIVE)
+  [OK]  Utworzony: [dane dynamiczne, np. 2026-04-29T10:15:00Z]
+
+[1.4] Konto rozliczeniowe:
+  [OK]  Billing aktywny: [dane dynamiczne, np. billingAccounts/0A1B2C-3D4E5F-6G7H8I]
+
+[1.5] Repozytorium warsztatu:
+  [OK]  Repozytorium sklonowane: [dane dynamiczne, np. /home/user/eskadra-bielik-misja2]
+  [OK]  Remote: https://github.com/Legard777/eskadra-bielik-misja2.git
+
+======================================================
+ WYNIK: Wszystkie weryfikacje przeszły pomyślnie.
+
+======================================================
+  CHECKPOINT 1 ZALICZONY!
+  Projekt Google Cloud
+======================================================
+  Punkty za ten krok : +5 pkt
+  Lacznie            : 5 / 75 pkt
+  Postep             : [##............................] 6%
+======================================================
+  Projekt skonfigurowany! Infrastruktura czeka na uruchomienie.
+  Artefakt           : cert_artifacts/checkpoint_1.enc
+======================================================
+======================================================
+```
+
+</details>
+
 ## 2. Konfiguracja zmiennych środowiskowych i usług Google Cloud `~5 min`
 
 <video src="https://github.com/user-attachments/assets/cbdfc7ed-948d-4812-bafc-4c9e5294ed12" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
@@ -337,6 +381,58 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    ```bash
    ./checkpoints/checkpoint_2.sh
    ```
+
+<details>
+<summary>▶️ Przykładowe wyjście — checkpoint zaliczony</summary>
+
+```text
+======================================================
+ CHECKPOINT 2 — Konfiguracja zmiennych i usług Google Cloud
+======================================================
+
+[2.1] Wymagane usługi Google Cloud:
+  [OK]  run.googleapis.com — włączona
+  [OK]  cloudbuild.googleapis.com — włączona
+  [OK]  artifactregistry.googleapis.com — włączona
+  [OK]  bigquery.googleapis.com — włączona
+
+[2.2] Uprawnienie roles/run.invoker:
+  [OK]  Rola roles/run.invoker przypisana do [dane dynamiczne, np. jan.kowalski@gmail.com]
+
+[2.3] Zmienne środowiskowe (setup_env.sh):
+  [OK]  PROJECT_ID=[dane dynamiczne, np. bielik-warsztat-20260429-jk]
+  [OK]  REGION=europe-west1
+  [OK]  EMBEDDING_SERVICE=embedding-gemma
+  [OK]  LLM_SERVICE=bielik
+  [OK]  BIGQUERY_DATASET=rag_dataset
+  [OK]  BIGQUERY_TABLE=hotel_rules
+
+[2.4] Ochrona plików źródłowych (protect_files.sh):
+  [OK]  orchestration/main.py — tylko do odczytu (chmod 444)
+  [OK]  orchestration/static/index.html — tylko do odczytu (chmod 444)
+  [OK]  vector_store/hotel_rules.csv — tylko do odczytu (chmod 444)
+
+[2.5] Dostęp do bucketu źródłowego z modelami:
+  [OK]  Dostęp do gs://warsztat-eskadra-bielika-modele potwierdzony (obiektów: [dane dynamiczne, np. 12])
+
+======================================================
+ WYNIK: Wszystkie weryfikacje przeszły pomyślnie.
+
+======================================================
+  CHECKPOINT 2 ZALICZONY!
+  Konfiguracja usług i uprawnień
+======================================================
+  Punkty za ten krok : +10 pkt
+  Lacznie            : 15 / 75 pkt
+  Postep             : [######........................] 20%
+======================================================
+  Uslugi aktywne, uprawnienia ustawione. Czas na modele!
+  Artefakt           : cert_artifacts/checkpoint_2.enc
+======================================================
+======================================================
+```
+
+</details>
 
 ## 3. Uruchomienie modeli LLM Bielik i EmbeddingGemma na [Cloud Run](https://cloud.google.com/run?hl=en) `~15 min`
 
@@ -435,6 +531,35 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ./llm_test1.sh
    ```
 
+<details>
+<summary>▶️ Przykładowe wyjście — odpowiedź modelu Bielik (bez kontekstu RAG)</summary>
+
+```text
+======================================================
+ Test modelu LLM Bielik
+======================================================
+
+ [1/3] Pobieranie adresu URL usługi 'bielik'...
+       URL: [dane dynamiczne, np. https://bielik-abc123-ew.a.run.app]
+
+ [2/3] Pobieranie tokenu autoryzacyjnego...
+       Token pobrany pomyślnie.
+
+ [3/3] Wysyłanie zapytania testowego do modelu Bielik...
+       Pytanie: 'Jak często powinien być mierzony poziom chloru w basenie?'
+
+ Odpowiedź:
+{
+  "odpowiedz": "Poziom chloru w basenie powinien być regularnie monitorowany. Standardowe zalecenia mówią o pomiarach co najmniej dwa razy dziennie — rano przed otwarciem i po południu. W przypadku intensywnego użytkowania lub wysokiej temperatury wody kontrole należy przeprowadzać częściej, nawet co kilka godzin. Prawidłowy poziom chloru wolnego wynosi zazwyczaj 0,5–1,5 mg/l.",
+  "model": "SpeakLeash/bielik-4.5b-v3.0-instruct:Q8_0",
+  "czas_ms": [dane dynamiczne, np. 9241]
+}
+```
+
+> 💡 **Zwróć uwagę:** Bielik odpowiedział na podstawie ogólnej wiedzy o pływalniach. W kroku 6 zobaczysz jak ta sama odpowiedź wygląda z kontekstem RAG — bazując na konkretnej zasadzie hotelowej z BigQuery (reguła 12: pomiar **co równe trzy godziny**).
+
+</details>
+
 <!-- 
 <details>
 <summary>📸 Podgląd 07 — Przykładowa odpowiedź modelu Bielik</summary>
@@ -501,6 +626,57 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ./embedding_test1.sh
    ```
 
+<details>
+<summary>▶️ Przykładowe wyjście — wektor z modelu EmbeddingGemma</summary>
+
+```text
+======================================================
+ Test modelu EmbeddingGemma
+======================================================
+
+ [1/3] Pobieranie adresu URL usługi 'embedding-gemma'...
+       URL: [dane dynamiczne, np. https://embedding-gemma-abc123-ew.a.run.app]
+
+ [2/3] Pobieranie tokenu autoryzacyjnego...
+       Token pobrany pomyślnie.
+
+ [3/3] Wysyłanie tekstu testowego do modelu EmbeddingGemma...
+       Tekst wejściowy: 'Suwerenne AI po polsku — Bielik i RAG w Google Cloud'
+       Odpowiedź będzie tablicą liczb — wektorem reprezentującym znaczenie tekstu.
+
+ Podsumowanie:
+{
+  "model": "embeddinggemma",
+  "wymiary": 738,
+  "czas_ms": [dane dynamiczne, np. 412],
+  "pierwsze_5_wartosci": [
+    [dane dynamiczne — np. 0.0234],
+    [dane dynamiczne — np. -0.0891],
+    [dane dynamiczne — np.  0.1142],
+    [dane dynamiczne — np. -0.0567],
+    [dane dynamiczne — np.  0.0823]
+  ]
+}
+
+======================================================
+ Pełny wektor (pierwsze 20 wartości):
+======================================================
+[
+  [dane dynamiczne — 738 liczb zmiennoprzecinkowych reprezentujących
+   znaczenie tekstu w przestrzeni semantycznej modelu EmbeddingGemma]
+]
+
+======================================================
+ Wektor reprezentuje znaczenie tekstu
+ 'Suwerenne AI po polsku — Bielik i RAG w Google Cloud'
+ w przestrzeni semantycznej modelu EmbeddingGemma.
+======================================================
+```
+
+> 💡 **Kluczowy fakt:** wymiar wektora **738** jest stały dla modelu `embeddinggemma` — niezależnie od długości tekstu wejściowego odpowiedź zawsze ma dokładnie 738 liczb. Wartości liczbowe będą różne u każdego uczestnika tylko jeśli model zostanie wznowiony po zimnym starcie; dla identycznego tekstu i modelu są deterministyczne.
+
+</details>
+
 <!-- 
 <details>
 <summary>📸 Podgląd 09 — Przykładowy wektor embedding z modelu EmbeddingGemma</summary>
@@ -520,6 +696,52 @@ Po zakończeniu skrypt wypisze podsumowanie wykonanych kroków.
    ```bash
    ./checkpoints/checkpoint_3.sh
    ```
+
+<details>
+<summary>▶️ Przykładowe wyjście — checkpoint zaliczony</summary>
+
+```text
+======================================================
+ CHECKPOINT 3 — Modele Bielik i EmbeddingGemma na Cloud Run
+======================================================
+
+[3.1] Usługa Cloud Run: bielik (model LLM)
+  [OK]  Status: Ready
+  [OK]  URL: [dane dynamiczne, np. https://bielik-abc123-ew.a.run.app]
+  [OK]  Utworzono: [dane dynamiczne, np. 2026-04-29T10:45:00Z]
+  [OK]  GPU: 1 × NVIDIA L4
+
+[3.2] Usługa Cloud Run: embedding-gemma (model embeddingowy)
+  [OK]  Status: Ready
+  [OK]  URL: [dane dynamiczne, np. https://embedding-gemma-abc123-ew.a.run.app]
+  [OK]  Utworzono: [dane dynamiczne, np. 2026-04-29T11:00:00Z]
+
+[3.3] Test odpowiedzi modelu Bielik (ping):
+  [OK]  Endpoint /api/tags odpowiada (HTTP 200)
+
+[3.4] Test odpowiedzi modelu EmbeddingGemma (ping):
+  [OK]  Endpoint /api/tags odpowiada (HTTP 200)
+
+======================================================
+ WYNIK: Oba modele wdrożone i gotowe.
+
+======================================================
+  CHECKPOINT 3 ZALICZONY!
+  Modele Bielik + EmbeddingGemma na Cloud Run
+======================================================
+  Punkty za ten krok : +20 pkt
+  Lacznie            : 35 / 75 pkt
+  Postep             : [##############................] 46%
+======================================================
+  Oba modele dzialaja w chmurze. Najtrudniejszy krok za Toba!
+  Artefakt           : cert_artifacts/checkpoint_3.enc
+======================================================
+======================================================
+```
+
+> ℹ️ Jeśli wdrożenie nastąpiło bez GPU (tryb awaryjny), linia `[OK]  GPU: 1 × NVIDIA L4` nie pojawi się — to normalne. Checkpoint przejdzie mimo braku tej linii.
+
+</details>
 
 ## 4. Inicjalizacja wektorowej bazy danych w BigQuery `~5 min`
 
@@ -572,6 +794,47 @@ Projekt wykorzystuje [BigQuery](https://cloud.google.com/bigquery?hl=en) z funkc
    ```bash
    ./checkpoints/checkpoint_4.sh
    ```
+
+<details>
+<summary>▶️ Przykładowe wyjście — checkpoint zaliczony</summary>
+
+```text
+======================================================
+ CHECKPOINT 4 — Wektorowa baza danych BigQuery
+======================================================
+
+[4.1] Dataset BigQuery: [dane dynamiczne, np. bielik-warsztat-20260429-jk]:rag_dataset
+  [OK]  Dataset istnieje: rag_dataset
+  [OK]  Lokalizacja: EU
+  [OK]  Utworzono (ms epoch): [dane dynamiczne, np. 1746000000000]
+
+[4.2] Tabela BigQuery: rag_dataset.hotel_rules
+  [OK]  Tabela istnieje: hotel_rules
+  [OK]  Schemat kolumn: id,content,embedding
+  [OK]  Liczba wierszy: 0 (0 jest prawidłowe — dane załadujesz w kroku 6)
+  [OK]  Utworzono (ms epoch): [dane dynamiczne, np. 1746000060000]
+
+[4.3] Kolumna embedding (typ FLOAT64 REPEATED):
+  [OK]  Kolumna embedding obecna: FLOAT64_REPEATED
+
+======================================================
+ WYNIK: Baza wektorowa zainicjalizowana poprawnie.
+
+======================================================
+  CHECKPOINT 4 ZALICZONY!
+  Wektorowa baza danych BigQuery
+======================================================
+  Punkty za ten krok : +5 pkt
+  Lacznie            : 40 / 75 pkt
+  Postep             : [################..............] 53%
+======================================================
+  Baza wektorowa gotowa. Czas polaczyc wszystko w jedno API.
+  Artefakt           : cert_artifacts/checkpoint_4.enc
+======================================================
+======================================================
+```
+
+</details>
 
 ## 5. Uruchomienie API (Orchestration) na [Cloud Run](https://cloud.google.com/run?hl=en) `~10 min`
 
@@ -638,6 +901,49 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ./checkpoints/checkpoint_5.sh
    ```
 
+<details>
+<summary>▶️ Przykładowe wyjście — checkpoint zaliczony</summary>
+
+```text
+======================================================
+ CHECKPOINT 5 — API Orchestration na Cloud Run
+======================================================
+
+[5.1] Usługa Cloud Run: orchestration-api
+  [OK]  Status: Ready
+  [OK]  URL: [dane dynamiczne, np. https://orchestration-api-abc123-ew.a.run.app]
+  [OK]  Utworzono: [dane dynamiczne, np. 2026-04-29T11:30:00Z]
+  [OK]  Ostatni deploy: [dane dynamiczne, np. 2026-04-29T11:32:00Z]
+
+[5.2] Zmienne środowiskowe wdrożonej usługi:
+  [OK]  LLM_URL skonfigurowany: [dane dynamiczne, np. https://bielik-abc123-ew.a.run.app]
+  [OK]  EMBEDDING_URL skonfigurowany: [dane dynamiczne, np. https://embedding-gemma-abc123-ew.a.run.app]
+
+[5.3] Dostępność Web UI (GET /):
+  [OK]  Endpoint GET / odpowiada (HTTP 200)
+
+[5.4] Zmienna ORCHESTRATION_URL w bieżącym terminalu:
+  [OK]  ORCHESTRATION_URL=[dane dynamiczne, np. https://orchestration-api-abc123-ew.a.run.app]
+
+======================================================
+ WYNIK: API Orchestration wdrożone i dostępne.
+
+======================================================
+  CHECKPOINT 5 ZALICZONY!
+  API Orchestration na Cloud Run
+======================================================
+  Punkty za ten krok : +10 pkt
+  Lacznie            : 50 / 75 pkt
+  Postep             : [####################..........] 66%
+======================================================
+  System RAG zlozony w calosci. Czas na prawdziwe testy!
+  Artefakt           : cert_artifacts/checkpoint_5.enc
+======================================================
+======================================================
+```
+
+</details>
+
 ---
 
 ## 6. Testowanie API — Zasilanie i Wyszukiwanie (RAG) `~10 min`
@@ -666,6 +972,20 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    curl -s -X POST "$ORCHESTRATION_URL/ingest" \
         -F "file=@vector_store/hotel_rules.csv" | jq .
    ```
+
+<details>
+<summary>▶️ Przykładowa odpowiedź — dane załadowane pomyślnie</summary>
+
+```json
+{
+  "status": "success",
+  "inserted_count": 19
+}
+```
+
+> Liczba `19` odpowiada liczbie wierszy w pliku `hotel_rules.csv`. Jeśli uruchomisz `/ingest` ponownie na tym samym pliku, rekordy zostaną dodane ponownie — tabela BigQuery nie sprawdza duplikatów.
+
+</details>
 
    > **🤖 Zadanie dla Gemini CLI** — zapytaj AI jak działa wysyłanie pliku przez HTTP:
    > ```bash
@@ -712,22 +1032,72 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ```bash
    curl -s -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
-        -d '{"query": "Jak często powinien być mierzony poziom chloru w basenie?"}' | jq '{answer: .answer, context: .context}'
+        -d '{"query": "Jak często powinien być mierzony poziom chloru w basenie?"}' | jq '{answer: .answer, context_used: .context_used}'
    ```
+
+<details>
+<summary>▶️ Przykładowa odpowiedź RAG — chlor w basenie</summary>
+
+```json
+{
+  "answer": "Zgodnie z regulaminem hotelowym, poziom chloru w basenie powinien być mierzony co równe trzy godziny. Pomiarów dokonuje ratownik, który jednocześnie kontroluje temperaturę wody.",
+  "context_used": [
+    "Ratownik musi dokonywać pomiaru chloru i temperatury wody w basenie co równe trzy godziny.",
+    "Basen oraz strefa saun są dostępne dla gości bez dodatkowych opłat w godzinach od 8:00 do 22:00.",
+    "W strefie saun obowiązuje bezwzględny zakaz używania telefonów komórkowych przez personel i gości."
+  ]
+}
+```
+
+> 💡 Porównaj z odpowiedzią Bielika bez RAG z kroku 3 — tam model odpowiedział ogólnikowo (co kilka godzin). Tutaj RAG znalazł w BigQuery konkretną zasadę hotelową i podał dokładną wartość: **co równe trzy godziny**.
+
+</details>
 
    Pytanie o godzinę podawania śniadania:
    ```bash
    curl -s -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
-        -d '{"query": "O której godzinie jest podawane śniadanie?"}' | jq '{answer: .answer, context: .context}'
+        -d '{"query": "O której godzinie jest podawane śniadanie?"}' | jq '{answer: .answer, context_used: .context_used}'
    ```
+
+<details>
+<summary>▶️ Przykładowa odpowiedź RAG — godziny śniadania</summary>
+
+```json
+{
+  "answer": "Śniadanie w hotelu podawane jest codziennie w restauracji znajdującej się na parterze. Można z niego skorzystać w godzinach od 7:00 do 10:00.",
+  "context_used": [
+    "Śniadanie podawane jest codziennie w restauracji na parterze w godzinach od 7:00 do 10:00.",
+    "Codzienne sprzątanie pokoi odbywa się w godzinach od 9:00 do 14:00 na życzenie gościa potwierdzone wywieszką na klamce.",
+    "Całodobowa recepcja jest do dyspozycji gości w celu zgłaszania wszelkich usterek oraz potrzeb."
+  ]
+}
+```
+
+</details>
 
    Pytanie o parking:
    ```bash
    curl -s -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
-        -d '{"query": "Ile kosztuje parking hotelowy?"}' | jq '{answer: .answer, context: .context}'
+        -d '{"query": "Ile kosztuje parking hotelowy?"}' | jq '{answer: .answer, context_used: .context_used}'
    ```
+
+<details>
+<summary>▶️ Przykładowa odpowiedź RAG — koszt parkingu</summary>
+
+```json
+{
+  "answer": "Parking hotelowy jest płatny i kosztuje 40 PLN za dobę. Jest to parking własny hotelu, usytuowany przed budynkiem, i nie wymaga wcześniejszej rezerwacji.",
+  "context_used": [
+    "Własny parking przed hotelem jest płatny 40 PLN za dzień i nie wymaga wcześniejszej rezerwacji.",
+    "Całodobowa recepcja jest do dyspozycji gości w celu zgłaszania wszelkich usterek oraz potrzeb.",
+    "Usługa późniejszego wymeldowania jest możliwa po konsultacji z recepcją i podlega dodatkowej opłacie."
+  ]
+}
+```
+
+</details>
 
    > **🔍 Dla chętnych — VECTOR_SEARCH bezpośrednio w BigQuery:** chcesz zobaczyć jak wygląda wyszukiwanie wektorowe od środka? Wykonaj je samodzielnie w dwóch krokach.
    >
@@ -780,6 +1150,45 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ./checkpoints/checkpoint_6.sh
    ```
 
+<details>
+<summary>▶️ Przykładowe wyjście — checkpoint zaliczony</summary>
+
+```text
+======================================================
+ CHECKPOINT 6 — Zasilanie bazy i zapytania RAG
+======================================================
+
+[6.1] Dane w BigQuery (po /ingest):
+  [OK]  Liczba rekordów w tabeli hotel_rules: 19
+
+[6.2] Wektory embedding w tabeli:
+  [OK]  Wiersze z wektorem: 19 / 19
+  [OK]  Wymiarowość wektora: 738
+
+[6.3] Endpoint POST /ask (test dostępności — max 60s):
+  [OK]  Endpoint /ask odpowiada (HTTP 200)
+
+======================================================
+ WYNIK: Dane załadowane, wektory wygenerowane, API dostępne.
+
+======================================================
+  CHECKPOINT 6 ZALICZONY!
+  Zasilanie bazy i zapytania RAG
+======================================================
+  Punkty za ten krok : +10 pkt
+  Lacznie            : 60 / 75 pkt
+  Postep             : [########################......] 80%
+======================================================
+  Wyszukiwanie semantyczne dziala. Jeden krok do mety!
+  Artefakt           : cert_artifacts/checkpoint_6.enc
+======================================================
+======================================================
+```
+
+> ℹ️ Jeśli model Bielik jest na zimnym starcie, weryfikacja [6.3] może pokazać `[--] Endpoint /ask — timeout po 60s` zamiast `[OK]`. To akceptowalne — checkpoint i tak zostanie zaliczony.
+
+</details>
+
 ## 7. Przegląd API i architektury kodu `~10 min`
 
 <video src="https://github.com/user-attachments/assets/5fb575ad-a61a-437d-8ab0-dcc0989e9ac3" controls width="720" muted preload="auto" poster="assets/videos/eskadra-bielika-misja2-video.jpg"></video>
@@ -818,6 +1227,51 @@ Zalicz krok i zdobądź **+5 punktów** — uruchom skrypt weryfikacyjny, który
 ```bash
 ./checkpoints/checkpoint_7.sh
 ```
+
+<details>
+<summary>▶️ Przykładowe wyjście — checkpoint zaliczony</summary>
+
+```text
+======================================================
+ CHECKPOINT 7 — Przegląd API: wszystkie usługi działają
+======================================================
+
+[7.1] Stan wszystkich usług Cloud Run warsztatu:
+  [OK]  bielik: Ready
+         URL:     [dane dynamiczne, np. https://bielik-abc123-ew.a.run.app]
+         Deploy:  [dane dynamiczne, np. 2026-04-29T10:45:00Z]
+
+  [OK]  embedding-gemma: Ready
+         URL:     [dane dynamiczne, np. https://embedding-gemma-abc123-ew.a.run.app]
+         Deploy:  [dane dynamiczne, np. 2026-04-29T11:00:00Z]
+
+  [OK]  orchestration-api: Ready
+         URL:     [dane dynamiczne, np. https://orchestration-api-abc123-ew.a.run.app]
+         Deploy:  [dane dynamiczne, np. 2026-04-29T11:32:00Z]
+
+[7.2] Weryfikacja endpointów API:
+  [OK]  GET / → HTTP 200
+  [OK]  GET /docs → HTTP 200
+  [OK]  GET /records → HTTP 200
+
+======================================================
+ WYNIK: Wszystkie 3 usługi Cloud Run działają poprawnie.
+
+======================================================
+  CHECKPOINT 7 ZALICZONY!
+  Przegląd API i architektury
+======================================================
+  Punkty za ten krok : +5 pkt
+  Lacznie            : 65 / 75 pkt
+  Postep             : [##########################....] 86%
+======================================================
+  Architektura przejrzana i zrozumiana. Ostatni krok!
+  Artefakt           : cert_artifacts/checkpoint_7.enc
+======================================================
+======================================================
+```
+
+</details>
 
 ## 8. Interfejs Użytkownika (Web UI) `~20 min`
 
@@ -896,6 +1350,48 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
    ```bash
    ./checkpoints/checkpoint_8.sh
    ```
+
+<details>
+<summary>▶️ Przykładowe wyjście — checkpoint zaliczony</summary>
+
+```text
+======================================================
+ CHECKPOINT 8 — Interfejs Web UI (RAG vs. bez RAG)
+======================================================
+
+[8.1] Dostępność Web UI:
+  [OK]  Web UI dostępny pod: [dane dynamiczne, np. https://orchestration-api-abc123-ew.a.run.app]
+  [OK]  HTTP status: 200
+
+[8.2] Endpoint /ask_direct (model bez RAG — max 60s):
+  [OK]  Endpoint /ask_direct dostępny (HTTP 200)
+
+[8.3] Endpoint /ask (model z RAG — max 60s):
+  [OK]  Endpoint /ask dostępny (HTTP 200)
+
+[8.4] Dokumentacja API (FastAPI /docs):
+  [OK]  Dokumentacja /docs dostępna (HTTP 200)
+
+======================================================
+ WYNIK: Web UI dostępny, oba tryby (RAG i bez RAG) aktywne.
+
+======================================================
+  CHECKPOINT 8 ZALICZONY!
+  Interfejs Web UI
+======================================================
+  Punkty za ten krok : +10 pkt
+  Lacznie            : 75 / 75 pkt
+  Postep             : [##############################] 100%
+======================================================
+  WARSZTAT UKONCZONY! Wygeneruj certyfikat i pochwal sie wynikiem.
+  Artefakt           : cert_artifacts/checkpoint_8.enc
+======================================================
+======================================================
+```
+
+> ℹ️ Wejścia [8.2] i [8.3] mogą pokazać `[--] timeout po 60s` jeśli Bielik jest na zimnym starcie — checkpoint przejdzie mimo to. Błąd pojawi się tylko przy HTTP 4xx/5xx.
+
+</details>
 
 ## 9. Certyfikat ukończenia warsztatu `~10 min`
 
