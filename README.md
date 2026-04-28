@@ -163,7 +163,7 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
 > [!TIP]
 >Szczegółową instrukcję tworzenia projektu znajdziesz w tym przewodniku: [Google Cloud Credits Redemption — krok 2](https://codelabs.developers.google.com/codelabs/cloud-codelab-credits#2)
 
-2. Nadaj projektowi nazwę (np. `bielik-warsztat`) i jako konto rozliczeniowe wybierz konto aktywowane w poprzednim kroku
+2. Nadaj projektowi nazwę (np. `bielik-warsztat-20260429-gw` — dodaj datę bez kresek i swoje inicjały, np. `bielik-warsztat-RRRRMMDD-XX`, ponieważ nazwy projektów w GCP muszą być **unikalne globalnie**) i jako konto rozliczeniowe wybierz konto aktywowane w poprzednim kroku
 
 3. Kliknij **Utwórz** i poczekaj aż projekt zostanie utworzony
 
@@ -663,8 +663,8 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 2. Wgraj przykładowe dane do [BigQuery](https://cloud.google.com/bigquery?hl=en) z pliku CSV
    ```bash
-   curl -X POST "$ORCHESTRATION_URL/ingest" \
-        -F "file=@vector_store/hotel_rules.csv"
+   curl -s -X POST "$ORCHESTRATION_URL/ingest" \
+        -F "file=@vector_store/hotel_rules.csv" | jq .
    ```
 
    > **🤖 Zadanie dla Gemini CLI** — zapytaj AI jak działa wysyłanie pliku przez HTTP:
@@ -710,23 +710,23 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
    Pytanie o częstotliwość pomiaru chloru w basenie:
    ```bash
-   curl -X POST "$ORCHESTRATION_URL/ask" \
+   curl -s -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
-        -d '{"query": "Jak często powinien być mierzony poziom chloru w basenie?"}'
+        -d '{"query": "Jak często powinien być mierzony poziom chloru w basenie?"}' | jq '{answer: .answer, context: .context}'
    ```
 
    Pytanie o godzinę podawania śniadania:
    ```bash
-   curl -X POST "$ORCHESTRATION_URL/ask" \
+   curl -s -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
-        -d '{"query": "O której godzinie jest podawane śniadanie?"}'
+        -d '{"query": "O której godzinie jest podawane śniadanie?"}' | jq '{answer: .answer, context: .context}'
    ```
 
    Pytanie o parking:
    ```bash
-   curl -X POST "$ORCHESTRATION_URL/ask" \
+   curl -s -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
-        -d '{"query": "Ile kosztuje parking hotelowy?"}'
+        -d '{"query": "Ile kosztuje parking hotelowy?"}' | jq '{answer: .answer, context: .context}'
    ```
 
    > **🔍 Dla chętnych — VECTOR_SEARCH bezpośrednio w BigQuery:** chcesz zobaczyć jak wygląda wyszukiwanie wektorowe od środka? Wykonaj je samodzielnie w dwóch krokach.
@@ -739,12 +739,12 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```
    > Następnie wyślij zapytanie:
    > ```bash
-   > curl -X POST "$EMBEDDING_URL/api/embed" \
+   > curl -s -X POST "$EMBEDDING_URL/api/embed" \
    >   -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
    >   -H "Content-Type: application/json" \
-   >   -d '{"model": "embeddinggemma", "input": "Jak często mierzyć chlor?"}'
+   >   -d '{"model": "embeddinggemma", "input": "Jak często mierzyć chlor?"}' | jq '{model: .model, wymiary: (.embeddings[0] | length), wektor: .embeddings[0]}'
    > ```
-   > Skopiuj tablicę liczb z pola `embeddings[0]` w odpowiedzi JSON.
+   > Skopiuj tablicę liczb z pola `wektor` w odpowiedzi powyżej.
    >
    > **Krok 2** — wklej wektor do edytora [BigQuery](https://console.cloud.google.com/bigquery) i uruchom zapytanie:
    > ```sql

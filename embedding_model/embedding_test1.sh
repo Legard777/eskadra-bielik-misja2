@@ -21,18 +21,26 @@ echo "       Tekst wejściowy: 'Suwerenne AI po polsku — Bielik i RAG w Google
 echo "       Odpowiedź będzie tablicą liczb — wektorem reprezentującym znaczenie tekstu."
 echo ""
 
-curl -X POST "$EMBEDDING_SERVICE_URL/api/embed" \
+RESPONSE=$(curl -s -X POST "$EMBEDDING_SERVICE_URL/api/embed" \
     -H "Authorization: Bearer $ID_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
         "model": "embeddinggemma",
         "input": "Suwerenne AI po polsku — Bielik i RAG w Google Cloud"
-    }'
+    }')
+
+echo " Podsumowanie:"
+echo "$RESPONSE" | jq '{model: .model, wymiary: (.embeddings[0] | length), czas_ms: (.total_duration / 1000000 | floor), pierwsze_5_wartosci: .embeddings[0][:5]}'
 
 echo ""
 echo "======================================================"
-echo " Wektor (embedding) wyświetlony powyżej."
-echo " Tablica liczb reprezentuje znaczenie tekstu"
+echo " Pełny wektor (pierwsze 20 wartości):"
+echo "======================================================"
+echo "$RESPONSE" | jq '.embeddings[0][:20]'
+
+echo ""
+echo "======================================================"
+echo " Wektor reprezentuje znaczenie tekstu"
 echo " 'Suwerenne AI po polsku — Bielik i RAG w Google Cloud'"
 echo " w przestrzeni semantycznej modelu EmbeddingGemma."
 echo "======================================================"
