@@ -1319,33 +1319,6 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 
 </details>
 
-### Eksperymenty — zmień wygląd interfejsu
-
-> [!TIP]
-> **🤖 Zadanie dla Gemini CLI** — zmień motyw kolorystyczny interfejsu Web UI!
->
-> 1. Odblokuj plik interfejsu do edycji:
->    ```bash
->    chmod +w orchestration/static/index.html
->    ```
-> 2. Poproś Gemini CLI o zmianę motywu — możesz wybrać dowolny styl:
->    ```bash
->    gemini "Zmodyfikuj plik @orchestration/static/index.html zmieniając motyw kolorystyczny na ciemny (dark mode) z akcentami w kolorze niebieskim. Zachowaj całą funkcjonalność i strukturę HTML."
->    ```
->    Lub spróbuj innego stylu:
->    ```bash
->    gemini "Zmodyfikuj plik @orchestration/static/index.html nadając mu wygląd retro-terminala (zielony tekst na czarnym tle, czcionka monospace). Zachowaj całą funkcjonalność."
->    ```
-> 3. Przejrzyj zmiany w edytorze Cloud Shell:
->    ```bash
->    cloudshell edit orchestration/static/index.html
->    ```
-> 4. Aby zobaczyć zmiany na żywo — wdróż ponownie aplikację (tak samo jak w kroku 5):
->    ```bash
->    cd orchestration && ./cloud_run.sh && cd ..
->    ```
->    Po zakończeniu wdrożenia odśwież stronę w przeglądarce.
-
 4. Zalicz krok i zdobądź **+10 punktów** — uruchom skrypt weryfikacyjny:
    ```bash
    ./checkpoints/checkpoint_8.sh
@@ -1392,6 +1365,33 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 > ℹ️ Wejścia [8.2] i [8.3] mogą pokazać `[--] timeout po 60s` jeśli Bielik jest na zimnym starcie — checkpoint przejdzie mimo to. Błąd pojawi się tylko przy HTTP 4xx/5xx.
 
 </details>
+
+### Eksperymenty — zmień wygląd interfejsu
+
+> [!TIP]
+> **🤖 Zadanie dla Gemini CLI** — zmień motyw kolorystyczny interfejsu Web UI!
+>
+> 1. Odblokuj plik interfejsu do edycji:
+>    ```bash
+>    chmod +w orchestration/static/index.html
+>    ```
+> 2. Poproś Gemini CLI o zmianę motywu — możesz wybrać dowolny styl:
+>    ```bash
+>    gemini "Zmodyfikuj plik @orchestration/static/index.html zmieniając motyw kolorystyczny na ciemny (dark mode) z akcentami w kolorze niebieskim. Zachowaj całą funkcjonalność i strukturę HTML."
+>    ```
+>    Lub spróbuj innego stylu:
+>    ```bash
+>    gemini "Zmodyfikuj plik @orchestration/static/index.html nadając mu wygląd retro-terminala (zielony tekst na czarnym tle, czcionka monospace). Zachowaj całą funkcjonalność."
+>    ```
+> 3. Przejrzyj zmiany w edytorze Cloud Shell:
+>    ```bash
+>    cloudshell edit orchestration/static/index.html
+>    ```
+> 4. Aby zobaczyć zmiany na żywo — wdróż ponownie aplikację (tak samo jak w kroku 5):
+>    ```bash
+>    cd orchestration && ./cloud_run.sh && cd ..
+>    ```
+>    Po zakończeniu wdrożenia odśwież stronę w przeglądarce.
 
 ## 9. Certyfikat ukończenia warsztatu `~10 min`
 
