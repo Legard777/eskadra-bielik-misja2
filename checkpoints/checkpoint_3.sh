@@ -31,7 +31,8 @@ BIELIK_CREATED=$(gcloud run services describe bielik \
     --format="value(metadata.creationTimestamp)" 2>/dev/null || true)
 BIELIK_GPU=$(gcloud run services describe bielik \
     --region "$REGION" \
-    --format="value(spec.template.spec.containers[0].resources.limits.nvidia.com/gpu)" 2>/dev/null || true)
+    --format=json 2>/dev/null | \
+    jq -r '.spec.template.spec.containers[0].resources.limits["nvidia.com/gpu"] // empty' 2>/dev/null || true)
 
 if [ "$BIELIK_STATUS" = "True" ]; then
     _print_ok "Status: Ready"
