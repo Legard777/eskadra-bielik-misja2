@@ -1002,13 +1002,6 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ⏳ 
    > Dane tekstowe w kolumnach `id`, `content` widoczne są natychmiast. Indeksowanie kolumny `embedding` na potrzeby Vector Search może chwilę potrwać — to normalne i nie blokuje kolejnych kroków.
 
-<details>
-<summary>📸 Podgląd 10 — BigQuery Preview tabeli hotel_rules z danymi</summary>
-
-![Screenshot 10 — BigQuery Preview tabeli z kolumną embedding](assets/screenshot-10-bigquery-preview.png)
-> *Do uzupełnienia: widok BigQuery Console z otwartą tabelą `hotel_rules` i klikniętym przyciskiem "Preview" — widoczne kolumny `id`, `content` i `embedding` z wypełnionymi danymi.*
-
-</details>
 
    > **🔍 Dla chętnych — weryfikacja SQL:** jeśli chcesz zobaczyć dane zapytaniem, wklej w edytorze BigQuery:
    > ```sql
@@ -1163,13 +1156,6 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    > ```
    > Kolumna `distance` to odległość kosinusowa (0 = identyczny, 1 = ortogonalny) — im mniejsza, tym lepiej dopasowany dokument. Dokładnie to samo robi `orchestration-api` za kulisami przy każdym zapytaniu `/ask`.
 
-<details>
-<summary>📸 Podgląd 11 — Przykładowa odpowiedź RAG z endpointu /ask</summary>
-
-![Screenshot 11 — Terminal z odpowiedzią RAG](assets/screenshot-11-odpowiedz-rag.png)
-> *Do uzupełnienia: terminal pokazujący odpowiedź JSON z endpointu `/ask` — widoczne pola `answer` (odpowiedź Bielika) oraz `context` (fragmenty dokumentów pobrane z BigQuery Vector Search).*
-
-</details>
 
    > **🤖 Zadanie dla Gemini CLI** — zapytaj AI o mechanizm RAG od środka:
    > ```bash
@@ -1250,8 +1236,7 @@ echo "$ORCHESTRATION_URL/docs"
 <details>
 <summary>📸 Podgląd 12 — Swagger UI z dokumentacją API</summary>
 
-![Screenshot 12 — Przeglądarka z interfejsem Swagger UI /docs](assets/screenshot-12-swagger-ui.png)
-> *Do uzupełnienia: przeglądarka otwarta na adresie `/docs` — widoczny interfejs Swagger UI z listą wszystkich endpointów: GET `/`, POST `/ingest`, POST `/ask`, POST `/ask_direct`, GET `/records`.*
+![Przeglądarka z interfejsem Swagger UI /docs](assets/Krok_7-swagger_ui_docs_view.jpg)
 
 </details>
 
@@ -1347,8 +1332,7 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 <details>
 <summary>📸 Podgląd 13 — Web UI z porównaniem odpowiedzi RAG vs bez RAG</summary>
 
-![Screenshot 13 — Interfejs Web UI z dwoma kolumnami odpowiedzi](assets/screenshot-13-webui-porownanie.png)
-> *Do uzupełnienia: przeglądarka z otwartym interfejsem Web UI — widoczne dwie kolumny z odpowiedziami na to samo pytanie: lewa (model bez RAG) i prawa (model z kontekstem RAG z BigQuery), poniżej sekcja "Użyty kontekst" z fragmentami dokumentów.*
+![Interfejs Web UI z dwoma kolumnami odpowiedzi](assets/Krok_8-web_ui_original_code.jpg)
 
 </details>
 
@@ -1412,10 +1396,26 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 >    ```bash
 >    gemini "Zmodyfikuj plik @orchestration/static/index.html zmieniając motyw kolorystyczny na ciemny (dark mode) z akcentami w kolorze niebieskim. Zachowaj całą funkcjonalność i strukturę HTML."
 >    ```
+
+<details>
+<summary>📸 Podgląd — Web UI w trybie dark mode</summary>
+
+![Web UI w trybie dark mode](assets/Krok_8-web_ui_dark_mode.jpg)
+
+</details>
+
 >    Lub spróbuj innego stylu:
 >    ```bash
 >    gemini "Zmodyfikuj plik @orchestration/static/index.html nadając mu wygląd retro-terminala (zielony tekst na czarnym tle, czcionka monospace). Zachowaj całą funkcjonalność."
 >    ```
+
+<details>
+<summary>📸 Podgląd — Web UI w stylu retro-terminala</summary>
+
+![Web UI w stylu retro-terminala](assets/Krok_8-web_ui_terminal_mode.jpg)
+
+</details>
+
 > 3. Przejrzyj zmiany w edytorze Cloud Shell:
 >    ```bash
 >    cloudshell edit orchestration/static/index.html
