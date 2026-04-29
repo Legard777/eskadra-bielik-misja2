@@ -1234,7 +1234,7 @@ echo "$ORCHESTRATION_URL/docs"
 ```
 
 <details>
-<summary>📸 Podgląd 12 — Swagger UI z dokumentacją API</summary>
+<summary>📸 Podgląd - Swagger UI z dokumentacją API</summary>
 
 ![Przeglądarka z interfejsem Swagger UI /docs](assets/Krok_7-swagger_ui_docs_view.jpg)
 
@@ -1330,7 +1330,7 @@ Aby otworzyć interfejs graficzny testowej aplikacji z poziomu Twojego projektu:
 3. Porównaj strumień odpowiedzi wyświetlany dla samej bazy wiedzy modelu (bez dodatkowego kontekstu) z bogatszą odpowiedzią RAG wygenerowaną w oparciu o wiedzę z przeszukiwania [BigQuery Vector Search](https://docs.cloud.google.com/bigquery/docs/vector-search).
 
 <details>
-<summary>📸 Podgląd 13 — Web UI z porównaniem odpowiedzi RAG vs bez RAG</summary>
+<summary>📸 Podgląd - Web UI z porównaniem odpowiedzi RAG vs bez RAG</summary>
 
 ![Interfejs Web UI z dwoma kolumnami odpowiedzi](assets/Krok_8-web_ui_original_code.jpg)
 
