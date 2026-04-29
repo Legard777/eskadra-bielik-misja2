@@ -1032,7 +1032,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ```bash
    curl -s -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
-        -d '{"query": "Jak często powinien być mierzony poziom chloru w basenie?"}' | jq '{answer: .answer, context_used: .context_used}'
+        -d '{"query": "Jak często powinien być mierzony poziom chloru w basenie?"}' | jq .
    ```
 
 <details>
@@ -1045,7 +1045,18 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
     "Ratownik musi dokonywać pomiaru chloru i temperatury wody w basenie co równe trzy godziny.",
     "Basen oraz strefa saun są dostępne dla gości bez dodatkowych opłat w godzinach od 8:00 do 22:00.",
     "W strefie saun obowiązuje bezwzględny zakaz używania telefonów komórkowych przez personel i gości."
-  ]
+  ],
+  "context_ids": [
+    "3",
+    "6",
+    "8"
+  ],
+  "context_scores": [
+    89.2,
+    63.4,
+    58.1
+  ],
+  "confidence": 70.2
 }
 ```
 
@@ -1057,7 +1068,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ```bash
    curl -s -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
-        -d '{"query": "O której godzinie jest podawane śniadanie?"}' | jq '{answer: .answer, context_used: .context_used}'
+        -d '{"query": "O której godzinie jest podawane śniadanie?"}' | jq .
    ```
 
 <details>
@@ -1070,7 +1081,18 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
     "Śniadanie podawane jest codziennie w restauracji na parterze w godzinach od 7:00 do 10:00.",
     "Codzienne sprzątanie pokoi odbywa się w godzinach od 9:00 do 14:00 na życzenie gościa potwierdzone wywieszką na klamce.",
     "Całodobowa recepcja jest do dyspozycji gości w celu zgłaszania wszelkich usterek oraz potrzeb."
-  ]
+  ],
+  "context_ids": [
+    "2",
+    "9",
+    "4"
+  ],
+  "context_scores": [
+    92.1,
+    61.5,
+    54.3
+  ],
+  "confidence": 69.3
 }
 ```
 
@@ -1080,7 +1102,7 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
    ```bash
    curl -s -X POST "$ORCHESTRATION_URL/ask" \
         -H "Content-Type: application/json" \
-        -d '{"query": "Ile kosztuje parking hotelowy?"}' | jq '{answer: .answer, context_used: .context_used}'
+        -d '{"query": "Ile kosztuje parking hotelowy?"}' | jq .
    ```
 
 <details>
@@ -1088,12 +1110,23 @@ Aplikacja Orchestration to serce całego rozwiązania RAG — spina model embedd
 
 ```json
 {
-  "answer": "Parking hotelowy jest płatny i kosztuje 40 PLN za dobę. Jest to parking własny hotelu, usytuowany przed budynkiem, i nie wymaga wcześniejszej rezerwacji.",
+  "answer": "Parking hotelowy kosztuje 40 PLN za dzień.",
   "context_used": [
     "Własny parking przed hotelem jest płatny 40 PLN za dzień i nie wymaga wcześniejszej rezerwacji.",
-    "Całodobowa recepcja jest do dyspozycji gości w celu zgłaszania wszelkich usterek oraz potrzeb.",
-    "Usługa późniejszego wymeldowania jest możliwa po konsultacji z recepcją i podlega dodatkowej opłacie."
-  ]
+    "Własny parking przed hotelem jest płatny 40 PLN za dzień i nie wymaga wcześniejszej rezerwacji.",
+    "Szybkie WiFi jest darmowe i dostępne w całym hotelu pod nazwą sieci Hotel_Guest."
+  ],
+  "context_ids": [
+    "5",
+    "5",
+    "7"
+  ],
+  "context_scores": [
+    81.0,
+    81.0,
+    55.7
+  ],
+  "confidence": 72.6
 }
 ```
 
