@@ -314,11 +314,12 @@ Przykładowy kod źródłowy zawarty w tym repozytorium pozwala w szczególnośc
    > **🤖 Zadanie dla Gemini CLI** — zamiast czytać opis, zapytaj AI! Uruchom w terminalu:
 
    > ℹ️ **Gemini CLI jest pre-zainstalowany w Cloud Shell** i uwierzytelnia się automatycznie Twoimi danymi Google. Przy pierwszym uruchomieniu może pojawić się prośba o akceptację warunków użytkowania — zatwierdź ją i kontynuuj. Komendę zamykającą Gemini CLI to `/quit`.
+   >
+   > Pierwsze uruchomienie wymaga wybrania opcji **1. Trust folder (eskadra-bielik-misja2)**.
 
    > ```bash
    > gemini "Co robi ten skrypt @setup_env.sh? Wyjaśnij każdą zmienną środowiskową."
    > ```
-   > W celu zamknięcia Gemini CLI wybierz komendę `/quit`.
    > Porównaj swoją odpowiedź z [opisem referencyjnym](skrypty/script_descriptions.md#skrypt-setupenvsh) — Twoja może brzmieć zupełnie inaczej i to jest jak najbardziej w porządku. Modele językowe są niedeterministyczne: za każdym razem generują odpowiedź od nowa, dlatego dwie osoby zadające to samo pytanie mogą otrzymać różne, ale równie poprawne wyjaśnienia.
 
 4. Uruchom skrypt `setup_env.sh`
@@ -1650,6 +1651,15 @@ Konfiguracja użyta w tym warsztacie jest celowo uproszczona. Dla zastosowań pr
 
 <a href="https://youtu.be/iOqdKGNks7Y" target="_blank">
   <img src="https://img.youtube.com/vi/iOqdKGNks7Y/0.jpg" alt="Zmiana wyglądu z light na dark w Google Cloud Platform" width="480">
+</a>
+
+</details>
+
+<details>
+<summary>▶️ Nagranie — Cloud Shell - zmiana wielkości czcionki i ustawienie Dark Mode</summary>
+
+<a href="https://youtu.be/qxkrwAfw0rQ" target="_blank">
+  <img src="https://img.youtube.com/vi/qxkrwAfw0rQ/0.jpg" alt="Cloud Shell - zmiana wielkości czcionki i ustawienie Dark Mode" width="480">
 </a>
 
 </details>
