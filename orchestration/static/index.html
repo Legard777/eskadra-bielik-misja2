@@ -216,6 +216,9 @@
             margin-left: 6px;
             vertical-align: middle;
         }
+        .context-score.high   { background: #059669; }
+        .context-score.medium { background: #d97706; }
+        .context-score.low    { background: #dc2626; }
 
         .context-id {
             font-size: 11px;
@@ -429,13 +432,35 @@
                     ragConfidence.innerHTML = confidenceBadge(res.confidence ?? null, 'Trafność RAG');
                     ragContent.innerText = res.answer;
                     if(res.context_used && res.context_used.length > 0) {
+                        let items = res.context_used.map((ctx, i) => ({
+                            ctx,
+                            score: res.context_scores ? res.context_scores[i] : null,
+                            id:    res.context_ids   ? res.context_ids[i]    : null
+                        }));
+                        // deduplicate by id+content
+                        const seen = new Set();
+                        items = items.filter(item => {
+                            const key = `${item.id}|${item.ctx}`;
+                            if (seen.has(key)) return false;
+                            seen.add(key);
+                            return true;
+                        });
+                        // sort best match first
+                        items.sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
+
+                        // best-match score: max of deduplicated scores (averaging penalises coverage)
+                        const validScores = items.map(i => i.score).filter(s => s !== null);
+                        const confidence = validScores.length > 0
+                            ? Math.round(Math.max(...validScores) * 10) / 10
+                            : null;
+                        ragConfidence.innerHTML = confidenceBadge(confidence, 'Trafność źródła');
+
                         ragContext.style.display = 'block';
                         ragContext.innerHTML = `<h4>💡 Wykorzystany kontekst z BigQuery:</h4>`;
-                        res.context_used.forEach((ctx, i) => {
-                            const score = res.context_scores ? res.context_scores[i] : null;
-                            const id    = res.context_ids   ? res.context_ids[i]    : null;
+                        items.forEach(({ctx, score, id}) => {
+                            const scoreCls = score === null ? '' : score >= 75 ? 'high' : score >= 50 ? 'medium' : 'low';
                             const scoreTag = score !== null
-                                ? `<span class="context-score">${score}%</span>`
+                                ? `<span class="context-score ${scoreCls}">${score}%</span>`
                                 : '';
                             const idTag = id !== null
                                 ? `<div class="context-id">id: ${id}</div>`
