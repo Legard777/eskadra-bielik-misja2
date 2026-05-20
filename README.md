@@ -34,7 +34,9 @@ Suwerenne i wiarygodne AI - Od dokumentów firmowych do inteligentnej bazy wiedz
 >
 > Jeśli nie masz aktywnego projektu Google Cloud (kredytów OnRamp, dostępu do Cloud Run lub BigQuery), pełny warsztat możesz przejść w notebooku Colab na bezpłatnym GPU T4:
 >
-> 👉 [`notebooks/warsztat_colab.ipynb`](notebooks/warsztat_colab.ipynb) — otwórz przez `File → Open notebook → GitHub` w Colab.
+> [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Legard777/eskadra-bielik-misja2/blob/main/notebooks/warsztat_colab.ipynb)
+>
+> Notebook w repo: [`notebooks/warsztat_colab.ipynb`](notebooks/warsztat_colab.ipynb). Pamiętaj o włączeniu GPU: `Runtime → Change runtime type → GPU (T4)`.
 >
 > Wariant zachowuje **te same 8 checkpointów i certyfikat (75 pkt)**, z tą różnicą że Ollama uruchamia się lokalnie zamiast Cloud Run, a baza wektorowa to ChromaDB zamiast BigQuery. Czas wykonania: **~36 min** zamiast ~180 min (brak cold startów Cloud Run i kopiowania modeli z GCS). Format certyfikatów `.enc` pozostaje kompatybilny z wariantem GCP.
 
