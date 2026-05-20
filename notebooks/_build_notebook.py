@@ -39,6 +39,9 @@ cells = []
 cells.append(md(
     "# Eskadra Bielik — Misja 2 — wariant Google Colab\n",
     "\n",
+    "<a href=\"https://colab.research.google.com/github/Legard777/eskadra-bielik-misja2/blob/main/notebooks/warsztat_colab.ipynb\" target=\"_blank\">"
+    "<img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>\n",
+    "\n",
     "**RAG w oparciu o model Bielik i lokalną bazę wektorową — pełny warsztat na Colab z GPU.**\n",
     "\n",
     "Ten notebook jest *kompletnym ekwiwalentem* 8-krokowego warsztatu z `README.md`, przeniesionym na Colab. "
